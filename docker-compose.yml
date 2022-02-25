@@ -1,0 +1,38 @@
+version: '3'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    environment:
+      - POSTGRES_DB=bitemebee
+      - POSTGRES_USER=bitemebee
+      - POSTGRES_PASSWORD=bitemebee
+      - POSTGRES_SCHEMA=public
+    ports:
+      - "5433:5432"
+
+#    networks:
+#      - bitemebee-network
+#
+#  bitemebee-app:
+#    container_name: bitemebee-app
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    image: bitemebee-app:latest
+#    depends_on:
+#      - postgres
+#    environment:
+#      - DB_HOST=database
+#      - DB_PORT=5432
+#      - DB_NAME=bitemebee
+#      - DB_USER=bitemebee
+#      - DB_PASS=bitemebee
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - bitemebee-network
+#
+#networks:
+#  bitemebee-network:
+#    driver: bridge
