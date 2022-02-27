@@ -9,5 +9,4 @@ public class BiteMeBeeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BiteMeBeeApplication.class, args);
 	}
-
 }
