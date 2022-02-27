@@ -43,10 +43,10 @@ public class BeeTypeRsDto {
   @Schema(description = "Максимальная температура")
   private Integer maxTemperature;
 
-  @Schema(description = "Сопротивление холоду")
+  @Schema(description = "Коэффициент сопротивление холоду")
   private Double coldResistance;
 
-  @Schema(description = "Сопротивление болезням")
+  @Schema(description = "Коэффициент сопротивления болезням")
   private Double diseaseResistance;
 
   @Schema(description = "Коэффициент производительности мёда")
@@ -55,9 +55,9 @@ public class BeeTypeRsDto {
   @Schema(description = "Коэффициент производительности яиц")
   private Double eggProductivity;
 
-  @Schema(description = "Уровень агрессии")
+  @Schema(description = "Коэффициент агрессии")
   private Double aggression;
 
-  @Schema(description = "Уровень роения")
+  @Schema(description = "Коэффициент роения")
   private Double roiling;
 }
