@@ -1,10 +1,6 @@
 package com.example.BiteMeBee.rest.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Response dto вида пчелы")
+@Schema(description = "Выходной DTO вида пчелы")
 public class BeeTypeRsDto {
 
   @Schema(description = "Идентификатор вида")
@@ -32,10 +28,10 @@ public class BeeTypeRsDto {
   private Integer maxCo2;
 
   @Schema(description = "Минимальная норма влажности")
-  private Integer min_Humidity;
+  private Integer minHumidity;
 
   @Schema(description = "Максимальная норма влажности")
-  private Integer max_Humidity;
+  private Integer maxHumidity;
 
   @Schema(description = "Минимальная температура")
   private Integer minTemperature;
@@ -55,9 +51,9 @@ public class BeeTypeRsDto {
   @Schema(description = "Коэффициент производительности яиц")
   private Double eggProductivity;
 
-  @Schema(description = "Коэффициент агрессии")
-  private Double aggression;
+  @Schema(description = "Уровень агрессии")
+  private Double aggressionLevel;
 
   @Schema(description = "Коэффициент роения")
-  private Double roiling;
+  private Double roilingLevel;
 }

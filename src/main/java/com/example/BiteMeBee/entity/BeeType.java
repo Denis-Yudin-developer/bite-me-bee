@@ -40,10 +40,10 @@ public class BeeType {
   private Integer maxCo2;
 
   @Column(name="min_humidity", nullable=false)
-  private Integer min_Humidity;
+  private Integer minHumidity;
 
   @Column(name="max_humidity", nullable=false)
-  private Integer max_Humidity;
+  private Integer maxHumidity;
 
   @Column(name="min_temperature", nullable=false)
   private Integer minTemperature;
@@ -63,10 +63,10 @@ public class BeeType {
   @Column(name="egg_productivity", nullable=false)
   private Double eggProductivity;
 
-  @Column(name="aggression", nullable=false)
-  private Double aggression;
+  @Column(name="aggression_level", nullable=false)
+  private Double aggressionLevel;
 
-  @Column(name="roiling", nullable=false)
-  private Double roiling;
+  @Column(name="roiling_level", nullable=false)
+  private Double roilingLevel;
 
 }
