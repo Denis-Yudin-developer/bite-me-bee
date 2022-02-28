@@ -33,7 +33,7 @@ public class BeeFamily {
   @JoinColumn(name = "bee_type_id", nullable = false)
   private BeeType beeType;
 
-  @Column(name="note", nullable=false, columnDefinition="TEXT")
+  @Column(name="note", nullable=false)
   private String note;
 
   @Column(name="status", nullable=false)
