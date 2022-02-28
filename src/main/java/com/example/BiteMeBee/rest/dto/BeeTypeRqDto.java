@@ -29,32 +29,32 @@ public class BeeTypeRqDto {
   @Schema(description = "Описание вида")
   private String description;
 
-  @Range(min=1,max=10000, message = "Минимальный уровень Co2 должен быть в промежутке от 1 до 10000")
+  @Range(min=300,max=700, message = "Минимальный уровень Co2 должен быть в промежутке от 1 до 10000")
   @NotNull(message = "Не указан минимальный уровень Co2")
   @Schema(description = "Минимальный уровень Co2")
   private Integer minCo2;
 
-  @Range(min=1,max=10000, message = "Максимальный уровень Co2 должен быть в промежутке от 1 до 10000")
+  @Range(min=300,max=700, message = "Максимальный уровень Co2 должен быть в промежутке от 1 до 10000")
   @NotNull(message = "Не указан максимальный уровень Co2")
   @Schema(description = "Максимальный уровень Co2")
   private Integer maxCo2;
 
-  @Range(min=0,max=100, message = "Минимальный уровень влажности должен быть в промежутке от 0% до 100%")
+  @Range(min=70,max=85, message = "Минимальный уровень влажности должен быть в промежутке от 0% до 100%")
   @NotNull(message = "Не указана минимальная норма влажности")
   @Schema(description = "Минимальная норма влажности")
   private Integer minHumidity;
 
-  @Range(min=0,max=100, message = "Максимальный уровень влажности должен быть в промежутке от 0% до 100%")
+  @Range(min=70,max=85, message = "Максимальный уровень влажности должен быть в промежутке от 0% до 100%")
   @NotNull(message = "Не указана максимальная норма влажности")
   @Schema(description = "Максимальная норма влажности")
   private Integer maxHumidity;
 
-  @Range(min=-100,max=100, message = "Минимальная температура должна быть в промежутке от -100°C до 100°C")
+  @Range(min=30,max=35, message = "Минимальная температура должна быть в промежутке от -100°C до 100°C")
   @NotNull(message = "Не указана минимальная температура")
   @Schema(description = "Минимальная температура")
   private Integer minTemperature;
 
-  @Range(min=-100,max=100, message = "Максимальная температура должна быть в промежутке от -100°C до 100°C")
+  @Range(min=30,max=35, message = "Максимальная температура должна быть в промежутке от -100°C до 100°C")
   @NotNull(message = "Не указана максимальная температура")
   @Schema(description = "Максимальная температура")
   private Integer maxTemperature;
