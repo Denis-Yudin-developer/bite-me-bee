@@ -24,7 +24,6 @@ public class BeeTypeRqDto {
   @Schema(description = "Название вида")
   private String title;
 
-  @Size(min = 1, message = "Длинна описания вида должна быть в промежутке от 1 до 3000 символов")
   @NotNull(message = "Не указано описание")
   @Schema(description = "Описание вида")
   private String description;
