@@ -15,13 +15,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Входной DTO пчелиной семьи")
 public class BeeFamilyRqDto {
 
-  //Подразумеваю, что пользователь на фронте будет выбирать вид пчёл(название вида уникально)
-  // поменять на id
-  @Size(max = 100, message
-    = "Длинна названия вида должна быть в промежутке от 1 до 100 символов")
-  @NotNull(message = "Не указано название вида")
-  @Schema(description = "Название вида пчелиной семьи")
-  private String beeTypeTitle;
+  @NotNull(message = "Не указан идентификатор пчелиной семьи")
+  @Schema(description = "Идентификатор пчелиной семьи")
+  private Long beeTypeId;
 
   @Size(max = 1000, message
     = "Длинна заметки должна быть в промежутке от 1 до 100 символов")

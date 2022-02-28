@@ -16,8 +16,8 @@ public class BeeFamilyRsDto {
   @Schema(description = "Идентификатор пчелиной семьи")
   private Long id;
 
-  @Schema(description = "Название вида пчелиной семьи")
-  private String beeTypeTitle;
+  @Schema(description = "Идентификатор пчелиной семьи")
+  private Long beeTypeId;
 
   @Schema(description = "Заметка о пчелиной семье")
   private String note;
