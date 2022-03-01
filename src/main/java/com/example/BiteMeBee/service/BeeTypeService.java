@@ -1,9 +1,10 @@
 package com.example.BiteMeBee.service;
 
-import com.example.BiteMeBee.entity.BeeType;
+import com.example.BiteMeBee.rest.dto.BeeTypeRsDto;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface BeeTypeService {
 
-  public List<BeeType> getAllBeeTypes();
+  List<BeeTypeRsDto> getAllBeeTypes(Pageable pageable);
 }
