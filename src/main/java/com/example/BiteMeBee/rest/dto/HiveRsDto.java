@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Выходной DTO улья")
 public class HiveRsDto {
 
-  @Schema(description = "Идентификатор улья")
+  @Schema(description = "Идентификатор улья", example = "1")
   private Long hiveId;
 
-  @Schema(description = "Идентификатор пчелиной семьи")
+  @Schema(description = "Идентификатор пчелиной семьи", example = "1")
   private Long beeFamilyId;
 
-  @Schema(description = "Количество рамок")
+  @Schema(description = "Количество рамок", example = "8", minimum = "1", maximum = "20")
   private Integer frameCount;
 }
