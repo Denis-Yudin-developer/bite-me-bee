@@ -34,7 +34,7 @@ public class BeeFamily {
   @Column(name="note", nullable=false)
   private String note;
 
-  @Column(name="status", nullable=false)
-  private Boolean status;
+  @Column(name="is_alive", nullable=false)
+  private Boolean isAlive;
 
 }

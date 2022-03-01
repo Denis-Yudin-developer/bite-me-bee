@@ -30,7 +30,7 @@ public class Hive {
 
   @OneToOne
   @JoinColumn(name = "family_id", nullable = false)
-  private BeeFamily beeType;
+  private BeeFamily beeFamily;
 
   @Column(name="frame_count", nullable=false)
   private Integer frameCount;
