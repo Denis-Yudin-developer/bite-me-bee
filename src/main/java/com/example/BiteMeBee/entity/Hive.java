@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@Table("hives")
+@Table(name= "hives")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Hive {

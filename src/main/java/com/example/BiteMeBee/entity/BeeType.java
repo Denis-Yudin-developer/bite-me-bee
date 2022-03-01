@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@Table("bee_types")
+@Table(name = "bee_types")
 @NoArgsConstructor
 @AllArgsConstructor
 public class BeeType {
