@@ -3,7 +3,9 @@ package com.example.BiteMeBee.repository;
 import com.example.BiteMeBee.entity.BeeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BeeTypeRepository extends JpaRepository<BeeType, String> {
+import java.util.Optional;
 
+public interface BeeTypeRepository extends JpaRepository<BeeType, Long> {
 
+    Optional<BeeType> getBeeTypeByTitle(String title);
 }
