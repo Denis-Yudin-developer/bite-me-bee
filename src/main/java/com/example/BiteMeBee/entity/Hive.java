@@ -14,14 +14,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@ToString
-@Table("hives")
+@Table(name= "hives")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Hive {
@@ -32,7 +30,7 @@ public class Hive {
 
   @OneToOne
   @JoinColumn(name = "family_id", nullable = false)
-  private BeeFamily beeType;
+  private BeeFamily beeFamily;
 
   @Column(name="frame_count", nullable=false)
   private Integer frameCount;

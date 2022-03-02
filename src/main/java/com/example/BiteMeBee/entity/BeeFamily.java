@@ -13,14 +13,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@ToString
-@Table("bee_families")
+@Table(name = "bee_families")
 @NoArgsConstructor
 @AllArgsConstructor
 public class BeeFamily {
@@ -36,7 +34,7 @@ public class BeeFamily {
   @Column(name="note", nullable=false)
   private String note;
 
-  @Column(name="status", nullable=false)
-  private Boolean status;
+  @Column(name="is_alive", nullable=false)
+  private Boolean isAlive;
 
 }
