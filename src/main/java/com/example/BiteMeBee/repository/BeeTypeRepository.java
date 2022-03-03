@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface BeeTypeRepository extends JpaRepository<BeeType, Long> {
 
-    Optional<BeeType> getBeeTypeByTitle(String title);
+    Optional<BeeType> findByTitle(String title);
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RequestMapping("/api/bee-types")
+@RequestMapping("/api/bee_types")
 @Tag(name = "BeeType", description = "API вида пчёл")
 public interface BeeTypeApi {
 
@@ -25,12 +25,16 @@ public interface BeeTypeApi {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Виды пчёл найдены",
+                    description = "OK",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = BeeTypeRsDto.class)))
-                    })
+                    }),
+            @ApiResponse(
+                    responseCode = "BAD REQUEST",
+                    description = "Неправильные параметры запроса для получения видов пчёл"
+            )
     })
     Page<BeeTypeRsDto> getAll(Pageable pageable);
 
@@ -39,15 +43,19 @@ public interface BeeTypeApi {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Вид пчелы найден",
+                    description = "OK",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = BeeTypeRsDto.class))
                     }),
             @ApiResponse(
+                    responseCode = "400",
+                    description = "BAD REQUEST"
+            ),
+            @ApiResponse(
                     responseCode = "404",
-                    description = "Вид пчелы не найден"
+                    description = "NOT FOUND"
                     )
     })
     BeeTypeRsDto getById(@PathVariable(name = "id") Long id);
@@ -56,8 +64,8 @@ public interface BeeTypeApi {
     @Operation(summary = "Добавить вид пчелы", tags = "beeType")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "200",
-                    description = "Добавлен вид пчелы",
+                    responseCode = "201",
+                    description = "CREATED",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -65,7 +73,7 @@ public interface BeeTypeApi {
                     }),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Вид пчелы не добавлен"
+                    description = "BAD REQUEST"
                     )
     })
     ResponseEntity<BeeTypeRsDto> create(@Valid @RequestBody BeeTypeRqDto beeTypeRqDto);
@@ -75,29 +83,37 @@ public interface BeeTypeApi {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Обновлен вид пчелы",
+                    description = "OK",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = BeeTypeRsDto.class))
                     }),
             @ApiResponse(
+                    responseCode = "400",
+                    description = "BAD REQUEST"
+            ),
+            @ApiResponse(
                     responseCode = "404",
-                    description = "Не найден вид пчелы, который нужно обновить"
+                    description = "NOT FOUND"
             )
     })
-    ResponseEntity<BeeTypeRsDto> update(@Valid @RequestBody BeeTypeRqDto beeTypeRqDto, @PathVariable Long id);
+    BeeTypeRsDto update(@Valid @RequestBody BeeTypeRqDto beeTypeRqDto, @PathVariable Long id);
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Удалить вид пчелы", tags = "beeType")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "200",
-                    description = "Удалён вид пчелы"
+                    responseCode = "202",
+                    description = "ACCEPTED"
                     ),
             @ApiResponse(
+                    responseCode = "400",
+                    description = "BAD REQUEST"
+            ),
+            @ApiResponse(
                     responseCode = "404",
-                    description = "Не найден вид пчелы, который нужно удалить"
+                    description = "NOT FOUND"
                     )
     })
     ResponseEntity<?> deleteById(@PathVariable(name = "id") Long id);

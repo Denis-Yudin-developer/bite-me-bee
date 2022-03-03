@@ -13,7 +13,7 @@ public interface BeeTypeService {
 
     BeeTypeRsDto create(BeeTypeRqDto beeTypeRqDto);
 
-    BeeTypeRsDto update(BeeTypeRqDto beeTypeRqDto, Long id);
+    BeeTypeRsDto update(Long id, BeeTypeRqDto beeTypeRqDto);
 
     void deleteById(Long id);
 }

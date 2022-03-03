@@ -22,7 +22,7 @@ public class BeeTypeController implements BeeTypeApi {
 
     private final BeeTypeServiceImpl beeTypeService;
 
-    private final String BEE_TYPE_NOT_CREATED = "Вид пчелы с id=%s не найден";
+    private final String BEE_TYPE_NOT_CREATED = "Вид пчелы не создан";
 
     @Override
     public Page<BeeTypeRsDto> getAll(Pageable pageable) {
@@ -54,10 +54,10 @@ public class BeeTypeController implements BeeTypeApi {
     }
 
     @Override
-    public ResponseEntity<BeeTypeRsDto> update(BeeTypeRqDto beeTypeRqDto, Long id) {
+    public BeeTypeRsDto update(BeeTypeRqDto beeTypeRqDto, Long id) {
         log.info("UPDATE /id={}", id);
 
-        return ResponseEntity.ok(beeTypeService.update(beeTypeRqDto, id));
+        return beeTypeService.update(id, beeTypeRqDto);
     }
 
     @Override
