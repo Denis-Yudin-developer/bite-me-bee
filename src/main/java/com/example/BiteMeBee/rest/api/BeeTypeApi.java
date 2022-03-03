@@ -32,8 +32,8 @@ public interface BeeTypeApi {
                                     array = @ArraySchema(schema = @Schema(implementation = BeeTypeRsDto.class)))
                     }),
             @ApiResponse(
-                    responseCode = "BAD REQUEST",
-                    description = "Неправильные параметры запроса для получения видов пчёл"
+                    responseCode = "400",
+                    description = "BAD REQUEST"
             )
     })
     Page<BeeTypeRsDto> getAll(Pageable pageable);
@@ -98,7 +98,7 @@ public interface BeeTypeApi {
                     description = "NOT FOUND"
             )
     })
-    BeeTypeRsDto update(@Valid @RequestBody BeeTypeRqDto beeTypeRqDto, @PathVariable Long id);
+    BeeTypeRsDto update(@PathVariable Long id, @Valid @RequestBody BeeTypeRqDto beeTypeRqDto);
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Удалить вид пчелы", tags = "beeType")

@@ -4,13 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "bee_types")
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "bee_types")
 public class BeeType {
 
     @Id

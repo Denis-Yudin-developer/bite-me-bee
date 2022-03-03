@@ -54,7 +54,7 @@ public class BeeTypeController implements BeeTypeApi {
     }
 
     @Override
-    public BeeTypeRsDto update(BeeTypeRqDto beeTypeRqDto, Long id) {
+    public BeeTypeRsDto update(Long id, BeeTypeRqDto beeTypeRqDto) {
         log.info("UPDATE /id={}", id);
 
         return beeTypeService.update(id, beeTypeRqDto);

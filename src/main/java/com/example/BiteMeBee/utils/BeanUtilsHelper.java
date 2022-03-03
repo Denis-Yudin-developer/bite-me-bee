@@ -14,13 +14,7 @@ public class BeanUtilsHelper {
 
     private BeanUtilsHelper() {
     }
-    /**
-     * Метод получает массив из имен полей объекта, значения которых равны null.
-     *
-     * @param source        - объект источник, имена полей которого необходимо получить
-     * @param ignoredFields - дополнительный список игнорируемых полей
-     * @return String[] - массив имен неинициализированных полей объекта
-     */
+
     public static String[] getNullPropertyNames(Object source, String... ignoredFields) {
         var wrappedSource = new BeanWrapperImpl(source);
         var foundFields = Stream.of(wrappedSource.getPropertyDescriptors())

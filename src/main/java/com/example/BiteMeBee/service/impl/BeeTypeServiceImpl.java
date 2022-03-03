@@ -33,7 +33,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
 
     @Override
     @Transactional
-    public Page<BeeTypeRsDto> getAll(Pageable pageable) {
+    public Page<BeeTypeRsDto> getAll(@NonNull Pageable pageable) {
         log.debug("Запрос на получение всех видов пчёл, pageable = {}", pageable);
 
         return beeTypeRepository.findAll(pageable)
@@ -42,7 +42,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
 
     @Override
     @Transactional
-    public BeeTypeRsDto getById(Long id) {
+    public BeeTypeRsDto getById(@NonNull Long id) {
         log.debug("Запрос на получение вида пчелы по id = {}", id);
 
         return beeTypeRepository.findById(id)
@@ -52,7 +52,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
 
     @Override
     @Transactional
-    public BeeTypeRsDto create(BeeTypeRqDto beeTypeRqDto) {
+    public BeeTypeRsDto create(@NonNull BeeTypeRqDto beeTypeRqDto) {
         log.debug("Запрос на создание нового вида пчёл, BeeTypeRqDto = {}", beeTypeRqDto);
 
         beeTypeRepository.findByTitle(beeTypeRqDto.getTitle())
@@ -80,7 +80,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
+    public void deleteById(@NonNull Long id) {
         log.debug("Запрос на удаление вида пчелы по id = {}", id);
 
         beeTypeRepository.findById(id)
