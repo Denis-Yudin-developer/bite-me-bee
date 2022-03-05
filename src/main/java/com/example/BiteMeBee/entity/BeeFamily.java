@@ -21,10 +21,10 @@ public class BeeFamily {
     @JoinColumn(name = "bee_type_id", nullable = false)
     private BeeType beeType;
 
-    @Column(name = "note", nullable = false)
+    @Column(name = "note", length = 1000, nullable = false)
     private String note;
 
     @Column(name = "is_alive", nullable = false)
-    private Boolean isAlive;
+    private Boolean isAlive = true;
 
 }
