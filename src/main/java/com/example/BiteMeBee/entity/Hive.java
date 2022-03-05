@@ -21,7 +21,7 @@ public class Hive {
 
     @OneToMany
     @JoinColumn(name = "family_id", nullable = false)
-    private List<BeeFamily> beeFamily;
+    private List<BeeFamily> beeFamilies;
 
     @Column(name = "frame_count", nullable = false)
     private Integer frameCount;

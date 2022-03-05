@@ -1,7 +1,7 @@
 package com.example.BiteMeBee.rest.api;
 
-import com.example.BiteMeBee.rest.dto.BeeTypeRqDto;
-import com.example.BiteMeBee.rest.dto.BeeTypeRsDto;
+import com.example.BiteMeBee.rest.dto.HiveRqDto;
+import com.example.BiteMeBee.rest.dto.HiveRsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,55 +16,54 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RequestMapping("/api/bee_types")
-@Tag(name = "Контроллер вида пчёл", description = "Позволяет управлять записями о пчелиных видах")
-public interface BeeTypeApi {
+@RequestMapping("/api/hives")
+@Tag(name = "Контроллер улья", description = "Позволяет управлять записями об улье")
+public interface HiveApi {
 
     @GetMapping()
-    @Operation(description = "Получить все виды пчёл", method = "GET")
+    @Operation(description = "Получить все ульи", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = BeeTypeRsDto.class))}),
+                                    schema = @Schema(implementation = HiveRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST")
     })
-    Page<BeeTypeRsDto> getAll(Pageable pageable);
+    Page<HiveRsDto> getAll(Pageable pageable);
 
     @GetMapping("/{id}")
-    @Operation(description = "Получить вид пчелы по id", method = "GET")
+    @Operation(description = "Получить улей по id", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = BeeTypeRsDto.class))}),
+                                    schema = @Schema(implementation = HiveRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
-    BeeTypeRsDto getById(@PathVariable(name = "id") Long id);
+    HiveRsDto getById(@PathVariable(name = "id") Long id);
 
     @PostMapping
-    @Operation(description = "Добавить вид пчелы", method = "POST")
+    @Operation(description = "Добавить улей", method = "POST")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "CREATED",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = BeeTypeRsDto.class))}),
+                                    schema = @Schema(implementation = HiveRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST")
     })
-    ResponseEntity<BeeTypeRsDto> create(@Valid @RequestBody BeeTypeRqDto beeTypeRqDto);
+    ResponseEntity<HiveRsDto> create(@Valid @RequestBody HiveRqDto hiveRqDto);
 
     @PutMapping("/{id}")
-    @Operation(description = "Обновить вид пчелы", method = "PUT")
+    @Operation(description = "Обновить улей", method = "PUT")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",
-                    content = {@Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = BeeTypeRsDto.class))}),
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = HiveRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
-    BeeTypeRsDto update(@PathVariable Long id, @Valid @RequestBody BeeTypeRqDto beeTypeRqDto);
+    HiveRsDto update(@PathVariable Long id, @Valid @RequestBody HiveRqDto hiveRqDto);
 
     @DeleteMapping("/{id}")
-    @Operation(description = "Удалить вид пчелы", method = "DELETE")
+    @Operation(description = "Удалить улей", method = "DELETE")
     @ApiResponses({
             @ApiResponse(responseCode = "202", description = "ACCEPTED"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),

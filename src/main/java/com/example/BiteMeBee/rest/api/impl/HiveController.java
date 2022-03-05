@@ -1,10 +1,10 @@
 package com.example.BiteMeBee.rest.api.impl;
 
-import com.example.BiteMeBee.rest.api.BeeTypeApi;
-import com.example.BiteMeBee.rest.dto.BeeTypeRqDto;
-import com.example.BiteMeBee.rest.dto.BeeTypeRsDto;
+import com.example.BiteMeBee.rest.api.HiveApi;
+import com.example.BiteMeBee.rest.dto.HiveRqDto;
+import com.example.BiteMeBee.rest.dto.HiveRsDto;
 import com.example.BiteMeBee.rest.exception.BadRequestException;
-import com.example.BiteMeBee.service.BeeTypeService;
+import com.example.BiteMeBee.service.HiveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,31 +18,31 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class BeeTypeController implements BeeTypeApi {
+public class HiveController implements HiveApi {
 
-    private final BeeTypeService beeTypeService;
+    private final HiveService hiveService;
 
-    private final String BEE_TYPE_NOT_CREATED = "Вид пчелы не создан";
+    private final String HIVE_NOT_CREATED = "Улей не создан";
 
     @Override
-    public Page<BeeTypeRsDto> getAll(Pageable pageable) {
+    public Page<HiveRsDto> getAll(Pageable pageable) {
         log.info("GET ALL /pageable={}", pageable);
 
-        return beeTypeService.getAll(pageable);
+        return hiveService.getAll(pageable);
     }
 
     @Override
-    public BeeTypeRsDto getById(Long id) {
+    public HiveRsDto getById(Long id) {
         log.info("GET /id={}", id);
 
-        return beeTypeService.getById(id);
+        return hiveService.getById(id);
     }
 
     @Override
-    public ResponseEntity<BeeTypeRsDto> create(BeeTypeRqDto beeTypeRqDto) {
-        log.info("CREATE /beeTypeRqDto={}", beeTypeRqDto);
+    public ResponseEntity<HiveRsDto> create(HiveRqDto hiveRqDto) {
+        log.info("CREATE /hiveRqDto={}", hiveRqDto);
 
-        return Optional.ofNullable(beeTypeService.create(beeTypeRqDto))
+        return Optional.ofNullable(hiveService.create(hiveRqDto))
                 .map(created -> {
                     var url = ServletUriComponentsBuilder.fromCurrentRequest()
                             .path("/{id}")
@@ -50,21 +50,21 @@ public class BeeTypeController implements BeeTypeApi {
                             .toUri();
                     return ResponseEntity.created(url).body(created);
                 })
-                .orElseThrow(() -> new BadRequestException(BEE_TYPE_NOT_CREATED));
+                .orElseThrow(() -> new BadRequestException(HIVE_NOT_CREATED));
     }
 
     @Override
-    public BeeTypeRsDto update(Long id, BeeTypeRqDto beeTypeRqDto) {
+    public HiveRsDto update(Long id, HiveRqDto hiveRqDto) {
         log.info("UPDATE /id={}", id);
 
-        return beeTypeService.update(id, beeTypeRqDto);
+        return hiveService.update(id, hiveRqDto);
     }
 
     @Override
     public ResponseEntity<?> deleteById(Long id) {
         log.info("DELETE /id={}", id);
 
-        beeTypeService.deleteById(id);
+        hiveService.deleteById(id);
         return ResponseEntity.accepted()
                 .build();
     }

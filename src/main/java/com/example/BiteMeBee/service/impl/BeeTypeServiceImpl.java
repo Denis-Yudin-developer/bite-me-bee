@@ -67,6 +67,8 @@ public class BeeTypeServiceImpl implements BeeTypeService {
 
     @Override
     public BeeTypeRsDto update(@NonNull Long id, @NonNull BeeTypeRqDto beeTypeRqDto) {
+        log.debug("Запрос на обновление вида пчелы, BeeTypeRqDto = {}", beeTypeRqDto);
+
         return beeTypeRepository.findById(id)
                 .map(src -> {
                     var newBeeType = beeTypeMapper.toEntity(beeTypeRqDto);
