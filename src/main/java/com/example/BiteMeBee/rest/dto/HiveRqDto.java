@@ -16,11 +16,6 @@ import javax.validation.constraints.NotNull;
 @Schema(description = "Входной DTO улья")
 public class HiveRqDto {
 
-
-    @NotNull(message = "Не указан идентификатор пчелиной семьи")
-    @Schema(description = "Идентификатор пчелиной семьи", example = "1")
-    private Long beeFamilyId;
-
     @Range(min = 1, max = 20, message = "Количество рамок должно быть в промежутке от 1 до 20")
     @NotNull(message = "Не указано количество рамок")
     @Schema(description = "Количество рамок", example = "8", minimum = "1", maximum = "20")
