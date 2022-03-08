@@ -21,6 +21,12 @@ public class HiveRsDto {
     @Schema(description = "Список пчелиных семей", example = "1")
     private List<BeeFamilyRsDto> beeFamilies;
 
+    @Schema(description = "Имя улья", example = "Большой жуж", maxLength = 50)
+    private String name;
+
     @Schema(description = "Количество рамок", example = "8", minimum = "1", maximum = "20")
     private Integer frameCount;
+
+    @Schema(description = "Количество мёда", example = "4.9", minimum = "0.0", maximum = "30.0")
+    private Double honeyAmount;
 }

@@ -23,7 +23,12 @@ public class Hive {
     @JoinColumn(name = "family_id", nullable = false)
     private List<BeeFamily> beeFamilies;
 
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
+
     @Column(name = "frame_count", nullable = false)
     private Integer frameCount;
 
+    @Column(name = "honey_amount", nullable = false)
+    private Double honeyAmount;
 }
