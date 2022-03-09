@@ -1,5 +1,6 @@
 package com.example.BiteMeBee.service.impl;
 
+import com.example.BiteMeBee.entity.BeeFamily;
 import com.example.BiteMeBee.entity.Hive;
 import com.example.BiteMeBee.mapper.HiveMapper;
 import com.example.BiteMeBee.repository.HiveRepository;
@@ -84,5 +85,15 @@ public class HiveServiceImpl implements HiveService {
                         () -> {
                             throw new NotFoundException(String.format(HIVE_NOT_FOUND, id));
                         });
+    }
+
+    @Override
+    @Transactional
+    public boolean isOccupied(@NonNull Long id) {
+        log.debug("Проверяем, является ли улей занятым живой пчелиной семьёй, id = {}", id);
+
+        return hiveRepository.findById(id)
+                .map(hive -> hive.getBeeFamilies().stream().anyMatch(BeeFamily::getIsAlive))
+                .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, id)));
     }
 }

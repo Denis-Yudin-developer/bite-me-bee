@@ -17,4 +17,6 @@ public interface HiveService {
     HiveRsDto update(@NonNull Long id, @NonNull HiveRqDto hiveRqDto);
 
     void deleteById(@NonNull Long id);
+
+    boolean isOccupied(@NonNull Long id);
 }
