@@ -1,6 +1,5 @@
 package com.example.BiteMeBee.entity;
 
-
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,8 +18,7 @@ public class Hive {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    @JoinColumn(name = "family_id", nullable = false)
+    @OneToMany(mappedBy = "hive", fetch = FetchType.EAGER)
     private List<BeeFamily> beeFamilies;
 
     @Column(name = "name", nullable = false, unique = true)
@@ -30,5 +28,5 @@ public class Hive {
     private Integer frameCount;
 
     @Column(name = "honey_amount", nullable = false)
-    private Double honeyAmount;
+    private Double honeyAmount = 0D;
 }

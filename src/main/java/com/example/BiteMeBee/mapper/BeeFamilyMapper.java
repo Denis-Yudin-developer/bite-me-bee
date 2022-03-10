@@ -2,6 +2,7 @@ package com.example.BiteMeBee.mapper;
 
 import com.example.BiteMeBee.entity.BeeFamily;
 import com.example.BiteMeBee.repository.BeeTypeRepository;
+import com.example.BiteMeBee.repository.HiveRepository;
 import com.example.BiteMeBee.rest.dto.BeeFamilyRqDto;
 import com.example.BiteMeBee.rest.dto.BeeFamilyRsDto;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,14 @@ public class BeeFamilyMapper {
 
     private final ModelMapper modelMapper;
     private final BeeTypeRepository beeTypeRepository;
+    private final HiveRepository hiveRepository;
 
     @PostConstruct
     private void init() {
         modelMapper.createTypeMap(BeeFamilyRqDto.class, BeeFamily.class)
                 .addMappings(mapping -> mapping.skip(BeeFamily::setBeeType))
+                .addMappings(mapping -> mapping.skip(BeeFamily::setHive))
+                .addMappings(mapping -> mapping.skip(BeeFamily::setPopulation))
                 .setPostConverter(toEntityPostConverter());
     }
 
@@ -42,6 +46,17 @@ public class BeeFamilyMapper {
             Optional.of(familySrc.getBeeTypeId())
                     .flatMap(beeTypeRepository::findById)
                     .ifPresent(familyDst::setBeeType);
+
+            Optional.of(familySrc.getHiveId())
+                    .flatMap(hiveRepository::findById)
+                    .ifPresent(familyDst::setHive);
+
+            //TODO: или это лучше в сервисе пересчитывать?
+            familyDst.setPopulation(
+                    familySrc.getWorkerPopulation() +
+                    familySrc.getDronePopulation() +
+                    familySrc.getQueenPopulation()
+            );
 
             return familyDst;
         };

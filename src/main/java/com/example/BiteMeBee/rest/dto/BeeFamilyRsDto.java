@@ -25,4 +25,17 @@ public class BeeFamilyRsDto {
 
     @Schema(description = "Живёт ли пчелиная семья в улье", example = "true")
     private Boolean isAlive;
+
+    @Schema(description = "Количество трутней", example = "32")
+    private Long dronePopulation;
+
+    @Schema(description = "Количество рабочих пчёл", example = "300")
+    private Long workerPopulation;
+
+    @Schema(description = "Количество маток", example = "1")
+    private Long queenPopulation;
+
+    @Schema(description = "Общая популяция пчелиной семьи", example = "333")
+    private Long population;
+
 }
