@@ -51,13 +51,6 @@ public class BeeFamilyMapper {
                     .flatMap(hiveRepository::findById)
                     .ifPresent(familyDst::setHive);
 
-            //TODO: или это лучше в сервисе пересчитывать?
-            familyDst.setPopulation(
-                    familySrc.getWorkerPopulation() +
-                    familySrc.getDronePopulation() +
-                    familySrc.getQueenPopulation()
-            );
-
             return familyDst;
         };
     }

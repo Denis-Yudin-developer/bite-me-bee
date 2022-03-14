@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Tag(name = "Контроллер вида пчёл", description = "Позволяет управлять записями о пчелиных видах")
 public interface BeeTypeApi {
 
-    @GetMapping()
+    @GetMapping
     @Operation(description = "Получить все виды пчёл", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",

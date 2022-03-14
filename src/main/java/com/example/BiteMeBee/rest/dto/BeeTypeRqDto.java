@@ -19,8 +19,7 @@ import javax.validation.constraints.Size;
 @Schema(description = "Входной DTO вида пчелы")
 public class BeeTypeRqDto {
 
-    @Size(max = 100, message
-            = "Длина названия вида должна быть не более 100 символов")
+    @Size(max = 100, message = "Длина названия вида должна быть не более 100 символов")
     @NotNull(message = "Не указано название вида")
     @Schema(description = "Название вида", example = "Медоносная пчела", maxLength = 100)
     private String title;

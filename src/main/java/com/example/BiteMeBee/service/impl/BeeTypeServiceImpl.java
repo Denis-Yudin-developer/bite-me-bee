@@ -26,7 +26,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     private static final String[] IGNORED_ON_COPY_FIELDS = {"id"};
 
     private final String BEE_TYPE_NOT_FOUND = "Вид пчелы с id=%s не найден";
-    private final String BEE_TYPE_ALREADY_EXISTS = "Вид пчелы с таким названием уже существует";
+    private final String BEE_TYPE_ALREADY_EXISTS = "Вид пчёл с названием «%s» уже существует";
 
     private final BeeTypeRepository beeTypeRepository;
     private final BeeTypeMapper beeTypeMapper;
@@ -43,7 +43,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     @Override
     @Transactional
     public BeeTypeRsDto getById(@NonNull Long id) {
-        log.debug("Запрос на получение вида пчелы по id = {}", id);
+        log.debug("Запрос на получение вида пчёл по id = {}", id);
 
         return beeTypeRepository.findById(id)
                 .map(beeTypeMapper::toDto)
@@ -55,26 +55,27 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     public BeeTypeRsDto create(@NonNull BeeTypeRqDto beeTypeRqDto) {
         log.debug("Запрос на создание нового вида пчёл, BeeTypeRqDto = {}", beeTypeRqDto);
 
-        beeTypeRepository.findByTitle(beeTypeRqDto.getTitle())
+        var typeTitle = beeTypeRqDto.getTitle();
+        beeTypeRepository.findByTitle(typeTitle)
                 .ifPresent(meterType -> {
-                    throw new BadRequestException(BEE_TYPE_ALREADY_EXISTS);
+                    throw new BadRequestException(String.format(BEE_TYPE_ALREADY_EXISTS, typeTitle));
                 });
 
-        BeeType beeTypeSrc = beeTypeMapper.toEntity(beeTypeRqDto);
-        BeeType beeTypeDst = beeTypeRepository.save(beeTypeSrc);
-        return beeTypeMapper.toDto(beeTypeDst);
+        BeeType toCreate = beeTypeMapper.toEntity(beeTypeRqDto);
+        BeeType created = beeTypeRepository.save(toCreate);
+        return beeTypeMapper.toDto(created);
     }
 
     @Override
     public BeeTypeRsDto update(@NonNull Long id, @NonNull BeeTypeRqDto beeTypeRqDto) {
-        log.debug("Запрос на обновление вида пчелы, BeeTypeRqDto = {}", beeTypeRqDto);
+        log.debug("Запрос на обновление вида пчёл, BeeTypeRqDto = {}", beeTypeRqDto);
 
         return beeTypeRepository.findById(id)
-                .map(src -> {
-                    var newBeeType = beeTypeMapper.toEntity(beeTypeRqDto);
-                    BeanUtils.copyProperties(newBeeType, src,
-                            BeanUtilsHelper.getNullPropertyNames(newBeeType, IGNORED_ON_COPY_FIELDS));
-                    return src;
+                .map(found -> {
+                    var update = beeTypeMapper.toEntity(beeTypeRqDto);
+                    BeanUtils.copyProperties(update, found,
+                            BeanUtilsHelper.getNullPropertyNames(update, IGNORED_ON_COPY_FIELDS));
+                    return found;
                 })
                 .map(beeTypeMapper::toDto)
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_TYPE_NOT_FOUND, id)));
@@ -83,12 +84,9 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     @Override
     @Transactional
     public void deleteById(@NonNull Long id) {
-        log.debug("Запрос на удаление вида пчелы по id = {}", id);
+        log.debug("Запрос на удаление вида пчёл по id = {}", id);
 
         beeTypeRepository.findById(id)
-                .ifPresentOrElse(beeTypeRepository::delete,
-                        () -> {
-                            throw new NotFoundException(String.format(BEE_TYPE_NOT_FOUND, id));
-                        });
+                .ifPresent(beeTypeRepository::delete);
     }
 }

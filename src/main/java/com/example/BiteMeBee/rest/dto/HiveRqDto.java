@@ -17,8 +17,7 @@ import javax.validation.constraints.Size;
 @Schema(description = "Входной DTO улья")
 public class HiveRqDto {
 
-    @Size(max = 50, message
-            = "Имя улья должно быть не более 50 символов")
+    @Size(max = 50, message = "Имя улья должно быть не более 50 символов")
     @NotNull(message = "Не указано имя улья")
     @Schema(description = "Имя улья", example = "Большой жуж", maxLength = 50)
     private String name;

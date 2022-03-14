@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Tag(name = "Контроллер улья", description = "Позволяет управлять записями об улье")
 public interface HiveApi {
 
-    @GetMapping()
+    @GetMapping
     @Operation(description = "Получить все ульи", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",

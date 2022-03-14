@@ -33,26 +33,29 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     @Override
     @Transactional
     public BeeFamilyRsDto create(@NonNull BeeFamilyRqDto beeFamilyRqDto) {
-        log.info("Создание записи о пчелиной семье, beeFamilyRqDto = {}", beeFamilyRqDto);
+        log.debug("Создание записи о пчелиной семье, beeFamilyRqDto = {}", beeFamilyRqDto);
 
-        BeeFamily beeFamilySrc = beeFamilyMapper.toEntity(beeFamilyRqDto);
-
-        if (hiveService.isOccupied(beeFamilySrc.getHive().getId())) {
-            log.info("Улей уже занят...");
+        var hiveId = beeFamilyRqDto.getHiveId();
+        if (hiveService.isOccupied(hiveId)) {
+            log.warn("Улей уже занят, id = {}", hiveId);
             throw new BadRequestException(HIVE_IS_OCCUPIED);
         }
-        log.info("Улей свободен, продолжаем...");
 
-        BeeFamily beeFamilyDst = beeFamilyRepository.save(beeFamilySrc);
-        log.info("Новая пчелиная семья успешно добавлена в улей");
+        long totalPopulation = beeFamilyRqDto.getDronePopulation() +
+                beeFamilyRqDto.getQueenPopulation() +
+                beeFamilyRqDto.getWorkerPopulation();
+        BeeFamily toCreate = beeFamilyMapper.toEntity(beeFamilyRqDto);
+        toCreate.setPopulation(totalPopulation);
+        BeeFamily created = beeFamilyRepository.save(toCreate);
+        log.debug("Пчелиная семья успешно добавлена в улей, id = {}, toCreate = {}", hiveId, toCreate);
 
-        return beeFamilyMapper.toDto(beeFamilyDst);
+        return beeFamilyMapper.toDto(created);
     }
 
     @Override
     @Transactional
     public BeeFamilyRsDto getById(@NonNull Long id) {
-        log.info("Получение записи о пчелиной семье по идентификатору, id = {}", id);
+        log.debug("Получение записи о пчелиной семье по идентификатору, id = {}", id);
 
         return beeFamilyRepository.findById(id)
                 .map(beeFamilyMapper::toDto)
@@ -62,7 +65,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     @Override
     @Transactional
     public Page<BeeFamilyRsDto> getAll(@NonNull Pageable pageable) {
-        log.info("Получение всех записей о пчелиных семьях, pageable = {}", pageable);
+        log.debug("Получение всех записей о пчелиных семьях, pageable = {}", pageable);
 
         return beeFamilyRepository.findAll(pageable)
                 .map(beeFamilyMapper::toDto);
@@ -71,19 +74,19 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     @Override
     @Transactional
     public BeeFamilyRsDto update(@NonNull Long id, @NonNull BeeFamilyNoteRqDto beeFamilyNoteRqDto) {
-        log.info("Обновление заметки о пчелиной семье по идентификатору, id = {}, beeFamilyNoteRqDto = {}", id, beeFamilyNoteRqDto);
+        log.debug("Обновление заметки о пчелиной семье, id = {}, beeFamilyNoteRqDto = {}", id, beeFamilyNoteRqDto);
 
-        final var currentFamily = beeFamilyRepository.findById(id)
+        var found = beeFamilyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
 
-        currentFamily.setNote(beeFamilyNoteRqDto.getNote());
-        return beeFamilyMapper.toDto(currentFamily);
+        found.setNote(beeFamilyNoteRqDto.getNote());
+        return beeFamilyMapper.toDto(found);
     }
 
     @Override
     @Transactional
     public BeeFamilyRsDto release(@NonNull Long id) {
-        log.info("Выпускаем пчелиную семью на волю по идентификатору, id = {}", id);
+        log.debug("Выпускаем пчелиную семью на волю по идентификатору, id = {}", id);
 
         final var currentFamily = beeFamilyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
@@ -95,13 +98,9 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     @Override
     @Transactional
     public void deleteById(@NonNull Long id) {
-        log.info("Удаление записи о пчелиной семье по идентификатору, id = {}", id);
+        log.debug("Удаление записи о пчелиной семье по идентификатору, id = {}", id);
 
         beeFamilyRepository.findById(id)
-                .ifPresentOrElse(
-                        beeFamilyRepository::delete,
-                        () -> {
-                            throw new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id));
-                        });
+                .ifPresent(beeFamilyRepository::delete);
     }
 }

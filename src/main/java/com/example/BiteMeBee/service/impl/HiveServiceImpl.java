@@ -54,9 +54,9 @@ public class HiveServiceImpl implements HiveService {
     public HiveRsDto create(@NonNull HiveRqDto hiveRqDto) {
         log.debug("Запрос на создание нового улья, HiveRqDto = {}", hiveRqDto);
 
-        Hive hiveSrc = hiveMapper.toEntity(hiveRqDto);
-        Hive hiveDst = hiveRepository.save(hiveSrc);
-        return hiveMapper.toDto(hiveDst);
+        Hive toCreate = hiveMapper.toEntity(hiveRqDto);
+        Hive created = hiveRepository.save(toCreate);
+        return hiveMapper.toDto(created);
     }
 
     @Override
@@ -65,11 +65,11 @@ public class HiveServiceImpl implements HiveService {
         log.debug("Запрос на обновление улья, HiveRqDto = {}", hiveRqDto);
 
         return hiveRepository.findById(id)
-                .map(src -> {
-                    var newHive = hiveMapper.toEntity(hiveRqDto);
-                    BeanUtils.copyProperties(newHive, src,
-                            BeanUtilsHelper.getNullPropertyNames(newHive, IGNORED_ON_COPY_FIELDS));
-                    return src;
+                .map(found -> {
+                    var update = hiveMapper.toEntity(hiveRqDto);
+                    BeanUtils.copyProperties(update, found,
+                            BeanUtilsHelper.getNullPropertyNames(update, IGNORED_ON_COPY_FIELDS));
+                    return found;
                 })
                 .map(hiveMapper::toDto)
                 .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, id)));
@@ -81,10 +81,7 @@ public class HiveServiceImpl implements HiveService {
         log.debug("Запрос на удаление улья по id = {}", id);
 
         hiveRepository.findById(id)
-                .ifPresentOrElse(hiveRepository::delete,
-                        () -> {
-                            throw new NotFoundException(String.format(HIVE_NOT_FOUND, id));
-                        });
+                .ifPresent(hiveRepository::delete);
     }
 
     @Override

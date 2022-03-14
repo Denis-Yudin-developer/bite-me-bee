@@ -1,14 +1,20 @@
 package com.example.BiteMeBee.rest.filter;
 
+import com.example.BiteMeBee.utils.CachedBodyHttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class HiveRequestFilter implements Filter {
+public class RequestFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -23,8 +29,10 @@ public class HiveRequestFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        log.info("Перехваченный запрос: метод {}, URI {}", request.getMethod(), request.getRequestURI());
-        filterChain.doFilter(request, response);
+        CachedBodyHttpServletRequest cachedRequest = new CachedBodyHttpServletRequest(request);
+
+        log.info("Перехваченный запрос: метод {}, URI {}, body {}", request.getMethod(), request.getRequestURI(), new String(cachedRequest.getInputStream().readAllBytes()));
+        filterChain.doFilter(cachedRequest, response);
     }
 
     @Override
