@@ -3,6 +3,7 @@ package com.example.BiteMeBee.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -19,7 +20,7 @@ public class Hive {
     private Long id;
 
     @OneToMany(mappedBy = "hive", fetch = FetchType.EAGER)
-    private List<BeeFamily> beeFamilies;
+    private List<BeeFamily> beeFamilies = Collections.emptyList();
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;

@@ -77,9 +77,9 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         log.debug("Обновление заметки о пчелиной семье, id = {}, beeFamilyNoteRqDto = {}", id, beeFamilyNoteRqDto);
 
         return beeFamilyRepository.findById(id)
-                .map(family -> {
-                    family.setNote(beeFamilyNoteRqDto.getNote());
-                    return family;
+                .map(found -> {
+                    found.setNote(beeFamilyNoteRqDto.getNote());
+                    return found;
                 })
                 .map(beeFamilyMapper::toDto)
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
@@ -90,11 +90,13 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     public BeeFamilyRsDto release(@NonNull Long id) {
         log.debug("Выпускаем пчелиную семью на волю по идентификатору, id = {}", id);
 
-        final var currentFamily = beeFamilyRepository.findById(id)
+        return beeFamilyRepository.findById(id)
+                .map(found -> {
+                    found.setIsAlive(false);
+                    return found;
+                })
+                .map(beeFamilyMapper::toDto)
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
-
-        currentFamily.setIsAlive(false);
-        return beeFamilyMapper.toDto(currentFamily);
     }
 
     @Override
