@@ -20,7 +20,7 @@ public class Hive {
     private Long id;
 
     @OneToMany(mappedBy = "hive", fetch = FetchType.EAGER)
-    private List<BeeFamily> beeFamilies = Collections.emptyList();
+    private List<BeeFamily> beeFamilies;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;

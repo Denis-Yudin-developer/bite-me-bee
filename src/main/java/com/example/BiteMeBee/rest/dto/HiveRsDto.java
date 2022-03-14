@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -19,7 +20,8 @@ public class HiveRsDto {
     private Long id;
 
     @Schema(description = "Список пчелиных семей", example = "1")
-    private List<BeeFamilyRsDto> beeFamilies;
+    @Builder.Default
+    private List<BeeFamilyRsDto> beeFamilies = Collections.emptyList();
 
     @Schema(description = "Имя улья", example = "Большой жуж", maxLength = 50)
     private String name;
