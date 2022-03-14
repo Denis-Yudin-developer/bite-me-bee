@@ -76,11 +76,13 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     public BeeFamilyRsDto update(@NonNull Long id, @NonNull BeeFamilyNoteRqDto beeFamilyNoteRqDto) {
         log.debug("Обновление заметки о пчелиной семье, id = {}, beeFamilyNoteRqDto = {}", id, beeFamilyNoteRqDto);
 
-        var found = beeFamilyRepository.findById(id)
+        return beeFamilyRepository.findById(id)
+                .map(family -> {
+                    family.setNote(beeFamilyNoteRqDto.getNote());
+                    return family;
+                })
+                .map(beeFamilyMapper::toDto)
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
-
-        found.setNote(beeFamilyNoteRqDto.getNote());
-        return beeFamilyMapper.toDto(found);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.BiteMeBee.utils;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -10,10 +11,8 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 @Slf4j
+@UtilityClass
 public class BeanUtilsHelper {
-
-    private BeanUtilsHelper() {
-    }
 
     public static String[] getNullPropertyNames(Object source, String... ignoredFields) {
         var wrappedSource = new BeanWrapperImpl(source);
