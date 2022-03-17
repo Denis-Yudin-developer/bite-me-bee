@@ -23,7 +23,6 @@ public class HiveController implements HiveApi {
 
     private final HiveService hiveService;
 
-
     @Override
     public List<HiveSnapshotRsDto> getSnapshots(HiveSnapshotsRqDto hiveSnapshotRqDto) {
         return hiveService.getSnapshots(hiveSnapshotRqDto);

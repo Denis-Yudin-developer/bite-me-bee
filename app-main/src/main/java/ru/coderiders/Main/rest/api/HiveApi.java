@@ -23,7 +23,6 @@ import java.util.List;
 @Tag(name = "Контроллер улья", description = "Позволяет управлять записями об улье")
 public interface HiveApi {
 
-
     @PostMapping("/snapshots")
     @Operation(description = "Получить все снимки улья за определенный период", method = "POST")
     @ApiResponses({

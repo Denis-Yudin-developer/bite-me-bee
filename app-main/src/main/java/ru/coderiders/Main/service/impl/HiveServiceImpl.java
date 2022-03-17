@@ -35,7 +35,6 @@ public class HiveServiceImpl implements HiveService {
 
     private final String HIVE_NOT_FOUND = "Улей с id=%s не найден";
 
-
     private final HiveRepository hiveRepository;
     private final HiveSnapshotRepository hiveSnapshotRepository;
     private final HiveMapper hiveMapper;
@@ -49,10 +48,13 @@ public class HiveServiceImpl implements HiveService {
         Instant dateFrom = hiveSnapshotRqDto.getDateFrom();
         Instant dateTo = hiveSnapshotRqDto.getDateTo();
 
-        hiveRepository.findById(hiveId).orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, hiveId)));
+        hiveRepository.findById(hiveId)
+                        .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, hiveId)));
 
-        return hiveSnapshotRepository.findByCreatedAtBetweenAndHive_Id(dateFrom, dateTo, hiveId).stream().
-                map(hiveSnapshotMapper::toDto).collect(Collectors.toList());
+        return hiveSnapshotRepository.findByCreatedAtBetweenAndHive_Id(dateFrom, dateTo, hiveId)
+                .stream()
+                .map(hiveSnapshotMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override

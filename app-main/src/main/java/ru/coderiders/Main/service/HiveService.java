@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface HiveService {
 
-
     List<HiveSnapshotRsDto> getSnapshots(@NonNull HiveSnapshotsRqDto hiveSnapshotRqDto);
 
     Page<HiveRsDto> getAll(@NonNull Pageable pageable);
