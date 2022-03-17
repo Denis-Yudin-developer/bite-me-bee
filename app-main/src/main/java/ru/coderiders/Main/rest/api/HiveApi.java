@@ -1,7 +1,5 @@
 package ru.coderiders.Main.rest.api;
 
-import ru.coderiders.Main.rest.dto.HiveRqDto;
-import ru.coderiders.Main.rest.dto.HiveRsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,12 +11,28 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.coderiders.Main.rest.dto.HiveRqDto;
+import ru.coderiders.Main.rest.dto.HiveRsDto;
+import ru.coderiders.Main.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.Main.rest.dto.HiveSnapshotsRqDto;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequestMapping("/api/hives")
 @Tag(name = "Контроллер улья", description = "Позволяет управлять записями об улье")
 public interface HiveApi {
+
+
+    @PostMapping("/snapshots")
+    @Operation(description = "Получить все снимки улья за определенный период", method = "POST")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = HiveSnapshotRsDto.class))}),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST")
+    })
+    List<HiveSnapshotRsDto> getSnapshots(@Valid @RequestBody HiveSnapshotsRqDto hiveSnapshotRqDto);
 
     @GetMapping
     @Operation(description = "Получить все ульи", method = "GET")

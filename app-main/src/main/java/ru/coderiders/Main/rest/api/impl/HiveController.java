@@ -1,9 +1,5 @@
 package ru.coderiders.Main.rest.api.impl;
 
-import ru.coderiders.Main.rest.api.HiveApi;
-import ru.coderiders.Main.rest.dto.HiveRqDto;
-import ru.coderiders.Main.rest.dto.HiveRsDto;
-import ru.coderiders.Main.service.HiveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -11,6 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.coderiders.Main.rest.api.HiveApi;
+import ru.coderiders.Main.rest.dto.HiveRqDto;
+import ru.coderiders.Main.rest.dto.HiveRsDto;
+import ru.coderiders.Main.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.Main.rest.dto.HiveSnapshotsRqDto;
+import ru.coderiders.Main.service.HiveService;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -18,6 +22,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class HiveController implements HiveApi {
 
     private final HiveService hiveService;
+
+
+    @Override
+    public List<HiveSnapshotRsDto> getSnapshots(HiveSnapshotsRqDto hiveSnapshotRqDto) {
+        return hiveService.getSnapshots(hiveSnapshotRqDto);
+    }
 
     @Override
     public Page<HiveRsDto> getAll(Pageable pageable) {

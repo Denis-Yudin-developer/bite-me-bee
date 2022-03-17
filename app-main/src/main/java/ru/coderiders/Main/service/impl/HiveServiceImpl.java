@@ -1,14 +1,5 @@
 package ru.coderiders.Main.service.impl;
 
-import ru.coderiders.Main.entity.BeeFamily;
-import ru.coderiders.Main.entity.Hive;
-import ru.coderiders.Main.mapper.HiveMapper;
-import ru.coderiders.Main.repository.HiveRepository;
-import ru.coderiders.Main.rest.dto.HiveRqDto;
-import ru.coderiders.Main.rest.dto.HiveRsDto;
-import ru.coderiders.Main.rest.exception.NotFoundException;
-import ru.coderiders.Main.service.HiveService;
-import ru.coderiders.Main.utils.BeanUtilsHelper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +8,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.coderiders.Main.entity.BeeFamily;
+import ru.coderiders.Main.entity.Hive;
+import ru.coderiders.Main.mapper.HiveMapper;
+import ru.coderiders.Main.mapper.HiveSnapshotMapper;
+import ru.coderiders.Main.repository.HiveRepository;
+import ru.coderiders.Main.repository.HiveSnapshotRepository;
+import ru.coderiders.Main.rest.dto.HiveRqDto;
+import ru.coderiders.Main.rest.dto.HiveRsDto;
+import ru.coderiders.Main.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.Main.rest.dto.HiveSnapshotsRqDto;
+import ru.coderiders.Main.rest.exception.NotFoundException;
+import ru.coderiders.Main.service.HiveService;
+import ru.coderiders.Main.utils.BeanUtilsHelper;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -27,8 +35,25 @@ public class HiveServiceImpl implements HiveService {
 
     private final String HIVE_NOT_FOUND = "Улей с id=%s не найден";
 
+
     private final HiveRepository hiveRepository;
+    private final HiveSnapshotRepository hiveSnapshotRepository;
     private final HiveMapper hiveMapper;
+    private final HiveSnapshotMapper hiveSnapshotMapper;
+
+    @Override
+    public List<HiveSnapshotRsDto> getSnapshots(@NonNull HiveSnapshotsRqDto hiveSnapshotRqDto) {
+        log.debug("Запрос на получение всех снимков ульев за период, hiveSnapshotsRequestRqDto = {}", hiveSnapshotRqDto);
+
+        Long hiveId = hiveSnapshotRqDto.getHiveId();
+        Instant dateFrom = hiveSnapshotRqDto.getDateFrom();
+        Instant dateTo = hiveSnapshotRqDto.getDateTo();
+
+        hiveRepository.findById(hiveId).orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, hiveId)));
+
+        return hiveSnapshotRepository.findByCreatedAtBetweenAndHive_Id(dateFrom, dateTo, hiveId).stream().
+                map(hiveSnapshotMapper::toDto).collect(Collectors.toList());
+    }
 
     @Override
     @Transactional
