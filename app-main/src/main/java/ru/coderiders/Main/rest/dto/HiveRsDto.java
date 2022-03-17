@@ -19,7 +19,7 @@ public class HiveRsDto {
     @Schema(description = "Идентификатор улья", example = "1")
     private Long id;
 
-    @Schema(description = "Список пчелиных семей", example = "1")
+    @Schema(description = "Список пчелиных семей")
     @Builder.Default
     private List<BeeFamilyRsDto> beeFamilies = Collections.emptyList();
 
