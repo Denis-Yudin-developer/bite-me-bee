@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:generator}
+    username: ${DB_USER:generator}
+    password: ${DB_PASS:generator}
+  jpa:
+    hibernate.ddl-auto: update
+    open-in-view: false
+  flyway:
+    enabled: false
+    baseline-on-migrate: true
+    schemas: public
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:generator}
+    user: ${DB_USER:generator}
+    password: ${DB_PASS:generator}
+
+server:
+  port: 8081
