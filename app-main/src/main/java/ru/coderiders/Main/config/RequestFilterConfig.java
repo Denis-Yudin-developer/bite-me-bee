@@ -13,8 +13,11 @@ public class RequestFilterConfig {
         FilterRegistrationBean<RequestFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new RequestFilter());
+        registrationBean.addUrlPatterns("/api/bee_types");
         registrationBean.addUrlPatterns("/api/bee_types/*");
+        registrationBean.addUrlPatterns("/api/hives");
         registrationBean.addUrlPatterns("/api/hives/*");
+        registrationBean.addUrlPatterns("/api/bee_families");
         registrationBean.addUrlPatterns("/api/bee_families/*");
 
         return registrationBean;
