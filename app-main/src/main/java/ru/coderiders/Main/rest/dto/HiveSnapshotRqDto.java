@@ -14,7 +14,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Входной DTO запроса снимков улья")
-public class HiveSnapshotsRqDto {
+public class HiveSnapshotRqDto {
 
     @NotNull(message = "Не указан идентификатор улья")
     @Schema(description = "Идентификатор улья", example = "1")

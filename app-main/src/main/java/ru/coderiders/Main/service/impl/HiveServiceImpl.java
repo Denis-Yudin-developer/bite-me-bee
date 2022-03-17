@@ -16,8 +16,8 @@ import ru.coderiders.Main.repository.HiveRepository;
 import ru.coderiders.Main.repository.HiveSnapshotRepository;
 import ru.coderiders.Main.rest.dto.HiveRqDto;
 import ru.coderiders.Main.rest.dto.HiveRsDto;
+import ru.coderiders.Main.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.Main.rest.dto.HiveSnapshotRsDto;
-import ru.coderiders.Main.rest.dto.HiveSnapshotsRqDto;
 import ru.coderiders.Main.rest.exception.NotFoundException;
 import ru.coderiders.Main.service.HiveService;
 import ru.coderiders.Main.utils.BeanUtilsHelper;
@@ -41,8 +41,8 @@ public class HiveServiceImpl implements HiveService {
     private final HiveSnapshotMapper hiveSnapshotMapper;
 
     @Override
-    public List<HiveSnapshotRsDto> getSnapshots(@NonNull HiveSnapshotsRqDto hiveSnapshotRqDto) {
-        log.debug("Запрос на получение всех снимков ульев за период, hiveSnapshotsRequestRqDto = {}", hiveSnapshotRqDto);
+    public List<HiveSnapshotRsDto> getSnapshots(@NonNull HiveSnapshotRqDto hiveSnapshotRqDto) {
+        log.debug("Запрос на получение всех снимков улья за период, hiveSnapshotRqDto = {}", hiveSnapshotRqDto);
 
         Long hiveId = hiveSnapshotRqDto.getHiveId();
         Instant dateFrom = hiveSnapshotRqDto.getDateFrom();

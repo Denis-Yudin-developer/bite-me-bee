@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.coderiders.Main.rest.dto.HiveRqDto;
 import ru.coderiders.Main.rest.dto.HiveRsDto;
+import ru.coderiders.Main.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.Main.rest.dto.HiveSnapshotRsDto;
-import ru.coderiders.Main.rest.dto.HiveSnapshotsRqDto;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -31,7 +31,7 @@ public interface HiveApi {
                             schema = @Schema(implementation = HiveSnapshotRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST")
     })
-    List<HiveSnapshotRsDto> getSnapshots(@Valid @RequestBody HiveSnapshotsRqDto hiveSnapshotRqDto);
+    List<HiveSnapshotRsDto> getSnapshots(@Valid @RequestBody HiveSnapshotRqDto hiveSnapshotRqDto);
 
     @GetMapping
     @Operation(description = "Получить все ульи", method = "GET")
