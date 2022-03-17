@@ -28,6 +28,7 @@ public class BeeFamilyMapper {
                 .addMappings(mapping -> mapping.skip(BeeFamily::setHive))
                 .addMappings(mapping -> mapping.skip(BeeFamily::setPopulation))
                 .setPostConverter(toEntityPostConverter());
+        modelMapper.createTypeMap(BeeFamily.class, BeeFamilyRsDto.class);
     }
 
     public BeeFamily toEntity(BeeFamilyRqDto beeFamilyRqDto) {
