@@ -49,7 +49,7 @@ public class HiveServiceImpl implements HiveService {
         Instant dateTo = hiveSnapshotRqDto.getDateTo();
 
         hiveRepository.findById(hiveId)
-                        .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, hiveId)));
+                .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, hiveId)));
 
         return hiveSnapshotRepository.findByCreatedAtBetweenAndHive_Id(dateFrom, dateTo, hiveId)
                 .stream()
