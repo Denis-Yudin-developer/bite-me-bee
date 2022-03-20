@@ -11,6 +11,12 @@
 
     <artifactId>app-main</artifactId>
 
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <start-class>ru.coderiders.BiteMeBee.BiteMeBeeApplication</start-class>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -30,11 +36,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <start-class>ru.coderiders.Main.MainApplication</start-class>
-    </properties>
 
 </project>
