@@ -57,7 +57,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
 
         var typeTitle = beeTypeRqDto.getTitle();
         beeTypeRepository.findByTitle(typeTitle)
-                .ifPresent(meterType -> {
+                .ifPresent(found -> {
                     throw new BadRequestException(String.format(BEE_TYPE_ALREADY_EXISTS, typeTitle));
                 });
 
