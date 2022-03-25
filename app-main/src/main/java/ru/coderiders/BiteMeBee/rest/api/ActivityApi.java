@@ -19,10 +19,10 @@ import javax.validation.Valid;
 
 @Validated
 @RequestMapping("/api/activities")
-@Tag(name = "Контроллер типов работ", description = "Позволяет управлять записями о типовых видах работ")
+@Tag(name = "Контроллер типовых работ", description = "Позволяет управлять записями о типовых видах работ")
 public interface ActivityApi {
 
-    @GetMapping()
+    @GetMapping
     @Operation(description = "Получить все типовые работы", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",
@@ -72,6 +72,6 @@ public interface ActivityApi {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
-    ResponseEntity<?> deleteById(@PathVariable(name = "id") Long id);
+    ResponseEntity<Void> deleteById(@PathVariable(name = "id") Long id);
 
 }

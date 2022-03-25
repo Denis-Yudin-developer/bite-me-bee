@@ -8,13 +8,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Входной DTO типа работы")
+@Schema(description = "Входной DTO типовой работы")
 public class ActivityRqDto {
 
     @Size(max = 100, message
@@ -23,7 +24,7 @@ public class ActivityRqDto {
     @Schema(description = "Тип работы", example = "Проветривание улья", maxLength = 100)
     private String title;
 
-    @NotNull(message = "Не указано, является ли работа плановой")
-    @Schema(description = "Указание того, является ли работа плановой", example = "Работа плановая")
+    @Pattern(regexp = "^(true|false)$", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Неправильно указано значение параметра isPlanned")
+    @Schema(description = "Указание того, является ли работа плановой", example = "true")
     private Boolean isPlanned;
 }

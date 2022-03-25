@@ -26,44 +26,32 @@ public class ActivityController implements ActivityApi {
 
     @Override
     public Page<ActivityRsDto> getAll(Pageable pageable) {
-        log.info("GET ALL /pageable={}", pageable);
-
         return activityService.getAll(pageable);
     }
 
     @Override
     public ActivityRsDto getById(Long id) {
-        log.info("GET /id={}", id);
-
         return activityService.getById(id);
     }
 
     @Override
     public ResponseEntity<ActivityRsDto> create(ActivityRqDto activityRqDto) {
-        log.info("CREATE /activityRqDto={}", activityRqDto);
 
-        return Optional.ofNullable(activityService.create(activityRqDto))
-                .map(created -> {
-                    var url = ServletUriComponentsBuilder.fromCurrentRequest()
-                            .path("/{id}")
-                            .buildAndExpand(created.getId())
-                            .toUri();
-                    return ResponseEntity.created(url).body(created);
-                })
-                .orElseThrow(() -> new BadRequestException(ACTIVITY_NOT_CREATED));
+        ActivityRsDto created = activityService.create(activityRqDto);
+        var location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @Override
     public ActivityRsDto update(Long id, ActivityRqDto activityRqDto) {
-        log.info("UPDATE /id={}", id);
-
         return activityService.update(id, activityRqDto);
     }
 
     @Override
-    public ResponseEntity<?> deleteById(Long id) {
-        log.info("DELETE /id={}", id);
-
+    public ResponseEntity<Void> deleteById(Long id) {
         activityService.deleteById(id);
         return ResponseEntity.accepted()
                 .build();

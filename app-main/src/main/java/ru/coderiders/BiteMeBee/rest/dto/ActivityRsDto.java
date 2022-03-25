@@ -10,15 +10,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Выходной DTO типа работы")
+@Schema(description = "Выходной DTO типовой работы")
 public class ActivityRsDto {
 
-    @Schema(description = "Идентификатор работы", example = "1")
+    @Schema(description = "Идентификатор записи", example = "1")
     private Long id;
 
     @Schema(description = "Тип работы", example = "Проветривание улья", maxLength = 100)
     private String title;
 
-    @Schema(description = "Указание того, является ли работа плановой", example = "Работа плановая")
+    @Schema(description = "Указание того, является ли работа плановой", example = "true")
     private Boolean isPlanned;
 }

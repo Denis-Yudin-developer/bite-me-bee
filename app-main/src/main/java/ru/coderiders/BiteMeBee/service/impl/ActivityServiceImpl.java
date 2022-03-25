@@ -25,8 +25,8 @@ public class ActivityServiceImpl implements ActivityService {
 
     private static final String[] IGNORED_ON_COPY_FIELDS = {"id"};
 
-    private final String ACTIVITY_TYPE_NOT_FOUND = "Тип работы с id=%s не найден";
-    private final String ACTIVITY_TYPE_ALREADY_EXISTS = "Тип работы с таким названием уже существует";
+    private final String ACTIVITY_NOT_FOUND = "Тип работы с id=%s не найден";
+    private final String ACTIVITY_ALREADY_EXISTS = "Тип работы с таким названием уже существует";
 
     private final ActivityRepository activityRepository;
     private final ActivityMapper activityMapper;
@@ -47,7 +47,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         return activityRepository.findById(id)
                 .map(activityMapper::toDto)
-                .orElseThrow(() -> new NotFoundException(String.format(ACTIVITY_TYPE_NOT_FOUND, id)));
+                .orElseThrow(() -> new NotFoundException(String.format(ACTIVITY_NOT_FOUND, id)));
     }
 
     @Override
@@ -56,8 +56,8 @@ public class ActivityServiceImpl implements ActivityService {
         log.debug("Запрос на создание новой типовой работы, ActivityRqDto = {}", activityRqDto);
 
         activityRepository.findByTitle(activityRqDto.getTitle())
-                .ifPresent(meterType -> {
-                    throw new BadRequestException(ACTIVITY_TYPE_ALREADY_EXISTS);
+                .ifPresent(found -> {
+                    throw new BadRequestException(ACTIVITY_ALREADY_EXISTS);
                 });
 
         Activity activitySrc = activityMapper.toEntity(activityRqDto);
@@ -78,7 +78,7 @@ public class ActivityServiceImpl implements ActivityService {
                     return src;
                 })
                 .map(activityMapper::toDto)
-                .orElseThrow(() -> new NotFoundException(String.format(ACTIVITY_TYPE_NOT_FOUND, id)));
+                .orElseThrow(() -> new NotFoundException(String.format(ACTIVITY_NOT_FOUND, id)));
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ActivityServiceImpl implements ActivityService {
         activityRepository.findById(id)
                 .ifPresentOrElse(activityRepository::delete,
                         () -> {
-                            throw new NotFoundException(String.format(ACTIVITY_TYPE_NOT_FOUND, id));
+                            throw new NotFoundException(String.format(ACTIVITY_NOT_FOUND, id));
                         });
     }
 }
