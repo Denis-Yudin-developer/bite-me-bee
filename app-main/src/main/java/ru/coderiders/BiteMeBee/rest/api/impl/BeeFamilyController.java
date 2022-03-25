@@ -1,10 +1,5 @@
 package ru.coderiders.BiteMeBee.rest.api.impl;
 
-import ru.coderiders.BiteMeBee.rest.api.BeeFamilyAPI;
-import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyNoteRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRsDto;
-import ru.coderiders.BiteMeBee.service.BeeFamilyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -12,6 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.coderiders.BiteMeBee.rest.api.BeeFamilyAPI;
+import ru.coderiders.BiteMeBee.rest.api.generator.BeeFamilyFeignApi;
+import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyNoteRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRsDto;
+import ru.coderiders.BiteMeBee.rest.dto.GeneratorFamilyRqDto;
+import ru.coderiders.BiteMeBee.service.BeeFamilyService;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,10 +22,26 @@ public class BeeFamilyController implements BeeFamilyAPI {
 
     private final BeeFamilyService beeFamilyService;
 
+    private final BeeFamilyFeignApi beeFamilyFeignApi;
+
     @Override
     public ResponseEntity<BeeFamilyRsDto> create(BeeFamilyRqDto beeFamilyRqDto) {
 
         BeeFamilyRsDto created = beeFamilyService.create(beeFamilyRqDto);
+
+        GeneratorFamilyRqDto generatorFamilyRqDto = GeneratorFamilyRqDto.builder()
+                .id(created.getId())
+                .hiveId(beeFamilyRqDto.getHiveId())
+                .dronePopulation(created.getDronePopulation())
+                .workerPopulation(created.getWorkerPopulation())
+                .queenPopulation(created.getQueenPopulation())
+                .population(created.getPopulation())
+                .diseaseResistance(created.getBeeType().getDiseaseResistance())
+                .honeyProductivity(created.getBeeType().getHoneyProductivity())
+                .eggProductivity(created.getBeeType().getEggProductivity())
+                .build();
+        beeFamilyFeignApi.addFamily(generatorFamilyRqDto);
+
         var location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(created.getId())
@@ -33,7 +51,10 @@ public class BeeFamilyController implements BeeFamilyAPI {
 
     @Override
     public BeeFamilyRsDto release(Long id) {
-        return beeFamilyService.release(id);
+        BeeFamilyRsDto beeFamilyRsDto =  beeFamilyService.release(id);
+        beeFamilyFeignApi.deleteById(id);
+
+        return beeFamilyRsDto;
     }
 
     @Override
@@ -54,6 +75,8 @@ public class BeeFamilyController implements BeeFamilyAPI {
     @Override
     public ResponseEntity<Void> delete(Long id) {
         beeFamilyService.deleteById(id);
+        beeFamilyFeignApi.deleteById(id);
+
         return ResponseEntity.accepted().build();
     }
 }
