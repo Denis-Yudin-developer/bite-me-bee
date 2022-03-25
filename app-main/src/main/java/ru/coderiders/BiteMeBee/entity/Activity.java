@@ -1,6 +1,5 @@
 package ru.coderiders.BiteMeBee.entity;
 
-
 import lombok.*;
 
 import javax.persistence.*;

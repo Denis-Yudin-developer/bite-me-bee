@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     Optional<Activity> findByTitle(String title);
