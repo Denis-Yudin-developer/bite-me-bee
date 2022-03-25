@@ -3,7 +3,6 @@ package ru.coderiders.BiteMeBee.rest.api.impl;
 import ru.coderiders.BiteMeBee.rest.api.ActivityApi;
 import ru.coderiders.BiteMeBee.rest.dto.ActivityRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.ActivityRsDto;
-import ru.coderiders.BiteMeBee.rest.exception.BadRequestException;
 import ru.coderiders.BiteMeBee.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -21,8 +19,6 @@ import java.util.Optional;
 public class ActivityController implements ActivityApi {
 
     private final ActivityService activityService;
-
-    private final String ACTIVITY_NOT_CREATED = "Типовая работа не создана";
 
     @Override
     public Page<ActivityRsDto> getAll(Pageable pageable) {
