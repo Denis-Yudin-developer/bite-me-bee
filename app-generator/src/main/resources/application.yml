@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:generator}
-    username: ${DB_USER:generator}
-    password: ${DB_PASS:generator}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:bitemebee}
+    username: ${DB_USER:bitemebee}
+    password: ${DB_PASS:bitemebee}
   jpa:
     hibernate.ddl-auto: update
     open-in-view: false
@@ -11,9 +11,19 @@ spring:
     enabled: false
     baseline-on-migrate: true
     schemas: public
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:generator}
-    user: ${DB_USER:generator}
-    password: ${DB_PASS:generator}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:bitemebee}
+    user: ${DB_USER:bitemebee}
+    password: ${DB_PASS:bitemebee}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+open-weather-appid: f3be4625645bd229b3c449602e5c8226
 
 server:
   port: 8081
