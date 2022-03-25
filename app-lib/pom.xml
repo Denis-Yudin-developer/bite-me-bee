@@ -9,15 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>app-generator</artifactId>
+    <artifactId>app-lib</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <start-class>ru.coderiders.Generator.GeneratorApplication</start-class>
     </properties>
-
-    <dependencies>
-    </dependencies>
 
 </project>

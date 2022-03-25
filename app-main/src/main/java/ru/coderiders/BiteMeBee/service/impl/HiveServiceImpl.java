@@ -18,6 +18,7 @@ import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
 import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.BiteMeBee.rest.exception.BadRequestException;
 import ru.coderiders.BiteMeBee.rest.exception.NotFoundException;
 import ru.coderiders.BiteMeBee.service.HiveService;
 import ru.coderiders.BiteMeBee.utils.BeanUtilsHelper;
@@ -34,6 +35,8 @@ public class HiveServiceImpl implements HiveService {
     private static final String[] IGNORED_ON_COPY_FIELDS = {"id"};
 
     private final String HIVE_NOT_FOUND = "Улей с id=%s не найден";
+    private final String HIVE_ALREADY_EXISTS = "Улей с названием «%s» уже существует";
+
 
     private final HiveRepository hiveRepository;
     private final HiveSnapshotRepository hiveSnapshotRepository;
@@ -80,6 +83,12 @@ public class HiveServiceImpl implements HiveService {
     @Transactional
     public HiveRsDto create(@NonNull HiveRqDto hiveRqDto) {
         log.debug("Запрос на создание нового улья, HiveRqDto = {}", hiveRqDto);
+
+        var hiveName = hiveRqDto.getName();
+        hiveRepository.findByName(hiveName)
+                .ifPresent(found -> {
+                    throw new BadRequestException(String.format(HIVE_ALREADY_EXISTS, hiveName));
+                });
 
         Hive toCreate = hiveMapper.toEntity(hiveRqDto);
         Hive created = hiveRepository.save(toCreate);
