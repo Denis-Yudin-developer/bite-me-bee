@@ -1,6 +1,5 @@
 package ru.coderiders.BiteMeBee.rest.api;
 
-
 import ru.coderiders.BiteMeBee.rest.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
