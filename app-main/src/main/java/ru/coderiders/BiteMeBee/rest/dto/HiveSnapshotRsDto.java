@@ -15,6 +15,9 @@ import java.time.Instant;
 @Schema(description = "Выходной DTO снимка улья")
 public class HiveSnapshotRsDto {
 
+    @Schema(description = "Идентификатор улья", example = "1")
+    private Long hiveId;
+
     @Schema(description = "Дата снимка", example = "2022-02-27T19:34:50.630Z")
     private Instant createdAt;
 
