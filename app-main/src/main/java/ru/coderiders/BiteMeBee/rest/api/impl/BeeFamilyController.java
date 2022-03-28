@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.coderiders.BiteMeBee.rest.api.BeeFamilyAPI;
-import ru.coderiders.BiteMeBee.rest.api.generator.BeeFamilyFeignApi;
 import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRsDto;
-import ru.coderiders.BiteMeBee.rest.dto.GeneratorFamilyRqDto;
 import ru.coderiders.BiteMeBee.service.BeeFamilyService;
+import ru.coderiders.Library.rest.api.generator.BeeFamilyFeignApi;
+import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
 
 @Slf4j
 @RequiredArgsConstructor

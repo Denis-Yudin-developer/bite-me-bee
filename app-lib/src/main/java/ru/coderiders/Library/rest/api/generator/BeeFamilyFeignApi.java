@@ -1,11 +1,11 @@
-package ru.coderiders.BiteMeBee.rest.api.generator;
+package ru.coderiders.Library.rest.api.generator;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import ru.coderiders.BiteMeBee.rest.dto.GeneratorFamilyRqDto;
+import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
 
 @FeignClient(name = "beeFamilyFeignApi", url = "http://localhost:8081/api/generator_families")
 public interface BeeFamilyFeignApi {

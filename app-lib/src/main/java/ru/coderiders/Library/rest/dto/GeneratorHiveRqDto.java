@@ -1,4 +1,4 @@
-package ru.coderiders.BiteMeBee.rest.dto;
+package ru.coderiders.Library.rest.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

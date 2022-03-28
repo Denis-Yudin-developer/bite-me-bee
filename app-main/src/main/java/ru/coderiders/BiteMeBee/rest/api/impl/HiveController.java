@@ -8,9 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.coderiders.BiteMeBee.rest.api.HiveApi;
-import ru.coderiders.BiteMeBee.rest.api.generator.HiveFeignApi;
-import ru.coderiders.BiteMeBee.rest.dto.*;
+import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
 import ru.coderiders.BiteMeBee.service.HiveService;
+import ru.coderiders.Library.rest.api.generator.HiveFeignApi;
+import ru.coderiders.Library.rest.dto.GeneratorHiveRqDto;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRqDto;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRsDto;
 
 import java.util.List;
 

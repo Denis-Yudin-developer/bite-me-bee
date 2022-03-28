@@ -1,4 +1,4 @@
-package ru.coderiders.Generator.rest.dto.openweather;
+package ru.coderiders.Library.rest.dto.openweather;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

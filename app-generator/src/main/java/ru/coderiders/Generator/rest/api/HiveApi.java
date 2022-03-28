@@ -1,7 +1,7 @@
 package ru.coderiders.Generator.rest.api;
 
 import org.springframework.web.bind.annotation.*;
-import ru.coderiders.Generator.rest.dto.GeneratorHiveRqDto;
+import ru.coderiders.Library.rest.dto.GeneratorHiveRqDto;
 
 
 @RequestMapping("/api/generator_hives")
