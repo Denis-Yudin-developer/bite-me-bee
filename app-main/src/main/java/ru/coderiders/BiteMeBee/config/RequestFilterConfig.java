@@ -19,6 +19,8 @@ public class RequestFilterConfig {
         registrationBean.addUrlPatterns("/api/hives/*");
         registrationBean.addUrlPatterns("/api/bee_families");
         registrationBean.addUrlPatterns("/api/bee_families/*");
+        registrationBean.addUrlPatterns("/api/activities");
+        registrationBean.addUrlPatterns("/api/activities/*");
 
         return registrationBean;
     }

@@ -19,6 +19,6 @@ public class ActivityRsDto {
     @Schema(description = "Тип работы", example = "Проветривание улья", maxLength = 100)
     private String title;
 
-    @Schema(description = "Указание того, является ли работа плановой", example = "true")
+    @Schema(description = "Признак того, является ли работа плановой", example = "true")
     private Boolean isPlanned;
 }

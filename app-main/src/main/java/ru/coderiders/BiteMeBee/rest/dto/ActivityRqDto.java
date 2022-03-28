@@ -17,13 +17,12 @@ import javax.validation.constraints.Size;
 @Schema(description = "Входной DTO типовой работы")
 public class ActivityRqDto {
 
-    @Size(max = 100, message
-            = "Длина описания работы должна быть не более 100 символов")
+    @Size(max = 100, message = "Длина описания работы должна быть не более 100 символов")
     @NotNull(message = "Не указан тип работы")
     @Schema(description = "Тип работы", example = "Проветривание улья", maxLength = 100)
     private String title;
 
-    @NotNull(message = "Не указано, является ли работа плановой")
-    @Schema(description = "Указание того, является ли работа плановой", example = "true")
-    private Boolean isPlanned;
+    @Pattern(regexp = "^(true|false)$", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Неправильно указан статус")
+    @Schema(description = "Признак того, является ли работа плановой", example = "true")
+    private String isPlanned;
 }

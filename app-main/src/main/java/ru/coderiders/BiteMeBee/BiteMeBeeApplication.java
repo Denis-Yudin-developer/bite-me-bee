@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication(scanBasePackages = {"ru.coderiders.BiteMeBee", "ru.coderiders.Library"})
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"ru.coderiders.Library"})
 public class BiteMeBeeApplication {
 
 	public static void main(String[] args) {
