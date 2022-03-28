@@ -2,7 +2,7 @@ package ru.coderiders.Generator.service;
 
 import lombok.NonNull;
 import ru.coderiders.Generator.entity.BeeFamily;
-import ru.coderiders.Generator.rest.dto.GeneratorHiveRqDto;
+import ru.coderiders.Library.rest.dto.GeneratorHiveRqDto;
 
 public interface HiveService {
 

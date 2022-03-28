@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.coderiders.BiteMeBee.entity.HiveSnapshot;
-import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRqDto;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRsDto;
 
 import javax.annotation.PostConstruct;
 

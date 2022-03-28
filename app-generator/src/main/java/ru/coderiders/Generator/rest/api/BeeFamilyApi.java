@@ -1,7 +1,7 @@
 package ru.coderiders.Generator.rest.api;
 
 import org.springframework.web.bind.annotation.*;
-import ru.coderiders.Generator.rest.dto.GeneratorFamilyRqDto;
+import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
 
 @RequestMapping("/api/generator_families")
 public interface BeeFamilyApi {

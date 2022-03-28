@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
-import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRqDto;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRsDto;
 
 import java.util.List;
 

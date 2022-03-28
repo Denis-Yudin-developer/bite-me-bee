@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
-import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRqDto;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRsDto;
 
 import javax.validation.Valid;
 import java.util.List;

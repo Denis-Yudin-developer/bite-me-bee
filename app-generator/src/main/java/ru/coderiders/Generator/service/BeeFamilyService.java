@@ -1,7 +1,7 @@
 package ru.coderiders.Generator.service;
 
 import lombok.NonNull;
-import ru.coderiders.Generator.rest.dto.GeneratorFamilyRqDto;
+import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
 
 public interface BeeFamilyService {
 
