@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.Generator.entity.BeeFamily;
 import ru.coderiders.Generator.repository.BeeFamilyRepository;
-import ru.coderiders.Generator.rest.dto.GeneratorFamilyRqDto;
 import ru.coderiders.Generator.service.BeeFamilyService;
+import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
 
 @Slf4j
 @Service

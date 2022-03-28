@@ -16,12 +16,12 @@ import ru.coderiders.BiteMeBee.repository.HiveRepository;
 import ru.coderiders.BiteMeBee.repository.HiveSnapshotRepository;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
-import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.HiveSnapshotRsDto;
 import ru.coderiders.BiteMeBee.rest.exception.BadRequestException;
 import ru.coderiders.BiteMeBee.rest.exception.NotFoundException;
 import ru.coderiders.BiteMeBee.service.HiveService;
 import ru.coderiders.BiteMeBee.utils.BeanUtilsHelper;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRqDto;
+import ru.coderiders.Library.rest.dto.HiveSnapshotRsDto;
 
 import java.time.Instant;
 import java.util.List;
@@ -36,7 +36,6 @@ public class HiveServiceImpl implements HiveService {
 
     private final String HIVE_NOT_FOUND = "Улей с id=%s не найден";
     private final String HIVE_ALREADY_EXISTS = "Улей с названием «%s» уже существует";
-
 
     private final HiveRepository hiveRepository;
     private final HiveSnapshotRepository hiveSnapshotRepository;

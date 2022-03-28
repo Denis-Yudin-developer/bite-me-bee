@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.Generator.entity.BeeFamily;
 import ru.coderiders.Generator.entity.Hive;
 import ru.coderiders.Generator.repository.HiveRepository;
-import ru.coderiders.Generator.rest.dto.GeneratorHiveRqDto;
 import ru.coderiders.Generator.service.HiveService;
+import ru.coderiders.Library.rest.dto.GeneratorHiveRqDto;
 
 @Slf4j
 @Service

@@ -3,8 +3,8 @@ package ru.coderiders.BiteMeBee.rest.api.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.coderiders.BiteMeBee.rest.api.GenPanelApi;
-import ru.coderiders.BiteMeBee.rest.api.generator.BeeFamilyFeignApi;
-import ru.coderiders.BiteMeBee.rest.api.generator.HiveFeignApi;
+import ru.coderiders.Library.rest.api.generator.BeeFamilyFeignApi;
+import ru.coderiders.Library.rest.api.generator.HiveFeignApi;
 
 @RestController
 @RequiredArgsConstructor
