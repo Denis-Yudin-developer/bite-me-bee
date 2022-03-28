@@ -21,7 +21,6 @@ import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
 public class BeeFamilyController implements BeeFamilyAPI {
 
     private final BeeFamilyService beeFamilyService;
-
     private final BeeFamilyFeignApi beeFamilyFeignApi;
 
     @Override
@@ -51,7 +50,7 @@ public class BeeFamilyController implements BeeFamilyAPI {
 
     @Override
     public BeeFamilyRsDto release(Long id) {
-        BeeFamilyRsDto beeFamilyRsDto =  beeFamilyService.release(id);
+        BeeFamilyRsDto beeFamilyRsDto = beeFamilyService.release(id);
         beeFamilyFeignApi.deleteById(id);
 
         return beeFamilyRsDto;
