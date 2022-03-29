@@ -15,7 +15,6 @@
         <module>app-lib</module>
         <module>app-main</module>
         <module>app-generator</module>
-        <module>app-lib</module>
     </modules>
 
     <groupId>ru.coderiders</groupId>

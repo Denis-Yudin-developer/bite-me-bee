@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import ru.coderiders.Library.config.BeeFamilyFeignConfig;
 import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
 
-@FeignClient(name = "beeFamilyFeignApi", url = "http://localhost:8081/api/generator_families")
+@FeignClient(name = "beeFamilyFeignApi", configuration = BeeFamilyFeignConfig.class, url = "http://localhost:8081/api/generator_families")
 public interface BeeFamilyFeignApi {
-
     @PostMapping
     void addFamily(@RequestBody GeneratorFamilyRqDto generatorFamilyRqDto);
 

@@ -13,10 +13,12 @@ import ru.coderiders.BiteMeBee.repository.BeeFamilyRepository;
 import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRsDto;
-import ru.coderiders.BiteMeBee.rest.exception.BadRequestException;
-import ru.coderiders.BiteMeBee.rest.exception.NotFoundException;
 import ru.coderiders.BiteMeBee.service.BeeFamilyService;
 import ru.coderiders.BiteMeBee.service.HiveService;
+import ru.coderiders.Library.rest.api.generator.BeeFamilyFeignApi;
+import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
+import ru.coderiders.Library.rest.exception.BadRequestException;
+import ru.coderiders.Library.rest.exception.NotFoundException;
 
 @Service
 @Slf4j
@@ -29,6 +31,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     private final BeeFamilyRepository beeFamilyRepository;
     private final BeeFamilyMapper beeFamilyMapper;
     private final HiveService hiveService;
+    private final BeeFamilyFeignApi beeFamilyFeignApi;
 
     @Override
     @Transactional
@@ -48,6 +51,19 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         toCreate.setPopulation(totalPopulation);
         BeeFamily created = beeFamilyRepository.save(toCreate);
         log.debug("Пчелиная семья успешно добавлена в улей, id = {}, toCreate = {}", hiveId, toCreate);
+
+        GeneratorFamilyRqDto generatorFamilyRqDto = GeneratorFamilyRqDto.builder()
+                .id(created.getId())
+                .hiveId(beeFamilyRqDto.getHiveId())
+                .dronePopulation(created.getDronePopulation())
+                .workerPopulation(created.getWorkerPopulation())
+                .queenPopulation(created.getQueenPopulation())
+                .population(created.getPopulation())
+                .diseaseResistance(created.getBeeType().getDiseaseResistance())
+                .honeyProductivity(created.getBeeType().getHoneyProductivity())
+                .eggProductivity(created.getBeeType().getEggProductivity())
+                .build();
+        beeFamilyFeignApi.addFamily(generatorFamilyRqDto);
 
         return beeFamilyMapper.toDto(created);
     }
@@ -90,13 +106,15 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     public BeeFamilyRsDto release(@NonNull Long id) {
         log.debug("Выпускаем пчелиную семью на волю по идентификатору, id = {}", id);
 
-        return beeFamilyRepository.findById(id)
+        BeeFamilyRsDto beeFamilyRsDto = beeFamilyRepository.findById(id)
                 .map(found -> {
                     found.setIsAlive(false);
                     return found;
                 })
                 .map(beeFamilyMapper::toDto)
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
+        beeFamilyFeignApi.deleteById(id);
+        return beeFamilyRsDto;
     }
 
     @Override
@@ -106,5 +124,6 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
 
         beeFamilyRepository.findById(id)
                 .ifPresent(beeFamilyRepository::delete);
+        beeFamilyFeignApi.deleteById(id);
     }
 }

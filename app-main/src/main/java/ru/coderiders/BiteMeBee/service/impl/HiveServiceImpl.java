@@ -16,12 +16,14 @@ import ru.coderiders.BiteMeBee.repository.HiveRepository;
 import ru.coderiders.BiteMeBee.repository.HiveSnapshotRepository;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
-import ru.coderiders.BiteMeBee.rest.exception.BadRequestException;
-import ru.coderiders.BiteMeBee.rest.exception.NotFoundException;
 import ru.coderiders.BiteMeBee.service.HiveService;
 import ru.coderiders.BiteMeBee.utils.BeanUtilsHelper;
+import ru.coderiders.Library.rest.api.generator.HiveFeignApi;
+import ru.coderiders.Library.rest.dto.GeneratorHiveRqDto;
 import ru.coderiders.Library.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.Library.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.Library.rest.exception.BadRequestException;
+import ru.coderiders.Library.rest.exception.NotFoundException;
 
 import java.time.Instant;
 import java.util.List;
@@ -41,6 +43,7 @@ public class HiveServiceImpl implements HiveService {
     private final HiveSnapshotRepository hiveSnapshotRepository;
     private final HiveMapper hiveMapper;
     private final HiveSnapshotMapper hiveSnapshotMapper;
+    private final HiveFeignApi hiveFeignApi;
 
     @Override
     public List<HiveSnapshotRsDto> getSnapshots(@NonNull HiveSnapshotRqDto hiveSnapshotRqDto) {
@@ -88,9 +91,13 @@ public class HiveServiceImpl implements HiveService {
                 .ifPresent(found -> {
                     throw new BadRequestException(String.format(HIVE_ALREADY_EXISTS, hiveName));
                 });
-
         Hive toCreate = hiveMapper.toEntity(hiveRqDto);
         Hive created = hiveRepository.save(toCreate);
+        GeneratorHiveRqDto generatorHiveRqDto = GeneratorHiveRqDto.builder()
+                .id(created.getId())
+                .honeyCapacity(1.5 * created.getFrameCount())
+                .build();
+        hiveFeignApi.addHive(generatorHiveRqDto);
         return hiveMapper.toDto(created);
     }
 
