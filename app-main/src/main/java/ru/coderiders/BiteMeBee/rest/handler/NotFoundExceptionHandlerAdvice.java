@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.coderiders.BiteMeBee.rest.exception.NotFoundException;
+import ru.coderiders.Library.rest.exception.NotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;

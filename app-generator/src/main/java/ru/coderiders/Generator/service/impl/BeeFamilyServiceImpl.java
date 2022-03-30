@@ -9,12 +9,15 @@ import ru.coderiders.Generator.entity.BeeFamily;
 import ru.coderiders.Generator.repository.BeeFamilyRepository;
 import ru.coderiders.Generator.service.BeeFamilyService;
 import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
+import ru.coderiders.Library.rest.exception.BadRequestException;
+import ru.coderiders.Library.rest.exception.NotFoundException;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class BeeFamilyServiceImpl implements BeeFamilyService {
-
+    private static final String BEE_FAMILY_NOT_FOUND = "Пчелиная семья с id=%s не найдена";
+    private static final String HIVE_IS_OCCUPIED = "Улей занят другой пчелиной семьёй";
     private final BeeFamilyRepository beeFamilyRepository;
     private final HiveServiceImpl hiveService;
 
@@ -22,7 +25,11 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     @Transactional
     public void create(GeneratorFamilyRqDto generatorFamilyRqDto) {
         log.debug("Запрос на подселение семьи в генераторе, id = {}", generatorFamilyRqDto.getId());
-
+        var hiveId = generatorFamilyRqDto.getHiveId();
+        if(hiveService.isOccupied(hiveId)) {
+            log.warn("Улей уже занят, id = {}", hiveId);
+            throw new BadRequestException(HIVE_IS_OCCUPIED);
+        }
         BeeFamily toCreate = BeeFamily.builder()
                 .id(generatorFamilyRqDto.getId())
                 .dronePopulation(generatorFamilyRqDto.getDronePopulation())
@@ -56,6 +63,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
                 .map(found -> {
                     found.setIsInfected(isInfected);
                     return found;
-                });
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
     }
 }

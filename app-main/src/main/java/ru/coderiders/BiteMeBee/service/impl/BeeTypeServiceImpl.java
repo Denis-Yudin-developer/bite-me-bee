@@ -1,14 +1,5 @@
 package ru.coderiders.BiteMeBee.service.impl;
 
-import ru.coderiders.BiteMeBee.entity.BeeType;
-import ru.coderiders.BiteMeBee.mapper.BeeTypeMapper;
-import ru.coderiders.BiteMeBee.repository.BeeTypeRepository;
-import ru.coderiders.BiteMeBee.rest.dto.BeeTypeRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.BeeTypeRsDto;
-import ru.coderiders.BiteMeBee.rest.exception.BadRequestException;
-import ru.coderiders.BiteMeBee.rest.exception.NotFoundException;
-import ru.coderiders.BiteMeBee.service.BeeTypeService;
-import ru.coderiders.BiteMeBee.utils.BeanUtilsHelper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.coderiders.BiteMeBee.entity.BeeType;
+import ru.coderiders.BiteMeBee.mapper.BeeTypeMapper;
+import ru.coderiders.BiteMeBee.repository.BeeTypeRepository;
+import ru.coderiders.BiteMeBee.rest.dto.BeeTypeRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeTypeRsDto;
+import ru.coderiders.BiteMeBee.service.BeeTypeService;
+import ru.coderiders.BiteMeBee.utils.BeanUtilsHelper;
+import ru.coderiders.Library.rest.exception.BadRequestException;
+import ru.coderiders.Library.rest.exception.NotFoundException;
 
 @Slf4j
 @Service
