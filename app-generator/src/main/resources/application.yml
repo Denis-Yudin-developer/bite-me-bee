@@ -15,7 +15,9 @@ spring:
     user: ${DB_USER:bitemebee}
     password: ${DB_PASS:bitemebee}
 
-open-weather-appid: f3be4625645bd229b3c449602e5c8226
-
 server:
   port: 8081
+
+open-weather:
+  url: https://api.openweathermap.org
+  app-id: f3be4625645bd229b3c449602e5c8226
