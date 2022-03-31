@@ -82,5 +82,5 @@ public interface HiveApi {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
-    ResponseEntity<?> deleteById(@PathVariable(name = "id") Long id);
+    ResponseEntity<Void> deleteById(@PathVariable(name = "id") Long id);
 }

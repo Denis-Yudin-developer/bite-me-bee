@@ -1,8 +1,13 @@
 package ru.coderiders.BiteMeBee.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -42,5 +47,8 @@ public class BeeFamily {
 
     @Column(name = "population", nullable = false)
     private Long population;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
 
 }

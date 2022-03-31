@@ -12,8 +12,6 @@ import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRsDto;
 import ru.coderiders.BiteMeBee.service.BeeFamilyService;
-import ru.coderiders.Library.rest.api.generator.BeeFamilyFeignApi;
-import ru.coderiders.Library.rest.dto.GeneratorFamilyRqDto;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,26 +20,9 @@ public class BeeFamilyController implements BeeFamilyAPI {
 
     private final BeeFamilyService beeFamilyService;
 
-    private final BeeFamilyFeignApi beeFamilyFeignApi;
-
     @Override
     public ResponseEntity<BeeFamilyRsDto> create(BeeFamilyRqDto beeFamilyRqDto) {
-
         BeeFamilyRsDto created = beeFamilyService.create(beeFamilyRqDto);
-
-        GeneratorFamilyRqDto generatorFamilyRqDto = GeneratorFamilyRqDto.builder()
-                .id(created.getId())
-                .hiveId(beeFamilyRqDto.getHiveId())
-                .dronePopulation(created.getDronePopulation())
-                .workerPopulation(created.getWorkerPopulation())
-                .queenPopulation(created.getQueenPopulation())
-                .population(created.getPopulation())
-                .diseaseResistance(created.getBeeType().getDiseaseResistance())
-                .honeyProductivity(created.getBeeType().getHoneyProductivity())
-                .eggProductivity(created.getBeeType().getEggProductivity())
-                .build();
-        beeFamilyFeignApi.addFamily(generatorFamilyRqDto);
-
         var location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(created.getId())
@@ -51,10 +32,7 @@ public class BeeFamilyController implements BeeFamilyAPI {
 
     @Override
     public BeeFamilyRsDto release(Long id) {
-        BeeFamilyRsDto beeFamilyRsDto =  beeFamilyService.release(id);
-        beeFamilyFeignApi.deleteById(id);
-
-        return beeFamilyRsDto;
+        return beeFamilyService.release(id);
     }
 
     @Override
@@ -75,8 +53,6 @@ public class BeeFamilyController implements BeeFamilyAPI {
     @Override
     public ResponseEntity<Void> delete(Long id) {
         beeFamilyService.deleteById(id);
-        beeFamilyFeignApi.deleteById(id);
-
         return ResponseEntity.accepted().build();
     }
 }

@@ -11,8 +11,6 @@ import ru.coderiders.BiteMeBee.rest.api.HiveApi;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
 import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
 import ru.coderiders.BiteMeBee.service.HiveService;
-import ru.coderiders.Library.rest.api.generator.HiveFeignApi;
-import ru.coderiders.Library.rest.dto.GeneratorHiveRqDto;
 import ru.coderiders.Library.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.Library.rest.dto.HiveSnapshotRsDto;
 
@@ -24,7 +22,6 @@ import java.util.List;
 public class HiveController implements HiveApi {
 
     private final HiveService hiveService;
-    private final HiveFeignApi hiveFeignApi;
 
     @Override
     public List<HiveSnapshotRsDto> getSnapshots(HiveSnapshotRqDto hiveSnapshotRqDto) {
@@ -43,15 +40,7 @@ public class HiveController implements HiveApi {
 
     @Override
     public ResponseEntity<HiveRsDto> create(HiveRqDto hiveRqDto) {
-
         HiveRsDto created = hiveService.create(hiveRqDto);
-
-        GeneratorHiveRqDto generatorHiveRqDto = GeneratorHiveRqDto.builder()
-                .id(created.getId())
-                .honeyCapacity(1.5 * created.getFrameCount())
-                .build();
-        hiveFeignApi.addHive(generatorHiveRqDto);
-
         var location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(created.getId())
@@ -67,7 +56,6 @@ public class HiveController implements HiveApi {
     @Override
     public ResponseEntity<Void> deleteById(Long id) {
         hiveService.deleteById(id);
-
         return ResponseEntity.accepted().build();
     }
 }
