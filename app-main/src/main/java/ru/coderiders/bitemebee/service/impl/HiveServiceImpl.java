@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.BeeFamily;
 import ru.coderiders.bitemebee.entity.Hive;
+import ru.coderiders.bitemebee.entity.HiveSnapshot;
 import ru.coderiders.bitemebee.mapper.HiveMapper;
 import ru.coderiders.bitemebee.mapper.HiveSnapshotMapper;
 import ru.coderiders.bitemebee.repository.HiveRepository;
@@ -43,6 +44,7 @@ public class HiveServiceImpl implements HiveService {
     private final HiveFeignApi hiveFeignApi;
 
     @Override
+    @Transactional
     public List<HiveSnapshotRsDto> getSnapshots(@NonNull HiveSnapshotRqDto hiveSnapshotRqDto) {
         log.debug("Запрос на получение всех снимков улья за период, hiveSnapshotRqDto = {}", hiveSnapshotRqDto);
         Long hiveId = hiveSnapshotRqDto.getHiveId();
@@ -62,6 +64,27 @@ public class HiveServiceImpl implements HiveService {
         log.debug("Запрос на получение всех ульев, pageable = {}", pageable);
         return hiveRepository.findAll(pageable)
                 .map(hiveMapper::toDto);
+    }
+
+    @Override
+    @Transactional
+    public HiveSnapshot createSnapshot(@NonNull HiveSnapshotRsDto hiveSnapshotRsDto) {
+        log.debug("Запрос на создание нового снимка улья, hiveSnapshotDto = {}", hiveSnapshotRsDto);
+        HiveSnapshot hiveSnapshot = hiveSnapshotMapper.toEntity(hiveSnapshotRsDto);
+        Long hiveId = hiveSnapshotRsDto.getHiveId();
+        Hive hive = getEntityById(hiveId);
+        Instant snapshotTime = Instant.parse(hiveSnapshotRsDto.getCreatedAt());
+        hiveSnapshot.setHive(hive);
+        hiveSnapshot.setCreatedAt(snapshotTime);
+        return hiveSnapshotRepository.save(hiveSnapshot);
+    }
+
+    @Override
+    @Transactional
+    public Hive getEntityById(@NonNull Long id) {
+        log.debug("Запрос на получение сущности улья по id = {}", id);
+        return hiveRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, id)));
     }
 
     @Override
@@ -109,6 +132,18 @@ public class HiveServiceImpl implements HiveService {
 
     @Override
     @Transactional
+    public void updateHoney(@NonNull Long id, @NonNull Double honeyIncrease) {
+        log.debug("Запрос на обновление мёда по id = {}, honeyIncrease = {}", id, honeyIncrease);
+        hiveRepository.findById(id)
+                .map(found -> {
+                    found.setHoneyAmount(found.getHoneyAmount() + honeyIncrease);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, id)));
+    }
+
+    @Override
+    @Transactional
     public void deleteById(@NonNull Long id) {
         log.debug("Запрос на удаление улья по id = {}", id);
         hiveRepository.findById(id)
@@ -122,5 +157,12 @@ public class HiveServiceImpl implements HiveService {
         return hiveRepository.findById(id)
                 .map(hive -> hive.getBeeFamilies().stream().anyMatch(BeeFamily::getIsAlive))
                 .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, id)));
+    }
+
+    @Override
+    @Transactional
+    public boolean isExists(@NonNull Long id) {
+        log.debug("Запрос на проверку существование улья по id = {}", id);
+        return hiveRepository.findById(id).isPresent();
     }
 }

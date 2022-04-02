@@ -22,6 +22,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 @Table(name = "hive_snapshots")
 public class HiveSnapshot {
     @Id

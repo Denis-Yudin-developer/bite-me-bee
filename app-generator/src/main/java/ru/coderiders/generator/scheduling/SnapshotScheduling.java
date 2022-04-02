@@ -29,11 +29,11 @@ public class SnapshotScheduling {
         List<Hive> hiveList = hiveRepository.findAll();
         for (Hive hive : hiveList) {
             if (hive.getBeeFamily() == null) continue;
-            Instant snapshotTime = Instant.now();
+            String snapshotTime = Instant.now().toString();
             WeatherDto weatherDto = openWeatherFeignClient.getWeather();
             Double co2 = ThreadLocalRandom.current().nextDouble(100.0, 1000.0);
             double heatFactor = hive.getIsOverheated() ? 5.0 : 0.0;
-            Double temperature = (weatherDto.getMain().getTemp() / 10) + 30 + heatFactor;
+            Double temperature = ((weatherDto.getMain().getTemp() / 10) + 30 + heatFactor) ;
             double healthFactor = hive.getBeeFamily().getIsInfected() ? 0.2 : 1.0;
             Double honeyIncrease =
                     ((hive.getBeeFamily().getHoneyProductivity() * hive.getDelta()) / 100)
@@ -52,6 +52,7 @@ public class SnapshotScheduling {
                     .co2(co2)
                     .honeyIncrease(honeyIncrease).build();
             log.debug("Создан новый снимок улья, snapshot = {}", hiveSnapshotRsDto);
+            template.convertAndSend("hive-snapshot", hiveSnapshotRsDto);
         }
     }
 }
