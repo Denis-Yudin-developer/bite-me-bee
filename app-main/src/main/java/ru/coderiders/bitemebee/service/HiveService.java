@@ -5,6 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
+
+import java.util.List;
 
 public interface HiveService {
     Page<HiveRsDto> getAll(@NonNull Pageable pageable);
