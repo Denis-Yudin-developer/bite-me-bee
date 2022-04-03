@@ -85,7 +85,7 @@ public class HiveServiceImpl implements HiveService {
 
     @Override
     @Transactional
-    public void updateHoney(@NonNull Long id, @NonNull Double honeyIncrease) {
+    public void updateHoneyAmount(@NonNull Long id, @NonNull Double honeyIncrease) {
         log.debug("Запрос на обновление мёда по id = {}, honeyIncrease = {}", id, honeyIncrease);
         hiveRepository.findById(id)
                 .map(found -> {
@@ -114,7 +114,7 @@ public class HiveServiceImpl implements HiveService {
 
     @Override
     @Transactional
-    public boolean isExists(@NonNull Long id) {
+    public boolean hiveExists(@NonNull Long id) {
         log.debug("Запрос на проверку существование улья по id = {}", id);
         return hiveRepository.existsById(id);
     }
