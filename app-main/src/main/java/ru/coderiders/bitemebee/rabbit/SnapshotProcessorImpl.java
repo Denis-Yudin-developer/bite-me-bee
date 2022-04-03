@@ -25,7 +25,7 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
             log.warn("Не найден улей по идентификатору, id = {}", hiveId);
             return;
         }
-        HiveSnapshot hiveSnapshot = hiveSnapshotService.createSnapshot(hiveSnapshotRsDto);
+        HiveSnapshot hiveSnapshot = hiveSnapshotService.createSnapshot(hiveSnapshotGeneratorDto);
         hiveService.updateHoneyAmount(hiveId, hiveSnapshot.getHoneyIncrease());
     }
 }

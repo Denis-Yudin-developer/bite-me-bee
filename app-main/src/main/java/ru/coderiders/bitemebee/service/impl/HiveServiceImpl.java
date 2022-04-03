@@ -21,6 +21,8 @@ import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.utils.BeanUtilsHelper;
 import ru.coderiders.commons.rest.api.generator.HiveFeignApi;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
@@ -43,6 +45,7 @@ public class HiveServiceImpl implements HiveService {
         log.debug("Запрос на получение всех ульев, pageable = {}", pageable);
         return hiveRepository.findAll(pageable)
                 .map(hiveMapper::toDto);
+    }
 
     @Override
     @Transactional

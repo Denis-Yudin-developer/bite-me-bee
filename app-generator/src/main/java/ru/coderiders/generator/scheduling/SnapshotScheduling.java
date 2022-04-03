@@ -28,13 +28,13 @@ public class SnapshotScheduling {
         log.info("Создание новых снимков улья");
         List<Hive> hiveList = hiveRepository.findAllByBeeFamilyNotNull();
         for (Hive hive : hiveList) {
-            HiveSnapshotRsDto hiveSnapshotRsDto = createHiveSnapshot(hive);
+            HiveSnapshotGeneratorDto hiveSnapshotRsDto = createHiveSnapshot(hive);
             log.debug("Создан новый снимок улья, snapshot = {}", hiveSnapshotRsDto);
             template.convertAndSend("hive-snapshot", hiveSnapshotRsDto);
         }
     }
 
-    private HiveSnapshotRsDto createHiveSnapshot(Hive hive) {
+    private HiveSnapshotGeneratorDto createHiveSnapshot(Hive hive) {
         String snapshotTime = Instant.now().toString();
         WeatherDto weatherDto = openWeatherFeignClient.getWeather();
         Double co2 = ThreadLocalRandom.current().nextDouble(100.0, 1000.0);
@@ -50,7 +50,7 @@ public class SnapshotScheduling {
         Double currentHoneyAmount = hive.getCurrentHoneyAmount() + honeyIncrease;
         hive.setCurrentHoneyAmount(currentHoneyAmount);
         hiveRepository.save(hive);
-        return HiveSnapshotRsDto.builder()
+        return HiveSnapshotGeneratorDto.builder()
                 .hiveId(hive.getId())
                 .createdAt(snapshotTime)
                 .temperature(temperature)

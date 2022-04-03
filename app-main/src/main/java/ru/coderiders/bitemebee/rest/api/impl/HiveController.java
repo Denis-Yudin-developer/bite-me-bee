@@ -14,8 +14,8 @@ import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.bitemebee.service.impl.HiveServiceImpl;
 import ru.coderiders.bitemebee.service.impl.HiveSnapshotServiceImpl;
+import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 
 import java.util.List;
 
@@ -25,11 +25,6 @@ import java.util.List;
 public class HiveController implements HiveApi {
     private final HiveServiceImpl hiveService;
     private final HiveSnapshotServiceImpl hiveSnapshotService;
-
-    @Override
-    public List<HiveSnapshotGeneratorDto> getSnapshots(HiveSnapshotRqDto hiveSnapshotRqDto) {
-        return hiveSnapshotService.getSnapshots(hiveSnapshotRqDto);
-    }
 
     @Override
     public Page<HiveRsDto> getAll(Pageable pageable) {
