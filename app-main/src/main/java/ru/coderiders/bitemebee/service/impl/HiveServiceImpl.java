@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.BeeFamily;
 import ru.coderiders.bitemebee.entity.Hive;
+import ru.coderiders.bitemebee.entity.HiveSnapshot;
 import ru.coderiders.bitemebee.mapper.HiveMapper;
+import ru.coderiders.bitemebee.mapper.HiveSnapshotMapper;
 import ru.coderiders.bitemebee.repository.HiveRepository;
+import ru.coderiders.bitemebee.repository.HiveSnapshotRepository;
 import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
 import ru.coderiders.bitemebee.service.HiveService;
@@ -29,7 +32,9 @@ public class HiveServiceImpl implements HiveService {
     private final String HIVE_NOT_FOUND = "Улей с id=%s не найден";
     private final String HIVE_ALREADY_EXISTS = "Улей с таким названием уже существует";
     private final HiveRepository hiveRepository;
+    private final HiveSnapshotRepository hiveSnapshotRepository;
     private final HiveMapper hiveMapper;
+    private final HiveSnapshotMapper hiveSnapshotMapper;
     private final HiveFeignApi hiveFeignApi;
 
     @Override
@@ -38,6 +43,13 @@ public class HiveServiceImpl implements HiveService {
         log.debug("Запрос на получение всех ульев, pageable = {}", pageable);
         return hiveRepository.findAll(pageable)
                 .map(hiveMapper::toDto);
+
+    @Override
+    @Transactional
+    public Hive getEntityById(@NonNull Long id) {
+        log.debug("Запрос на получение сущности улья по id = {}", id);
+        return hiveRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, id)));
     }
 
     @Override

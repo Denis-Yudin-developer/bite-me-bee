@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.coderiders.bitemebee.rest.api.impl.HiveController;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
 import ru.coderiders.bitemebee.service.impl.HiveServiceImpl;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
@@ -38,14 +38,14 @@ public class HiveControllerTest {
 
     @Test
     public void getSnapshotsOkTest() throws Exception {
-        List<HiveSnapshotRsDto> hiveSnapshotRsDtoList = Arrays.asList(HIVE_SNAPSHOT_RS_DTO_1, HIVE_SNAPSHOT_RS_DTO_2);
-        when(hiveService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenReturn(hiveSnapshotRsDtoList);
+        List<HiveSnapshotGeneratorDto> hiveSnapshotGeneratorDtoList = Arrays.asList(HIVE_SNAPSHOT_RS_DTO_1, HIVE_SNAPSHOT_RS_DTO_2);
+        when(hiveService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenReturn(hiveSnapshotGeneratorDtoList);
         mockMvc.perform(get("/api/hives/snapshots")
                         .content(objectToJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(hiveSnapshotRsDtoList)));
+                .andExpect(content().json(objectToJsonString(hiveSnapshotGeneratorDtoList)));
         verify(hiveService, times(1)).getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1);
     }
 

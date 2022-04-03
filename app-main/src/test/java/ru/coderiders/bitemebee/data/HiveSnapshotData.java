@@ -1,7 +1,7 @@
 package ru.coderiders.bitemebee.data;
 
+import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 
 import java.time.Instant;
 
@@ -12,7 +12,7 @@ public class HiveSnapshotData {
             .dateTo(Instant.parse("2022-03-22T10:12:04.340Z"))
             .build();
 
-    public static final HiveSnapshotRsDto HIVE_SNAPSHOT_RS_DTO_1 = HiveSnapshotRsDto.builder()
+    public static final HiveSnapshotGeneratorDto HIVE_SNAPSHOT_RS_DTO_1 = HiveSnapshotGeneratorDto.builder()
             .hiveId(1L)
             .createdAt("2022-02-27T19:34:50.630Z")
             .temperature(30.3)
@@ -21,7 +21,7 @@ public class HiveSnapshotData {
             .honeyIncrease(0.21)
             .build();
 
-    public static final HiveSnapshotRsDto HIVE_SNAPSHOT_RS_DTO_2 = HiveSnapshotRsDto.builder()
+    public static final HiveSnapshotGeneratorDto HIVE_SNAPSHOT_RS_DTO_2 = HiveSnapshotGeneratorDto.builder()
             .hiveId(2L)
             .createdAt("2022-02-28T20:30:33.341Z")
             .temperature(31.2)

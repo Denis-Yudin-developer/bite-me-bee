@@ -6,7 +6,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.coderiders.commons.client.OpenWeatherFeignClient;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.dto.openweather.WeatherDto;
 import ru.coderiders.generator.entity.Hive;
 import ru.coderiders.generator.repository.HiveRepository;
