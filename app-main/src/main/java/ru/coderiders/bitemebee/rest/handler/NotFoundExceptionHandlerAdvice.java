@@ -1,4 +1,4 @@
-package ru.coderiders.bitemebee.rest.handler;
+package ru.coderiders.BiteMeBee.rest.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

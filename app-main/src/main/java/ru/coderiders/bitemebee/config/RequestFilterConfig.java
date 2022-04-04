@@ -1,9 +1,9 @@
-package ru.coderiders.bitemebee.config;
+package ru.coderiders.BiteMeBee.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.coderiders.bitemebee.rest.filter.RequestFilter;
+import ru.coderiders.BiteMeBee.rest.filter.RequestFilter;
 
 @Configuration
 public class RequestFilterConfig {

@@ -1,4 +1,4 @@
-package ru.coderiders.generator.entity;
+package ru.coderiders.Generator.entity;
 
 import lombok.*;
 

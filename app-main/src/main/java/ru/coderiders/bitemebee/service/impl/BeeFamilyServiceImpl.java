@@ -1,4 +1,4 @@
-package ru.coderiders.bitemebee.service.impl;
+package ru.coderiders.BiteMeBee.service.impl;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -7,14 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.coderiders.bitemebee.entity.BeeFamily;
-import ru.coderiders.bitemebee.mapper.BeeFamilyMapper;
-import ru.coderiders.bitemebee.repository.BeeFamilyRepository;
-import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
-import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
-import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
-import ru.coderiders.bitemebee.service.BeeFamilyService;
-import ru.coderiders.bitemebee.service.HiveService;
+import ru.coderiders.BiteMeBee.entity.BeeFamily;
+import ru.coderiders.BiteMeBee.mapper.BeeFamilyMapper;
+import ru.coderiders.BiteMeBee.repository.BeeFamilyRepository;
+import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyNoteRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRsDto;
+import ru.coderiders.BiteMeBee.service.BeeFamilyService;
+import ru.coderiders.BiteMeBee.service.HiveService;
 import ru.coderiders.commons.rest.api.generator.BeeFamilyFeignApi;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;

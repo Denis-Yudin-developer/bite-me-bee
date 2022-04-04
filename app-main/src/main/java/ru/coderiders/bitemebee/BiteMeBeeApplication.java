@@ -1,4 +1,4 @@
-package ru.coderiders.bitemebee;
+package ru.coderiders.BiteMeBee;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

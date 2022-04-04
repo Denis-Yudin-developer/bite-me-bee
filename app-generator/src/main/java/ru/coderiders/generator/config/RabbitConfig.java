@@ -1,4 +1,4 @@
-package ru.coderiders.generator.config;
+package ru.coderiders.Generator.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;

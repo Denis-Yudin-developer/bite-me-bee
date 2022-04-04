@@ -1,4 +1,4 @@
-package ru.coderiders.bitemebee.rest.api;
+package ru.coderiders.BiteMeBee.rest.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,8 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
-import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
+import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 

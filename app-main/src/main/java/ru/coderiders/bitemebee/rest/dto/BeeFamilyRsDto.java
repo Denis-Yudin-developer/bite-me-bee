@@ -1,4 +1,4 @@
-package ru.coderiders.bitemebee.rest.dto;
+package ru.coderiders.BiteMeBee.rest.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

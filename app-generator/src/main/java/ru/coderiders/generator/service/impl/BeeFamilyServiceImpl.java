@@ -1,4 +1,4 @@
-package ru.coderiders.generator.service.impl;
+package ru.coderiders.Generator.service.impl;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
-import ru.coderiders.generator.entity.BeeFamily;
-import ru.coderiders.generator.repository.BeeFamilyRepository;
-import ru.coderiders.generator.service.BeeFamilyService;
+import ru.coderiders.Generator.entity.BeeFamily;
+import ru.coderiders.Generator.repository.BeeFamilyRepository;
+import ru.coderiders.Generator.service.BeeFamilyService;
 
 @Slf4j
 @Service

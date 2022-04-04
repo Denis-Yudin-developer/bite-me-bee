@@ -1,4 +1,4 @@
-package ru.coderiders.generator.scheduling;
+package ru.coderiders.Generator.scheduling;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import ru.coderiders.commons.client.OpenWeatherFeignClient;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 import ru.coderiders.commons.rest.dto.openweather.WeatherDto;
-import ru.coderiders.generator.entity.Hive;
-import ru.coderiders.generator.repository.HiveRepository;
+import ru.coderiders.Generator.entity.Hive;
+import ru.coderiders.Generator.repository.HiveRepository;
 
 import java.time.Instant;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ru.coderiders.generator;
+package ru.coderiders.Generator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

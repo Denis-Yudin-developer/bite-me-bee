@@ -1,10 +1,10 @@
-package ru.coderiders.bitemebee.service;
+package ru.coderiders.BiteMeBee.service;
 
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ru.coderiders.bitemebee.rest.dto.BeeTypeRqDto;
-import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeTypeRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeTypeRsDto;
 
 public interface BeeTypeService {
     Page<BeeTypeRsDto> getAll(@NonNull Pageable pageable);

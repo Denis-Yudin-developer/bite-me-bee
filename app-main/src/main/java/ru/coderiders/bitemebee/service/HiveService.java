@@ -1,10 +1,10 @@
-package ru.coderiders.bitemebee.service;
+package ru.coderiders.BiteMeBee.service;
 
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
-import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
+import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 

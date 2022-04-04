@@ -1,4 +1,4 @@
-package ru.coderiders.bitemebee.utils;
+package ru.coderiders.BiteMeBee.utils;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;

@@ -1,4 +1,4 @@
-package ru.coderiders.bitemebee.rest.api;
+package ru.coderiders.BiteMeBee.rest.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,8 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.coderiders.bitemebee.rest.dto.ActivityRqDto;
-import ru.coderiders.bitemebee.rest.dto.ActivityRsDto;
+import ru.coderiders.BiteMeBee.rest.dto.ActivityRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.ActivityRsDto;
 
 import javax.validation.Valid;
 

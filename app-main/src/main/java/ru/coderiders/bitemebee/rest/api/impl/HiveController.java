@@ -1,4 +1,4 @@
-package ru.coderiders.bitemebee.rest.api.impl;
+package ru.coderiders.BiteMeBee.rest.api.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.coderiders.bitemebee.rest.api.HiveApi;
-import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
-import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
-import ru.coderiders.bitemebee.service.HiveService;
+import ru.coderiders.BiteMeBee.rest.api.HiveApi;
+import ru.coderiders.BiteMeBee.rest.dto.HiveRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.HiveRsDto;
+import ru.coderiders.BiteMeBee.service.HiveService;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 

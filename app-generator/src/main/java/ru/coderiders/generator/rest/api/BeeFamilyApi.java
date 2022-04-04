@@ -1,4 +1,4 @@
-package ru.coderiders.generator.rest.api;
+package ru.coderiders.Generator.rest.api;
 
 import org.springframework.web.bind.annotation.*;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;

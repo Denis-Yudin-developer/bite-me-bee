@@ -1,11 +1,11 @@
-package ru.coderiders.bitemebee.service;
+package ru.coderiders.BiteMeBee.service;
 
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
-import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
-import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyNoteRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRqDto;
+import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRsDto;
 
 public interface BeeFamilyService {
     BeeFamilyRsDto create(@NonNull BeeFamilyRqDto beeFamilyRqDto);
