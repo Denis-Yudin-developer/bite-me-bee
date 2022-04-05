@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -43,4 +46,8 @@ public class BeeTypeRsDto {
     private Double aggressionLevel;
     @Schema(description = "Коэффициент склонности к роению", example = "0.9", minimum = "0.7", maximum = "1.3")
     private Double roilingLevel;
+
+    @Schema(description = "Список расписаний плановых задач")
+    @Builder.Default
+    private List<ScheduleRsDto> schedules = Collections.emptyList();
 }

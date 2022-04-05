@@ -13,10 +13,15 @@ import ru.coderiders.bitemebee.mapper.BeeTypeMapper;
 import ru.coderiders.bitemebee.repository.BeeTypeRepository;
 import ru.coderiders.bitemebee.rest.dto.BeeTypeRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
+import ru.coderiders.bitemebee.rest.dto.ScheduleRqDto;
+import ru.coderiders.bitemebee.rest.dto.ScheduleRsDto;
 import ru.coderiders.bitemebee.service.BeeTypeService;
+import ru.coderiders.bitemebee.service.ScheduleService;
 import ru.coderiders.bitemebee.utils.BeanUtilsHelper;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -27,6 +32,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     private final String BEE_TYPE_ALREADY_EXISTS = "Вид пчёл с таким названием уже существует";
     private final BeeTypeRepository beeTypeRepository;
     private final BeeTypeMapper beeTypeMapper;
+    private final ScheduleService scheduleService;
 
     @Override
     @Transactional
@@ -54,10 +60,19 @@ public class BeeTypeServiceImpl implements BeeTypeService {
                 .ifPresent(meterType -> {
                     throw new BadRequestException(BEE_TYPE_ALREADY_EXISTS);
                 });
-
         BeeType toCreate = beeTypeMapper.toEntity(beeTypeRqDto);
         BeeType created = beeTypeRepository.save(toCreate);
-        return beeTypeMapper.toDto(created);
+        BeeTypeRsDto beeTypeRsDto = beeTypeMapper.toDto(created);
+        List<ScheduleRsDto> schedules = beeTypeRqDto.getSchedules().stream()
+                .map(schedule -> {
+                    ScheduleRqDto scheduleToCreate = ScheduleRqDto.builder()
+                            .activityId(schedule.getActivityId())
+                            .intervalInMinutes(schedule.getIntervalInMinutes())
+                            .build();
+                    return scheduleService.create(toCreate.getId(), scheduleToCreate);
+                }).toList();
+        beeTypeRsDto.setSchedules(schedules);
+        return beeTypeRsDto;
     }
 
     @Override
@@ -65,7 +80,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
         log.debug("Запрос на обновление вида пчёл по id = {}, BeeTypeRqDto = {}", id, beeTypeRqDto);
         return beeTypeRepository.findById(id)
                 .map(found -> {
-                    var update = beeTypeMapper.toEntity(beeTypeRqDto);
+                    BeeType update = beeTypeMapper.toEntity(beeTypeRqDto);
                     BeanUtils.copyProperties(update, found,
                             BeanUtilsHelper.getNullPropertyNames(update, IGNORED_ON_COPY_FIELDS));
                     return found;
