@@ -83,21 +83,4 @@ public class BeeFamilyControllerTest {
                 .andExpect(status().isBadRequest());
         verify(beeFamilyService, times(1)).create(BEE_FAMILY_RQ_DTO_1);
     }
-
-    @Test
-    public void release_validData_returnOk() throws Exception {
-        when(beeFamilyService.release(1L)).thenReturn(BEE_FAMILY_RS_DTO_1);
-        mockMvc.perform(post("/api/bee_families/1/release"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(BEE_FAMILY_RS_DTO_1)));
-        verify(beeFamilyService, times(1)).release(1L);
-    }
-
-    @Test
-    public void release_invalidData_returnNotFound() throws Exception {
-        when(beeFamilyService.release(10L)).thenThrow(new NotFoundException("Семья с id=10 не найден"));
-        mockMvc.perform(post("/api/bee_families/10/release"))
-                .andExpect(status().isNotFound());
-        verify(beeFamilyService, times(1)).release(10L);
-    }
 }
