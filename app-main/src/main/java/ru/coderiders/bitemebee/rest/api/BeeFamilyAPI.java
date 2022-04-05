@@ -39,17 +39,6 @@ public interface BeeFamilyAPI {
     })
     ResponseEntity<BeeFamilyRsDto> create(@Valid @RequestBody BeeFamilyRqDto beeFamilyRqDto);
 
-    @PostMapping("/{id}/release")
-    @Operation(description = "\"Выселение\" пчелиной семьи из улья по её идентификатору", method = "POST")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = BeeFamilyRsDto.class))}),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND")
-    })
-    BeeFamilyRsDto release(@Parameter(required = true, description = "Идентификатор") @PathVariable(name = "id") Long id);
-
     @GetMapping("/{id}")
     @Operation(description = "Получение записи о пчелиной семье по идентификатору", method = "GET")
     @ApiResponses({
@@ -82,11 +71,11 @@ public interface BeeFamilyAPI {
                           @Valid @RequestBody BeeFamilyNoteRqDto beeFamilyNoteRqDto);
 
     @DeleteMapping("/{id}")
-    @Operation(description = "Удаление записи о пчелиной семье по идентификатору", method = "DELETE")
+    @Operation(description = "\"Выселение\" пчелиной семьи из улья по её идентификатору", method = "POST")
     @ApiResponses({
             @ApiResponse(responseCode = "202", description = "ACCEPTED"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
-    ResponseEntity<Void> delete(@Parameter(required = true, description = "Идентификатор") @PathVariable(name = "id") Long id);
+    ResponseEntity<Void> release(@Parameter(required = true, description = "Идентификатор") @PathVariable(name = "id") Long id);
 }

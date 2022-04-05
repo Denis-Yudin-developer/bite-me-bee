@@ -19,17 +19,13 @@ public class RequestFilter implements Filter {
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
-
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-
         CachedBodyHttpServletRequest cachedRequest = new CachedBodyHttpServletRequest(request);
-
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, enctype");
         response.setHeader("Access-Control-Max-Age", "3600");
-
         log.info("Перехваченный запрос к API, метод: \"{}\", URI: \"{}\", body: \"{}\"", request.getMethod(), request.getRequestURI(), new String(cachedRequest.getInputStream().readAllBytes()));
         filterChain.doFilter(cachedRequest, response);
     }

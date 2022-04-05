@@ -11,6 +11,8 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collections;
+import java.util.List;
 
 @Data
 @Builder
@@ -80,4 +82,7 @@ public class BeeTypeRqDto {
     @NotNull(message = "Не указан коэффициент склонности к роению")
     @Schema(description = "Коэффициент склонности к роению", example = "0.9", minimum = "0.7", maximum = "1.3")
     private Double roilingLevel;
+    @Builder.Default
+    @Schema(description = "Массив с интервалами для типовых работ")
+    private List<ScheduleRqDto> schedules = Collections.emptyList();
 }
