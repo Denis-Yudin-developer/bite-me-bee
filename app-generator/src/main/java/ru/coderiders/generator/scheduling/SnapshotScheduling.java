@@ -44,8 +44,7 @@ public class SnapshotScheduling {
             Double currentHoneyAmount = hive.getCurrentHoneyAmount() + honeyIncrease;
             hive.setCurrentHoneyAmount(currentHoneyAmount);
             hiveRepository.save(hive);
-
-            HiveSnapshotRsDto hiveSnapshotRsDto = HiveSnapshotRsDto.builder()
+            var hiveSnapshotRsDto = HiveSnapshotRsDto.builder()
                     .hiveId(hive.getId())
                     .createdAt(snapshotTime)
                     .temperature(temperature)

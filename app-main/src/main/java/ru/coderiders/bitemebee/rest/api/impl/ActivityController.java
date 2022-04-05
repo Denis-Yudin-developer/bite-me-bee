@@ -30,7 +30,6 @@ public class ActivityController implements ActivityApi {
 
     @Override
     public ResponseEntity<ActivityRsDto> create(ActivityRqDto activityRqDto) {
-
         ActivityRsDto created = activityService.create(activityRqDto);
         var location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
