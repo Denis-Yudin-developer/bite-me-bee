@@ -30,11 +30,6 @@ public class BeeFamilyController implements BeeFamilyAPI {
     }
 
     @Override
-    public BeeFamilyRsDto release(Long id) {
-        return beeFamilyService.release(id);
-    }
-
-    @Override
     public BeeFamilyRsDto getById(Long id) {
         return beeFamilyService.getById(id);
     }
@@ -50,8 +45,8 @@ public class BeeFamilyController implements BeeFamilyAPI {
     }
 
     @Override
-    public ResponseEntity<Void> delete(Long id) {
-        beeFamilyService.deleteById(id);
+    public ResponseEntity<Void> release(Long id) {
+        beeFamilyService.release(id);
         return ResponseEntity.accepted().build();
     }
 }
