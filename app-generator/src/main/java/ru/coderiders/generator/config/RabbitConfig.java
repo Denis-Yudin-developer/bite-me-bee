@@ -1,0 +1,60 @@
+package ru.coderiders.generator.config;
+
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@EnableRabbit
+@Configuration
+public class RabbitConfig {
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        return new CachingConnectionFactory("localhost");
+    }
+
+    @Bean
+    public AmqpAdmin amqpAdmin() {
+        return new RabbitAdmin(connectionFactory());
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate() {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
+        rabbitTemplate.setExchange("snapshot-exchange");
+        return rabbitTemplate;
+    }
+
+    @Bean
+    public Queue hiveSnapshotQueue() {
+        return new Queue("hive-snapshot");
+    }
+
+    @Bean
+    public Queue familySnapshotQueue() {
+        return new Queue("family-snapshot");
+    }
+
+    @Bean
+    public DirectExchange directExchange() {
+        return new DirectExchange("snapshot-exchange");
+    }
+
+    @Bean
+    public Binding hiveSnapshotBinding() {
+        return BindingBuilder.bind(hiveSnapshotQueue()).to(directExchange()).with("hive-snapshot");
+    }
+
+    @Bean
+    public Binding familySnapshotBinding() {
+        return BindingBuilder.bind(familySnapshotQueue()).to(directExchange()).with("family-snapshot");
+    }
+}
