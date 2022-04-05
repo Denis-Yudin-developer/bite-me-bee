@@ -34,7 +34,7 @@ public class BeeFamilyControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void getAllOKTest() throws Exception {
+    public void getAll_validData_returnOk() throws Exception {
         Page<BeeFamilyRsDto> beeFamilyRsDtoPage = new PageImpl<>(Arrays.asList(BEE_FAMILY_RS_DTO_1, BEE_FAMILY_RS_DTO_2));
         when(beeFamilyService.getAll(PageRequest.of(0, 20))).thenReturn(beeFamilyRsDtoPage);
         mockMvc.perform(get("/api/bee_families"))
@@ -44,7 +44,7 @@ public class BeeFamilyControllerTest {
     }
 
     @Test
-    public void getOkTest() throws Exception {
+    public void getById_validData_returnOk() throws Exception {
         when(beeFamilyService.getById(1L)).thenReturn(BEE_FAMILY_RS_DTO_1);
         mockMvc.perform(get("/api/bee_families/1"))
                 .andExpect(status().isOk())
@@ -53,7 +53,7 @@ public class BeeFamilyControllerTest {
     }
 
     @Test
-    public void getNotFoundTest() throws Exception {
+    public void getById_invalidData_returnNotFound() throws Exception {
         when(beeFamilyService.getById(10L)).thenThrow(new NotFoundException("Семья с id=10 не найден"));
         mockMvc.perform(get("/api/bee_families/10"))
                 .andExpect(status().isNotFound());
@@ -61,15 +61,7 @@ public class BeeFamilyControllerTest {
     }
 
     @Test
-    public void getBadRequestTest() throws Exception {
-        when(beeFamilyService.getById(-1L)).thenThrow(new BadRequestException("Ошибка запроса семьи по id=-1"));
-        mockMvc.perform(get("/api/bee_families/-1"))
-                .andExpect(status().isBadRequest());
-        verify(beeFamilyService, times(1)).getById(-1L);
-    }
-
-    @Test
-    public void createCreatedTest() throws Exception {
+    public void create_validData_returnCreated() throws Exception {
         when(beeFamilyService.create(BEE_FAMILY_RQ_DTO_1)).thenReturn(BEE_FAMILY_RS_DTO_1);
         mockMvc.perform(post("/api/bee_families/")
                         .content(objectToJsonString(BEE_FAMILY_RQ_DTO_1))
@@ -81,7 +73,7 @@ public class BeeFamilyControllerTest {
     }
 
     @Test
-    public void createBadRequestTest() throws Exception {
+    public void create_invalidData_returnBadRequest() throws Exception {
         when(beeFamilyService.create(BEE_FAMILY_RQ_DTO_1))
                 .thenThrow(new BadRequestException("Ошибка в теле запроса при добавлении семьи"));
         mockMvc.perform(post("/api/bee_families/")
@@ -93,7 +85,7 @@ public class BeeFamilyControllerTest {
     }
 
     @Test
-    public void releaseOkTest() throws Exception {
+    public void release_validData_returnOk() throws Exception {
         when(beeFamilyService.release(1L)).thenReturn(BEE_FAMILY_RS_DTO_1);
         mockMvc.perform(post("/api/bee_families/1/release"))
                 .andExpect(status().isOk())
@@ -102,18 +94,10 @@ public class BeeFamilyControllerTest {
     }
 
     @Test
-    public void releaseNotFoundTest() throws Exception {
+    public void release_invalidData_returnNotFound() throws Exception {
         when(beeFamilyService.release(10L)).thenThrow(new NotFoundException("Семья с id=10 не найден"));
         mockMvc.perform(post("/api/bee_families/10/release"))
                 .andExpect(status().isNotFound());
         verify(beeFamilyService, times(1)).release(10L);
-    }
-
-    @Test
-    public void releaseBadRequestTest() throws Exception {
-        when(beeFamilyService.release(-1L)).thenThrow(new BadRequestException("Ошибка запроса семьи по id=-1"));
-        mockMvc.perform(post("/api/bee_families/-1/release"))
-                .andExpect(status().isBadRequest());
-        verify(beeFamilyService, times(1)).release(-1L);
     }
 }

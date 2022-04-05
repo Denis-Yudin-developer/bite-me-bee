@@ -37,10 +37,10 @@ public class HiveControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void getSnapshotsOkTest() throws Exception {
+    public void getSnapshots_validData_returnOk() throws Exception {
         List<HiveSnapshotGeneratorDto> hiveSnapshotGeneratorDtoList = Arrays.asList(HIVE_SNAPSHOT_RS_DTO_1, HIVE_SNAPSHOT_RS_DTO_2);
         when(hiveService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenReturn(hiveSnapshotGeneratorDtoList);
-        mockMvc.perform(get("/api/hives/snapshots")
+        mockMvc.perform(post("/api/hives/snapshots")
                         .content(objectToJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -50,13 +50,18 @@ public class HiveControllerTest {
     }
 
     @Test
-    public void getSnapshotsBadRequestTest() throws Exception {
-        mockMvc.perform(get("/api/hives/snapshots"))
-                .andExpect(status().isBadRequest());
+    public void getSnapshots_invalidData_returnNotFound() throws Exception {
+        when(hiveService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenThrow(new NotFoundException("Улей не найден"));
+        mockMvc.perform(post("/api/hives/snapshots")
+                        .content(objectToJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(hiveService, times(1)).getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1);
     }
 
     @Test
-    public void getAllOKTest() throws Exception {
+    public void getAll_validData_returnOk() throws Exception {
         Page<HiveRsDto> hiveRsDtoPage = new PageImpl<>(Arrays.asList(HIVE_RS_DTO_1, HIVE_RS_DTO_2));
         when(hiveService.getAll(PageRequest.of(0, 20))).thenReturn(hiveRsDtoPage);
         mockMvc.perform(get("/api/hives"))
@@ -66,7 +71,7 @@ public class HiveControllerTest {
     }
 
     @Test
-    public void getOkTest() throws Exception {
+    public void getById_validData_returnOk() throws Exception {
         when(hiveService.getById(1L)).thenReturn(HIVE_RS_DTO_1);
         mockMvc.perform(get("/api/hives/1"))
                 .andExpect(status().isOk())
@@ -75,7 +80,7 @@ public class HiveControllerTest {
     }
 
     @Test
-    public void getNotFoundTest() throws Exception {
+    public void getById_invalidData_returnNotFound() throws Exception {
         when(hiveService.getById(10L)).thenThrow(new NotFoundException("Улей с id=10 не найден"));
         mockMvc.perform(get("/api/hives/10"))
                 .andExpect(status().isNotFound());
@@ -83,15 +88,7 @@ public class HiveControllerTest {
     }
 
     @Test
-    public void getBadRequestTest() throws Exception {
-        when(hiveService.getById(-1L)).thenThrow(new BadRequestException("Ошибка запроса улья по id=-1"));
-        mockMvc.perform(get("/api/hives/-1"))
-                .andExpect(status().isBadRequest());
-        verify(hiveService, times(1)).getById(-1L);
-    }
-
-    @Test
-    public void createCreatedTest() throws Exception {
+    public void create_validData_returnCreated() throws Exception {
         when(hiveService.create(HIVE_RQ_DTO_1)).thenReturn(HIVE_RS_DTO_1);
         mockMvc.perform(post("/api/hives/")
                         .content(objectToJsonString(HIVE_RQ_DTO_1))
@@ -103,7 +100,7 @@ public class HiveControllerTest {
     }
 
     @Test
-    public void createBadRequestTest() throws Exception {
+    public void create_invalidData_returnBadRequest() throws Exception {
         when(hiveService.create(HIVE_RQ_DTO_1))
                 .thenThrow(new BadRequestException("Ошибка в теле запроса при добавлении улья"));
         mockMvc.perform(post("/api/hives/")
