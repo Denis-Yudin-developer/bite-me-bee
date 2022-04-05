@@ -12,9 +12,9 @@
     </parent>
 
     <modules>
+        <module>app-commons</module>
         <module>app-main</module>
         <module>app-generator</module>
-        <module>app-lib</module>
     </modules>
 
     <groupId>ru.coderiders</groupId>
@@ -95,6 +95,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <skip>true</skip>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -105,5 +106,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
