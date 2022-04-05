@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.coderiders.commons.config.HiveFeignConfig;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
 
-@FeignClient(name = "hiveFeignApi", configuration = HiveFeignConfig.class, url = "http://localhost:8081/api/generator_hives")
+@FeignClient(name = "hiveFeignApi",
+             configuration = HiveFeignConfig.class,
+             url = "${feign-client.families-url:http://localhost:8081/api/generator_hives}")
 public interface HiveFeignApi {
     @PostMapping
     void addHive(@RequestBody GeneratorHiveRqDto generatorHiveRqDto);
