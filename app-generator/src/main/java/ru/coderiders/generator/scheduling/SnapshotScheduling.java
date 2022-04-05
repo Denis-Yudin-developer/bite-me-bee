@@ -1,4 +1,4 @@
-package ru.coderiders.Generator.scheduling;
+package ru.coderiders.generator.scheduling;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import ru.coderiders.commons.client.OpenWeatherFeignClient;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 import ru.coderiders.commons.rest.dto.openweather.WeatherDto;
-import ru.coderiders.Generator.entity.Hive;
-import ru.coderiders.Generator.repository.HiveRepository;
+import ru.coderiders.generator.entity.Hive;
+import ru.coderiders.generator.repository.HiveRepository;
 
 import java.time.Instant;
 import java.util.List;
@@ -44,8 +44,7 @@ public class SnapshotScheduling {
             Double currentHoneyAmount = hive.getCurrentHoneyAmount() + honeyIncrease;
             hive.setCurrentHoneyAmount(currentHoneyAmount);
             hiveRepository.save(hive);
-
-            HiveSnapshotRsDto hiveSnapshotRsDto = HiveSnapshotRsDto.builder()
+            var hiveSnapshotRsDto = HiveSnapshotRsDto.builder()
                     .hiveId(hive.getId())
                     .createdAt(snapshotTime)
                     .temperature(temperature)

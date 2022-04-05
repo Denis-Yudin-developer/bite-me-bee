@@ -1,8 +1,8 @@
-package ru.coderiders.Generator.service;
+package ru.coderiders.generator.service;
 
 import lombok.NonNull;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
-import ru.coderiders.Generator.entity.BeeFamily;
+import ru.coderiders.generator.entity.BeeFamily;
 
 public interface HiveService {
     void create(@NonNull GeneratorHiveRqDto generatorHiveRqDto);

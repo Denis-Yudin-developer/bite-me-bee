@@ -1,10 +1,10 @@
-package ru.coderiders.Generator.rest.api.impl;
+package ru.coderiders.generator.rest.api.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
-import ru.coderiders.Generator.rest.api.BeeFamilyApi;
-import ru.coderiders.Generator.service.BeeFamilyService;
+import ru.coderiders.generator.rest.api.BeeFamilyApi;
+import ru.coderiders.generator.service.BeeFamilyService;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package ru.coderiders.BiteMeBee.service.impl;
+package ru.coderiders.bitemebee.service.impl;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -8,13 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.coderiders.BiteMeBee.entity.Activity;
-import ru.coderiders.BiteMeBee.mapper.ActivityMapper;
-import ru.coderiders.BiteMeBee.repository.ActivityRepository;
-import ru.coderiders.BiteMeBee.rest.dto.ActivityRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.ActivityRsDto;
-import ru.coderiders.BiteMeBee.service.ActivityService;
-import ru.coderiders.BiteMeBee.utils.BeanUtilsHelper;
+import ru.coderiders.bitemebee.entity.Activity;
+import ru.coderiders.bitemebee.mapper.ActivityMapper;
+import ru.coderiders.bitemebee.repository.ActivityRepository;
+import ru.coderiders.bitemebee.rest.dto.ActivityRqDto;
+import ru.coderiders.bitemebee.rest.dto.ActivityRsDto;
+import ru.coderiders.bitemebee.service.ActivityService;
+import ru.coderiders.bitemebee.utils.BeanUtilsHelper;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 

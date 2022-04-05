@@ -1,4 +1,4 @@
-package ru.coderiders.BiteMeBee.rest.api;
+package ru.coderiders.bitemebee.rest.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

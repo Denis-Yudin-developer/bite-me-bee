@@ -1,4 +1,4 @@
-package ru.coderiders.BiteMeBee.config;
+package ru.coderiders.bitemebee.config;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

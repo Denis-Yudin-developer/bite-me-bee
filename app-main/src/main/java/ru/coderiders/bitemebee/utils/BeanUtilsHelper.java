@@ -1,4 +1,4 @@
-package ru.coderiders.BiteMeBee.utils;
+package ru.coderiders.bitemebee.utils;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

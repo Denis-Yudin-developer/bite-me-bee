@@ -1,4 +1,4 @@
-package ru.coderiders.BiteMeBee.rest.api;
+package ru.coderiders.bitemebee.rest.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,10 +12,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyNoteRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.BeeFamilyRsDto;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
+import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
+import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
 
 import javax.validation.Valid;
 

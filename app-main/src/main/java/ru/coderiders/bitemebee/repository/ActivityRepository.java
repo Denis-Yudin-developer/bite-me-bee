@@ -1,7 +1,7 @@
-package ru.coderiders.BiteMeBee.repository;
+package ru.coderiders.bitemebee.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.coderiders.BiteMeBee.entity.Activity;
+import ru.coderiders.bitemebee.entity.Activity;
 
 import java.util.Optional;
 

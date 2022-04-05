@@ -1,7 +1,7 @@
-package ru.coderiders.Generator.repository;
+package ru.coderiders.generator.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.coderiders.Generator.entity.Hive;
+import ru.coderiders.generator.entity.Hive;
 
 import java.util.Optional;
 

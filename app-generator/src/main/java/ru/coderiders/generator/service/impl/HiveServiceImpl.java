@@ -1,4 +1,4 @@
-package ru.coderiders.Generator.service.impl;
+package ru.coderiders.generator.service.impl;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
 import ru.coderiders.commons.rest.exception.NotFoundException;
-import ru.coderiders.Generator.entity.BeeFamily;
-import ru.coderiders.Generator.entity.Hive;
-import ru.coderiders.Generator.repository.HiveRepository;
-import ru.coderiders.Generator.service.HiveService;
+import ru.coderiders.generator.entity.BeeFamily;
+import ru.coderiders.generator.entity.Hive;
+import ru.coderiders.generator.repository.HiveRepository;
+import ru.coderiders.generator.service.HiveService;
 
 @Slf4j
 @Service

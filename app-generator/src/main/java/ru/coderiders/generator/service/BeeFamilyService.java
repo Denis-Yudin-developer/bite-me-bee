@@ -1,4 +1,4 @@
-package ru.coderiders.Generator.service;
+package ru.coderiders.generator.service;
 
 import lombok.NonNull;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
