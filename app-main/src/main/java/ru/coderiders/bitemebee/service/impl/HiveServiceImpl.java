@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.BeeFamily;
 import ru.coderiders.bitemebee.entity.Hive;
-import ru.coderiders.bitemebee.entity.HiveSnapshot;
 import ru.coderiders.bitemebee.mapper.HiveMapper;
 import ru.coderiders.bitemebee.mapper.HiveSnapshotMapper;
 import ru.coderiders.bitemebee.repository.HiveRepository;
@@ -21,8 +20,6 @@ import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.utils.BeanUtilsHelper;
 import ru.coderiders.commons.rest.api.generator.HiveFeignApi;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 

@@ -11,8 +11,8 @@ import ru.coderiders.bitemebee.mapper.HiveSnapshotMapper;
 import ru.coderiders.bitemebee.repository.HiveRepository;
 import ru.coderiders.bitemebee.repository.HiveSnapshotRepository;
 import ru.coderiders.bitemebee.service.HiveSnapshotService;
+import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
 import java.time.Instant;
@@ -30,7 +30,7 @@ public class HiveSnapshotServiceImpl implements HiveSnapshotService {
 
     @Override
     @Transactional
-    public List<HiveSnapshotRsDto> getSnapshots(@NonNull HiveSnapshotRqDto hiveSnapshotRqDto) {
+    public List<HiveSnapshotGeneratorDto> getSnapshots(@NonNull HiveSnapshotRqDto hiveSnapshotRqDto) {
         log.debug("Запрос на получение всех снимков улья за период, hiveSnapshotRqDto = {}", hiveSnapshotRqDto);
         Long hiveId = hiveSnapshotRqDto.getHiveId();
         Instant dateFrom = hiveSnapshotRqDto.getDateFrom();
@@ -45,13 +45,13 @@ public class HiveSnapshotServiceImpl implements HiveSnapshotService {
 
     @Override
     @Transactional
-    public HiveSnapshot createSnapshot(@NonNull HiveSnapshotRsDto hiveSnapshotRsDto) {
-        log.debug("Запрос на создание нового снимка улья, hiveSnapshotDto = {}", hiveSnapshotRsDto);
-        HiveSnapshot hiveSnapshot = hiveSnapshotMapper.toEntity(hiveSnapshotRsDto);
-        Long hiveId = hiveSnapshotRsDto.getHiveId();
+    public HiveSnapshot createSnapshot(@NonNull HiveSnapshotGeneratorDto hiveSnapshotGeneratorDto) {
+        log.debug("Запрос на создание нового снимка улья, hiveSnapshotDto = {}", hiveSnapshotGeneratorDto);
+        HiveSnapshot hiveSnapshot = hiveSnapshotMapper.toEntity(hiveSnapshotGeneratorDto);
+        Long hiveId = hiveSnapshotGeneratorDto.getHiveId();
         Hive hive = Hive.builder()
                 .id(hiveId).build();
-        Instant snapshotTime = Instant.parse(hiveSnapshotRsDto.getCreatedAt());
+        Instant snapshotTime = Instant.parse(hiveSnapshotGeneratorDto.getCreatedAt());
         hiveSnapshot.setHive(hive);
         hiveSnapshot.setCreatedAt(snapshotTime);
         return hiveSnapshotRepository.save(hiveSnapshot);

@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.coderiders.bitemebee.rest.api.impl.HiveController;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
 import ru.coderiders.bitemebee.service.impl.HiveServiceImpl;
+import ru.coderiders.bitemebee.service.impl.HiveSnapshotServiceImpl;
 import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
@@ -32,6 +33,8 @@ import static ru.coderiders.bitemebee.data.HiveSnapshotData.*;
 public class HiveControllerTest {
     @MockBean
     private HiveServiceImpl hiveService;
+    @MockBean
+    private HiveSnapshotServiceImpl hiveSnapshotService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,25 +42,25 @@ public class HiveControllerTest {
     @Test
     public void getSnapshots_validData_returnOk() throws Exception {
         List<HiveSnapshotGeneratorDto> hiveSnapshotGeneratorDtoList = Arrays.asList(HIVE_SNAPSHOT_RS_DTO_1, HIVE_SNAPSHOT_RS_DTO_2);
-        when(hiveService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenReturn(hiveSnapshotGeneratorDtoList);
+        when(hiveSnapshotService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenReturn(hiveSnapshotGeneratorDtoList);
         mockMvc.perform(post("/api/hives/snapshots")
                         .content(objectToJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectToJsonString(hiveSnapshotGeneratorDtoList)));
-        verify(hiveService, times(1)).getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1);
+        verify(hiveSnapshotService, times(1)).getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1);
     }
 
     @Test
     public void getSnapshots_invalidData_returnNotFound() throws Exception {
-        when(hiveService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenThrow(new NotFoundException("Улей не найден"));
+        when(hiveSnapshotService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenThrow(new NotFoundException("Улей не найден"));
         mockMvc.perform(post("/api/hives/snapshots")
                         .content(objectToJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        verify(hiveService, times(1)).getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1);
+        verify(hiveSnapshotService, times(1)).getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1);
     }
 
     @Test
