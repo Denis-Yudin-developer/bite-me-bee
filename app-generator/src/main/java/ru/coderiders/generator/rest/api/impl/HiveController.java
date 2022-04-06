@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
 import ru.coderiders.generator.rest.api.HiveApi;
-import ru.coderiders.generator.service.HiveService;
+import ru.coderiders.generator.service.impl.HiveServiceImpl;
 
 @RestController
 @RequiredArgsConstructor
 public class HiveController implements HiveApi {
-    private final HiveService hiveService;
+    private final HiveServiceImpl hiveService;
 
     @Override
     public void addHive(GeneratorHiveRqDto generatorHiveRqDto) {

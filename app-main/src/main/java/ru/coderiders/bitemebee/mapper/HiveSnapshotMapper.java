@@ -23,4 +23,8 @@ public class HiveSnapshotMapper {
     public HiveSnapshotRsDto toDto(HiveSnapshot hiveSnapshot) {
         return modelMapper.map(hiveSnapshot, HiveSnapshotRsDto.class);
     }
+
+    public HiveSnapshot toEntity(HiveSnapshotRsDto hiveSnapshotRsDto) {
+        return modelMapper.map(hiveSnapshotRsDto, HiveSnapshot.class);
+    }
 }

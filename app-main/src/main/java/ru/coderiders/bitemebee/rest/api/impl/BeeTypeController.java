@@ -10,13 +10,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.coderiders.bitemebee.rest.api.BeeTypeApi;
 import ru.coderiders.bitemebee.rest.dto.BeeTypeRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
-import ru.coderiders.bitemebee.service.BeeTypeService;
+import ru.coderiders.bitemebee.service.impl.BeeTypeServiceImpl;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class BeeTypeController implements BeeTypeApi {
-    private final BeeTypeService beeTypeService;
+    private final BeeTypeServiceImpl beeTypeService;
 
     @Override
     public Page<BeeTypeRsDto> getAll(Pageable pageable) {

@@ -10,13 +10,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.coderiders.bitemebee.rest.api.ActivityApi;
 import ru.coderiders.bitemebee.rest.dto.ActivityRqDto;
 import ru.coderiders.bitemebee.rest.dto.ActivityRsDto;
-import ru.coderiders.bitemebee.service.ActivityService;
+import ru.coderiders.bitemebee.service.impl.ActivityServiceImpl;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ActivityController implements ActivityApi {
-    private final ActivityService activityService;
+    private final ActivityServiceImpl activityService;
 
     @Override
     public Page<ActivityRsDto> getAll(Pageable pageable) {

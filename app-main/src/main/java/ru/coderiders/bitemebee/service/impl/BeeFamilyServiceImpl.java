@@ -14,8 +14,6 @@ import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
-import ru.coderiders.bitemebee.service.BeeTypeService;
-import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.commons.rest.api.generator.BeeFamilyFeignApi;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
@@ -31,8 +29,8 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     private static final String HIVE_IS_OCCUPIED = "Улей занят другой пчелиной семьёй";
     private final BeeFamilyRepository beeFamilyRepository;
     private final BeeFamilyMapper beeFamilyMapper;
-    private final HiveService hiveService;
-    private final BeeTypeService beeTypeService;
+    private final HiveServiceImpl hiveService;
+    private final BeeTypeServiceImpl beeTypeService;
     private final BeeFamilyFeignApi beeFamilyFeignApi;
 
     @Override
