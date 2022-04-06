@@ -17,6 +17,7 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 
 import java.util.Arrays;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,7 +39,10 @@ public class BeeTypeControllerTest {
         when(beeTypeService.getAll(PageRequest.of(0, 20))).thenReturn(beeTypeRsDtoPage);
         mockMvc.perform(get("/api/bee_types"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(beeTypeRsDtoPage)));
+                .andExpect(content().json(objectToJsonString(beeTypeRsDtoPage)))
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.content[0].title").value("Медоносная пчела"));
         verify(beeTypeService, times(1)).getAll(PageRequest.of(0, 20));
     }
 
@@ -48,7 +52,8 @@ public class BeeTypeControllerTest {
         mockMvc.perform(get("/api/bee_types/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectToJsonString(BEE_TYPE_RS_DTO_1)))
-                .andExpect(jsonPath("$.id").value(1));
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.title").value("Медоносная пчела"));
         verify(beeTypeService, times(1)).getById(1L);
     }
 
@@ -68,7 +73,9 @@ public class BeeTypeControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectToJsonString(BEE_TYPE_RS_DTO_1)));
+                .andExpect(content().json(objectToJsonString(BEE_TYPE_RS_DTO_1)))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.title").value("Медоносная пчела"));
         verify(beeTypeService, times(1)).create(BEE_TYPE_RQ_DTO_1);
     }
 

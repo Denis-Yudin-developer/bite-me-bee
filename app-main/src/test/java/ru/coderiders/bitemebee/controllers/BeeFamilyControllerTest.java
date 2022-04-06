@@ -17,11 +17,11 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 
 import java.util.Arrays;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.objectToJsonString;
 import static ru.coderiders.bitemebee.data.BeeFamilyData.*;
 
@@ -39,7 +39,10 @@ public class BeeFamilyControllerTest {
         when(beeFamilyService.getAll(PageRequest.of(0, 20))).thenReturn(beeFamilyRsDtoPage);
         mockMvc.perform(get("/api/bee_families"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(beeFamilyRsDtoPage)));
+                .andExpect(content().json(objectToJsonString(beeFamilyRsDtoPage)))
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.content[0].beeType.title").value("Медоносная пчела"));
         verify(beeFamilyService, times(1)).getAll(PageRequest.of(0, 20));
     }
 
@@ -48,7 +51,10 @@ public class BeeFamilyControllerTest {
         when(beeFamilyService.getById(1L)).thenReturn(BEE_FAMILY_RS_DTO_1);
         mockMvc.perform(get("/api/bee_families/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(BEE_FAMILY_RS_DTO_1)));
+                .andExpect(content().json(objectToJsonString(BEE_FAMILY_RS_DTO_1)))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.isAlive").isBoolean())
+                .andExpect(jsonPath("$.beeType.title").value("Медоносная пчела"));
         verify(beeFamilyService, times(1)).getById(1L);
     }
 
@@ -68,7 +74,10 @@ public class BeeFamilyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectToJsonString(BEE_FAMILY_RS_DTO_1)));
+                .andExpect(content().json(objectToJsonString(BEE_FAMILY_RS_DTO_1)))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.isAlive").isBoolean())
+                .andExpect(jsonPath("$.beeType.title").value("Медоносная пчела"));
         verify(beeFamilyService, times(1)).create(BEE_FAMILY_RQ_DTO_1);
     }
 

@@ -20,11 +20,11 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.objectToJsonString;
 import static ru.coderiders.bitemebee.data.HiveData.*;
 import static ru.coderiders.bitemebee.data.HiveSnapshotData.*;
@@ -48,7 +48,10 @@ public class HiveControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(hiveSnapshotGeneratorDtoList)));
+                .andExpect(content().json(objectToJsonString(hiveSnapshotGeneratorDtoList)))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].hiveId").value(1));
         verify(hiveSnapshotService, times(1)).getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1);
     }
 
@@ -69,7 +72,11 @@ public class HiveControllerTest {
         when(hiveService.getAll(PageRequest.of(0, 20))).thenReturn(hiveRsDtoPage);
         mockMvc.perform(get("/api/hives"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(hiveRsDtoPage)));
+                .andExpect(content().json(objectToJsonString(hiveRsDtoPage)))
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.content[0].beeFamilies[0].beeType.title")
+                        .value("Медоносная пчела"));
         verify(hiveService, times(1)).getAll(PageRequest.of(0, 20));
     }
 
@@ -78,7 +85,11 @@ public class HiveControllerTest {
         when(hiveService.getById(1L)).thenReturn(HIVE_RS_DTO_1);
         mockMvc.perform(get("/api/hives/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(HIVE_RS_DTO_1)));
+                .andExpect(content().json(objectToJsonString(HIVE_RS_DTO_1)))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.beeFamilies[0].isAlive").isBoolean())
+                .andExpect(jsonPath("$.beeFamilies[0].beeType.title")
+                        .value("Медоносная пчела"));
         verify(hiveService, times(1)).getById(1L);
     }
 
@@ -98,7 +109,11 @@ public class HiveControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectToJsonString(HIVE_RS_DTO_1)));
+                .andExpect(content().json(objectToJsonString(HIVE_RS_DTO_1)))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.beeFamilies[0].isAlive").isBoolean())
+                .andExpect(jsonPath("$.beeFamilies[0].beeType.title")
+                        .value("Медоносная пчела"));
         verify(hiveService, times(1)).create(HIVE_RQ_DTO_1);
     }
 
