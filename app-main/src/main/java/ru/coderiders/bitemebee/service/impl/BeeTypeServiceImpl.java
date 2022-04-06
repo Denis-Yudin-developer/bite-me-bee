@@ -16,7 +16,6 @@ import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRqDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRsDto;
 import ru.coderiders.bitemebee.service.BeeTypeService;
-import ru.coderiders.bitemebee.service.ScheduleService;
 import ru.coderiders.bitemebee.utils.BeanUtilsHelper;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
@@ -32,7 +31,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     private final String BEE_TYPE_ALREADY_EXISTS = "Вид пчёл с таким названием уже существует";
     private final BeeTypeRepository beeTypeRepository;
     private final BeeTypeMapper beeTypeMapper;
-    private final ScheduleService scheduleService;
+    private final ScheduleServiceImpl scheduleService;
 
     @Override
     @Transactional

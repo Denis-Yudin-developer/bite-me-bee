@@ -10,7 +10,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.coderiders.bitemebee.rest.api.HiveApi;
 import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
-import ru.coderiders.bitemebee.service.HiveService;
+import ru.coderiders.bitemebee.service.impl.HiveServiceImpl;
+import ru.coderiders.bitemebee.service.impl.HiveSnapshotServiceImpl;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 
@@ -20,11 +21,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class HiveController implements HiveApi {
-    private final HiveService hiveService;
+    private final HiveServiceImpl hiveService;
+    private final HiveSnapshotServiceImpl hiveSnapshotService;
 
     @Override
     public List<HiveSnapshotRsDto> getSnapshots(HiveSnapshotRqDto hiveSnapshotRqDto) {
-        return hiveService.getSnapshots(hiveSnapshotRqDto);
+        return hiveSnapshotService.getSnapshots(hiveSnapshotRqDto);
     }
 
     @Override

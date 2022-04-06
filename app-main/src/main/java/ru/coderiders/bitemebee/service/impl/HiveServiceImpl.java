@@ -10,25 +10,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.BeeFamily;
 import ru.coderiders.bitemebee.entity.Hive;
-import ru.coderiders.bitemebee.entity.HiveSnapshot;
 import ru.coderiders.bitemebee.mapper.HiveMapper;
-import ru.coderiders.bitemebee.mapper.HiveSnapshotMapper;
 import ru.coderiders.bitemebee.repository.HiveRepository;
-import ru.coderiders.bitemebee.repository.HiveSnapshotRepository;
 import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.utils.BeanUtilsHelper;
 import ru.coderiders.commons.rest.api.generator.HiveFeignApi;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -38,25 +29,8 @@ public class HiveServiceImpl implements HiveService {
     private final String HIVE_NOT_FOUND = "Улей с id=%s не найден";
     private final String HIVE_ALREADY_EXISTS = "Улей с таким названием уже существует";
     private final HiveRepository hiveRepository;
-    private final HiveSnapshotRepository hiveSnapshotRepository;
     private final HiveMapper hiveMapper;
-    private final HiveSnapshotMapper hiveSnapshotMapper;
     private final HiveFeignApi hiveFeignApi;
-
-    @Override
-    @Transactional
-    public List<HiveSnapshotRsDto> getSnapshots(@NonNull HiveSnapshotRqDto hiveSnapshotRqDto) {
-        log.debug("Запрос на получение всех снимков улья за период, hiveSnapshotRqDto = {}", hiveSnapshotRqDto);
-        Long hiveId = hiveSnapshotRqDto.getHiveId();
-        Instant dateFrom = hiveSnapshotRqDto.getDateFrom();
-        Instant dateTo = hiveSnapshotRqDto.getDateTo();
-        hiveRepository.findById(hiveId)
-                .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, hiveId)));
-        return hiveSnapshotRepository.findByCreatedAtBetweenAndHive_Id(dateFrom, dateTo, hiveId)
-                .stream()
-                .map(hiveSnapshotMapper::toDto)
-                .collect(Collectors.toList());
-    }
 
     @Override
     @Transactional
@@ -64,27 +38,6 @@ public class HiveServiceImpl implements HiveService {
         log.debug("Запрос на получение всех ульев, pageable = {}", pageable);
         return hiveRepository.findAll(pageable)
                 .map(hiveMapper::toDto);
-    }
-
-    @Override
-    @Transactional
-    public HiveSnapshot createSnapshot(@NonNull HiveSnapshotRsDto hiveSnapshotRsDto) {
-        log.debug("Запрос на создание нового снимка улья, hiveSnapshotDto = {}", hiveSnapshotRsDto);
-        HiveSnapshot hiveSnapshot = hiveSnapshotMapper.toEntity(hiveSnapshotRsDto);
-        Long hiveId = hiveSnapshotRsDto.getHiveId();
-        Hive hive = getEntityById(hiveId);
-        Instant snapshotTime = Instant.parse(hiveSnapshotRsDto.getCreatedAt());
-        hiveSnapshot.setHive(hive);
-        hiveSnapshot.setCreatedAt(snapshotTime);
-        return hiveSnapshotRepository.save(hiveSnapshot);
-    }
-
-    @Override
-    @Transactional
-    public Hive getEntityById(@NonNull Long id) {
-        log.debug("Запрос на получение сущности улья по id = {}", id);
-        return hiveRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, id)));
     }
 
     @Override
@@ -163,6 +116,6 @@ public class HiveServiceImpl implements HiveService {
     @Transactional
     public boolean isExists(@NonNull Long id) {
         log.debug("Запрос на проверку существование улья по id = {}", id);
-        return hiveRepository.findById(id).isPresent();
+        return hiveRepository.existsById(id);
     }
 }
