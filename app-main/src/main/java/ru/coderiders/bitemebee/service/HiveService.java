@@ -15,11 +15,11 @@ public interface HiveService {
 
     HiveRsDto update(@NonNull Long id, @NonNull HiveRqDto hiveRqDto);
 
-    void updateHoney(@NonNull Long id, @NonNull Double honeyIncrease);
+    void updateHoneyAmount(@NonNull Long id, @NonNull Double honeyIncrease);
 
     void deleteById(@NonNull Long id);
 
     boolean isOccupied(@NonNull Long id);
 
-    boolean isExists(@NonNull Long id);
+    boolean hiveExists(@NonNull Long id);
 }

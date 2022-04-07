@@ -6,7 +6,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.coderiders.commons.client.OpenWeatherFeignClient;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.dto.openweather.WeatherDto;
 import ru.coderiders.generator.entity.Hive;
 import ru.coderiders.generator.repository.HiveRepository;
@@ -28,13 +28,13 @@ public class SnapshotScheduling {
         log.info("Создание новых снимков улья");
         List<Hive> hiveList = hiveRepository.findAllByBeeFamilyNotNull();
         for (Hive hive : hiveList) {
-            HiveSnapshotRsDto hiveSnapshotRsDto = createHiveSnapshot(hive);
+            HiveSnapshotGeneratorDto hiveSnapshotRsDto = createHiveSnapshot(hive);
             log.debug("Создан новый снимок улья, snapshot = {}", hiveSnapshotRsDto);
             template.convertAndSend("hive-snapshot", hiveSnapshotRsDto);
         }
     }
 
-    private HiveSnapshotRsDto createHiveSnapshot(Hive hive) {
+    private HiveSnapshotGeneratorDto createHiveSnapshot(Hive hive) {
         String snapshotTime = Instant.now().toString();
         WeatherDto weatherDto = openWeatherFeignClient.getWeather();
         Double co2 = ThreadLocalRandom.current().nextDouble(100.0, 1000.0);
@@ -50,7 +50,7 @@ public class SnapshotScheduling {
         Double currentHoneyAmount = hive.getCurrentHoneyAmount() + honeyIncrease;
         hive.setCurrentHoneyAmount(currentHoneyAmount);
         hiveRepository.save(hive);
-        return HiveSnapshotRsDto.builder()
+        return HiveSnapshotGeneratorDto.builder()
                 .hiveId(hive.getId())
                 .createdAt(snapshotTime)
                 .temperature(temperature)

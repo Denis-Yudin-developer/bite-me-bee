@@ -1,8 +1,8 @@
 package ru.coderiders.bitemebee.rabbit;
 
 import lombok.NonNull;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 
 public interface SnapshotProcessor {
-    void processHiveSnapshot(@NonNull HiveSnapshotRsDto hiveSnapshotRsDto);
+    void processHiveSnapshot(@NonNull HiveSnapshotGeneratorDto hiveSnapshotGeneratorDto);
 }

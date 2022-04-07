@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Выходной DTO снимка улья")
-public class HiveSnapshotRsDto {
+public class HiveSnapshotGeneratorDto {
     @Schema(description = "Идентификатор улья", example = "1")
     private Long hiveId;
     @Schema(description = "Дата снимка", example = "2022-02-27T19:34:50.630Z")
