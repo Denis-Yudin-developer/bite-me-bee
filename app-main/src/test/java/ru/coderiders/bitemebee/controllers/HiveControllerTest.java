@@ -21,13 +21,21 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.objectToJsonString;
-import static ru.coderiders.bitemebee.data.HiveData.*;
-import static ru.coderiders.bitemebee.data.HiveSnapshotData.*;
+import static ru.coderiders.bitemebee.data.HiveData.HIVE_RQ_DTO_1;
+import static ru.coderiders.bitemebee.data.HiveData.HIVE_RS_DTO_1;
+import static ru.coderiders.bitemebee.data.HiveData.HIVE_RS_DTO_2;
+import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RQ_DTO_1;
+import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RS_DTO_1;
+import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RS_DTO_2;
 
 @WebMvcTest(HiveController.class)
 public class HiveControllerTest {

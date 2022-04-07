@@ -18,12 +18,18 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.objectToJsonString;
-import static ru.coderiders.bitemebee.data.BeeTypeData.*;
+import static ru.coderiders.bitemebee.data.BeeTypeData.BEE_TYPE_RQ_DTO_1;
+import static ru.coderiders.bitemebee.data.BeeTypeData.BEE_TYPE_RS_DTO_1;
+import static ru.coderiders.bitemebee.data.BeeTypeData.BEE_TYPE_RS_DTO_2;
 
 @WebMvcTest(BeeTypeController.class)
 public class BeeTypeControllerTest {
