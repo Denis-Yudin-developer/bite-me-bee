@@ -11,13 +11,13 @@ import ru.coderiders.bitemebee.rest.api.BeeFamilyAPI;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
-import ru.coderiders.bitemebee.service.BeeFamilyService;
+import ru.coderiders.bitemebee.service.impl.BeeFamilyServiceImpl;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 public class BeeFamilyController implements BeeFamilyAPI {
-    private final BeeFamilyService beeFamilyService;
+    private final BeeFamilyServiceImpl beeFamilyService;
 
     @Override
     public ResponseEntity<BeeFamilyRsDto> create(BeeFamilyRqDto beeFamilyRqDto) {
