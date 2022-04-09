@@ -16,7 +16,7 @@ public class HiveSnapshotMapper {
 
     @PostConstruct
     private void init() {
-        modelMapper.createTypeMap(HiveSnapshotRqDto.class, HiveSnapshot.class);
+        modelMapper.createTypeMap(HiveSnapshotGeneratorDto.class, HiveSnapshot.class);
         modelMapper.createTypeMap(HiveSnapshot.class, HiveSnapshotGeneratorDto.class);
     }
 

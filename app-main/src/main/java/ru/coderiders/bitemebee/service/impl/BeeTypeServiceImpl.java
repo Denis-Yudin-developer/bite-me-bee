@@ -21,7 +21,6 @@ import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
 import java.util.List;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     private final String BEE_TYPE_ALREADY_EXISTS = "Вид пчёл с таким названием уже существует";
     private final BeeTypeRepository beeTypeRepository;
     private final BeeTypeMapper beeTypeMapper;
-    private final ScheduleServiceImpl scheduleService;
+    private final ScheduleService scheduleService;
 
     @Override
     @Transactional
