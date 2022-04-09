@@ -11,6 +11,7 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 import ru.coderiders.generator.entity.BeeFamily;
 import ru.coderiders.generator.repository.BeeFamilyRepository;
 import ru.coderiders.generator.service.BeeFamilyService;
+import ru.coderiders.generator.service.HiveService;
 
 @Slf4j
 @Service
@@ -19,7 +20,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     private static final String BEE_FAMILY_NOT_FOUND = "Пчелиная семья с id=%s не найдена";
     private static final String HIVE_IS_OCCUPIED = "Улей занят другой пчелиной семьёй";
     private final BeeFamilyRepository beeFamilyRepository;
-    private final HiveServiceImpl hiveService;
+    private final HiveService hiveService;
 
     @Override
     @Transactional

@@ -10,13 +10,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.coderiders.bitemebee.rest.api.ScheduleApi;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRqDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRsDto;
-import ru.coderiders.bitemebee.service.impl.ScheduleServiceImpl;
+import ru.coderiders.bitemebee.service.ScheduleService;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController implements ScheduleApi {
-    private final ScheduleServiceImpl scheduleService;
+    private final ScheduleService scheduleService;
 
     @Override
     public ResponseEntity<ScheduleRsDto> create(Long beeTypeId, ScheduleRqDto scheduleRqDto) {
