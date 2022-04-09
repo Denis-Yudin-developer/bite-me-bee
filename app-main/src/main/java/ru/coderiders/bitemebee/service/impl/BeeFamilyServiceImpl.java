@@ -14,6 +14,7 @@ import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
+import ru.coderiders.bitemebee.service.BeeTypeService;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.commons.rest.api.generator.BeeFamilyFeignApi;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;

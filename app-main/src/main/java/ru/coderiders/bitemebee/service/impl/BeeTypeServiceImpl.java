@@ -16,6 +16,7 @@ import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRqDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRsDto;
 import ru.coderiders.bitemebee.service.BeeTypeService;
+import ru.coderiders.bitemebee.service.ScheduleService;
 import ru.coderiders.bitemebee.utils.BeanUtilsHelper;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;

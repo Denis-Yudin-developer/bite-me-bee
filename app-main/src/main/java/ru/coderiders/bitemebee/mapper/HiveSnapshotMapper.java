@@ -5,7 +5,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.coderiders.bitemebee.entity.HiveSnapshot;
 import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 
 import javax.annotation.PostConstruct;
 

@@ -10,8 +10,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.coderiders.bitemebee.rest.api.HiveApi;
 import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
-import ru.coderiders.bitemebee.service.impl.HiveService;
-import ru.coderiders.bitemebee.service.impl.HiveSnapshotService;
+import ru.coderiders.bitemebee.service.HiveService;
+import ru.coderiders.bitemebee.service.HiveSnapshotService;
 import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 
