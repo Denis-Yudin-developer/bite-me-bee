@@ -5,24 +5,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import ru.coderiders.commons.superclass.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "generator_hives")
-public class    Hive {
-    @Id
-    private Long id;
+public class Hive extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "bee_family_id")
     private BeeFamily beeFamily;
