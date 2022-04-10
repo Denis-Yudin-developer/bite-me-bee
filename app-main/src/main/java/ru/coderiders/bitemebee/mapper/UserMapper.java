@@ -1,11 +1,11 @@
-package ru.coderiders.BiteMeBee.mapper;
+package ru.coderiders.bitemebee.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import ru.coderiders.BiteMeBee.entity.User;
-import ru.coderiders.BiteMeBee.rest.dto.UserRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.UserRsDto;
+import ru.coderiders.bitemebee.entity.User;
+import ru.coderiders.bitemebee.rest.dto.UserRqDto;
+import ru.coderiders.bitemebee.rest.dto.UserRsDto;
 
 import javax.annotation.PostConstruct;
 

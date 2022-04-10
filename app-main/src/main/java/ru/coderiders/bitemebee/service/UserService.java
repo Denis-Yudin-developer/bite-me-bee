@@ -1,10 +1,10 @@
-package ru.coderiders.BiteMeBee.service;
+package ru.coderiders.bitemebee.service;
 
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ru.coderiders.BiteMeBee.rest.dto.UserRqDto;
-import ru.coderiders.BiteMeBee.rest.dto.UserRsDto;
+import ru.coderiders.bitemebee.rest.dto.UserRqDto;
+import ru.coderiders.bitemebee.rest.dto.UserRsDto;
 
 public interface UserService {
     Page<UserRsDto> getAll(@NonNull Pageable pageable);
@@ -13,7 +13,7 @@ public interface UserService {
 
     UserRsDto create(@NonNull UserRqDto userRqDto);
 
-    UserRsDto update(@NonNull Long Id, @NonNull UserRqDto userRqDto);
+    UserRsDto update(@NonNull Long id, @NonNull UserRqDto userRqDto);
 
-    void deleteById(@NonNull Long Id);
+    void deleteById(@NonNull Long id);
 }

@@ -1,4 +1,4 @@
-package ru.coderiders.BiteMeBee.entity;
+package ru.coderiders.bitemebee.entity;
 
 import lombok.*;
 
