@@ -144,6 +144,18 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
 
     @Override
     @Transactional
+    public void deleteByBeeType(@NonNull Long beeTypeId) {
+        log.debug("Запрос на удаление семей с beeTypeId = {}", beeTypeId);
+        beeFamilyRepository.getByBeeTypeId(beeTypeId)
+                .stream().peek(found -> {
+                    found.setIsDeleted(true);
+                    found.setIsAlive(false);
+                    beeFamilyFeignApi.deleteById(found.getId());
+                });
+    }
+
+    @Override
+    @Transactional
     public boolean beeFamilyExists(@NonNull Long id) {
         log.debug("Запрос на проверку существование пчелиной семьи по id = {}", id);
         return beeFamilyRepository.existsById(id);

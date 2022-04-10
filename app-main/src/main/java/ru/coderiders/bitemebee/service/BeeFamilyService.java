@@ -23,4 +23,6 @@ public interface BeeFamilyService {
     void release(@NonNull Long id);
 
     boolean beeFamilyExists(@NonNull Long id);
+
+    void deleteByBeeType(@NonNull Long beeTypeId);
 }

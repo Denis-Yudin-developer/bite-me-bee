@@ -15,6 +15,7 @@ import ru.coderiders.bitemebee.rest.dto.BeeTypeRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRqDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRsDto;
+import ru.coderiders.bitemebee.service.BeeFamilyService;
 import ru.coderiders.bitemebee.service.BeeTypeService;
 import ru.coderiders.bitemebee.service.ScheduleService;
 import ru.coderiders.bitemebee.utils.BeanUtilsHelper;
@@ -32,6 +33,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     private final BeeTypeRepository beeTypeRepository;
     private final BeeTypeMapper beeTypeMapper;
     private final ScheduleService scheduleService;
+    private final BeeFamilyService beeFamilyService;
 
     @Override
     @Transactional
@@ -75,6 +77,7 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     }
 
     @Override
+    @Transactional
     public BeeTypeRsDto update(@NonNull Long id, @NonNull BeeTypeRqDto beeTypeRqDto) {
         log.debug("Запрос на обновление вида пчёл по id = {}, BeeTypeRqDto = {}", id, beeTypeRqDto);
         return beeTypeRepository.findById(id)
@@ -93,6 +96,11 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     public void deleteById(@NonNull Long id) {
         log.debug("Запрос на удаление вида пчёл по id = {}", id);
         beeTypeRepository.findById(id)
-                .ifPresent(beeTypeRepository::delete);
+                .map(found -> {
+                    found.setIsDeleted(true);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(BEE_TYPE_NOT_FOUND, id)));
+        beeFamilyService.deleteByBeeType(id);
     }
 }
