@@ -11,8 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.coderiders.bitemebee.rest.api.impl.HiveController;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
-import ru.coderiders.bitemebee.service.impl.HiveServiceImpl;
-import ru.coderiders.bitemebee.service.impl.HiveSnapshotServiceImpl;
+import ru.coderiders.bitemebee.service.HiveService;
+import ru.coderiders.bitemebee.service.HiveSnapshotService;
 import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
@@ -40,9 +40,9 @@ import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RS_DTO
 @WebMvcTest(HiveController.class)
 public class HiveControllerTest {
     @MockBean
-    private HiveServiceImpl hiveService;
+    private HiveService hiveService;
     @MockBean
-    private HiveSnapshotServiceImpl hiveSnapshotService;
+    private HiveSnapshotService hiveSnapshotService;
 
     @Autowired
     private MockMvc mockMvc;

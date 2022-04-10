@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.coderiders.bitemebee.rest.api.impl.BeeTypeController;
 import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
-import ru.coderiders.bitemebee.service.impl.BeeTypeServiceImpl;
+import ru.coderiders.bitemebee.service.BeeTypeService;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
@@ -34,7 +34,7 @@ import static ru.coderiders.bitemebee.data.BeeTypeData.BEE_TYPE_RS_DTO_2;
 @WebMvcTest(BeeTypeController.class)
 public class BeeTypeControllerTest {
     @MockBean
-    private BeeTypeServiceImpl beeTypeService;
+    private BeeTypeService beeTypeService;
 
     @Autowired
     private MockMvc mockMvc;
