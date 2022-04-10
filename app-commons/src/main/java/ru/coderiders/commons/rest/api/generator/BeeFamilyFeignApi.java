@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.coderiders.commons.config.BeeFamilyFeignConfig;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
 
-@FeignClient(name = "beeFamilyFeignApi", configuration = BeeFamilyFeignConfig.class, url = "http://localhost:8081/api/generator_families")
+@FeignClient(name = "beeFamilyFeignApi",
+             configuration = BeeFamilyFeignConfig.class,
+             url = "${feign-client.families-url:http://localhost:8081/api/generator_families}")
 public interface BeeFamilyFeignApi {
     @PostMapping
     void addFamily(@RequestBody GeneratorFamilyRqDto generatorFamilyRqDto);
