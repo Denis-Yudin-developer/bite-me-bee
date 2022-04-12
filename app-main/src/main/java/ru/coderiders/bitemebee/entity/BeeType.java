@@ -10,6 +10,9 @@ import ru.coderiders.commons.superclass.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -22,6 +25,9 @@ import java.util.List;
 @Entity
 @Table(name = "bee_types")
 public class BeeType extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "title", nullable = false, unique = true)
     private String title;
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")

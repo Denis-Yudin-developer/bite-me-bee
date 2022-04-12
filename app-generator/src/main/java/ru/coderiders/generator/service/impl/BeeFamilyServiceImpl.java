@@ -75,6 +75,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         }
         BeeFamily toCreate = BeeFamily.builder()
                 .id(generatorFamilyRqDto.getId())
+                .isDeleted(false)
                 .dronePopulation(generatorFamilyRqDto.getDronePopulation())
                 .workerPopulation(generatorFamilyRqDto.getWorkerPopulation())
                 .queenPopulation(generatorFamilyRqDto.getQueenPopulation())
@@ -91,6 +92,12 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     @Transactional
     public void delete(@NonNull Long id) {
         log.debug("Запрос на выселение семьи в генераторе, id = {}", id);
+        beeFamilyRepository.findById(id)
+                .map(found -> {
+                    found.setIsDeleted(true);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
         hiveService.releaseFamily(id);
     }
 

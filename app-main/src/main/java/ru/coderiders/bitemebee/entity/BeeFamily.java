@@ -11,6 +11,9 @@ import ru.coderiders.commons.superclass.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -25,6 +28,9 @@ import java.time.Instant;
 @Entity
 @Table(name = "bee_families")
 public class BeeFamily extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @OneToOne
     @JoinColumn(name = "bee_type_id", nullable = false)
     private BeeType beeType;

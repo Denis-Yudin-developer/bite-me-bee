@@ -6,5 +6,5 @@ import ru.coderiders.bitemebee.entity.BeeFamily;
 import java.util.List;
 
 public interface BeeFamilyRepository extends JpaRepository<BeeFamily, Long> {
-    List<BeeFamily> getByBeeTypeId(Long id);
+    List<BeeFamily> findByBeeTypeIdAndIsDeletedFalseAndIsAliveTrue(Long id);
 }

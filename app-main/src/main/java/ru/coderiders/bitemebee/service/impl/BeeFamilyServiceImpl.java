@@ -24,6 +24,7 @@ import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -31,6 +32,7 @@ import java.time.Instant;
 public class BeeFamilyServiceImpl implements BeeFamilyService {
     private static final String BEE_FAMILY_NOT_FOUND = "Пчелиная семья с id=%s не найдена";
     private static final String HIVE_IS_OCCUPIED = "Улей занят другой пчелиной семьёй";
+    private static final String BEE_TYPE_IS_DELETED = "Карточка вида удалена";
     private final BeeFamilyRepository beeFamilyRepository;
     private final BeeFamilyMapper beeFamilyMapper;
     private final HiveService hiveService;
@@ -59,6 +61,10 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         Hive hive = Hive.builder()
                 .id(hiveId)
                 .build();
+        /*if (beeTypeService.getById(beeTypeId).getIsDeleted()) {
+            log.warn("Карточка вида уже удалена, beeTypeId = {}", beeTypeId);
+            throw new BadRequestException(BEE_TYPE_IS_DELETED);
+        }*/
         long totalPopulation = beeFamilyRqDto.getDronePopulation() +
                 beeFamilyRqDto.getQueenPopulation() +
                 beeFamilyRqDto.getWorkerPopulation();
@@ -146,12 +152,14 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     @Transactional
     public void deleteByBeeType(@NonNull Long beeTypeId) {
         log.debug("Запрос на удаление семей с beeTypeId = {}", beeTypeId);
-        beeFamilyRepository.getByBeeTypeId(beeTypeId)
-                .stream().peek(found -> {
+        List<BeeFamily> beeFamiliesList = beeFamilyRepository.findByBeeTypeIdAndIsDeletedFalseAndIsAliveTrue(beeTypeId)
+                .stream().map(found -> {
                     found.setIsDeleted(true);
                     found.setIsAlive(false);
                     beeFamilyFeignApi.deleteById(found.getId());
-                });
+                    return found;
+                }).toList();
+        beeFamilyRepository.saveAll(beeFamiliesList);
     }
 
     @Override

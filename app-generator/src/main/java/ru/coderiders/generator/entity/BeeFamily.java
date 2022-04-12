@@ -10,6 +10,7 @@ import ru.coderiders.commons.superclass.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
@@ -20,6 +21,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "generator_families")
 public class BeeFamily extends BaseEntity {
+    @Id
+    private Long id;
     @Builder.Default
     @Column(name = "is_infected", nullable = false)
     private Boolean isInfected = false;
