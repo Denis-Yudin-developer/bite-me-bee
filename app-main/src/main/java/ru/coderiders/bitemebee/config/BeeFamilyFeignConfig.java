@@ -1,4 +1,4 @@
-package ru.coderiders.commons.config;
+package ru.coderiders.bitemebee.config;
 
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;

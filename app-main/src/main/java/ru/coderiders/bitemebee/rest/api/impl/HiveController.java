@@ -25,8 +25,8 @@ public class HiveController implements HiveApi {
     private final HiveSnapshotService hiveSnapshotService;
 
     @Override
-    public List<HiveSnapshotGeneratorDto> getSnapshots(HiveSnapshotRqDto hiveSnapshotRqDto) {
-        return hiveSnapshotService.getSnapshots(hiveSnapshotRqDto);
+    public List<HiveSnapshotGeneratorDto> getSnapshots(Pageable pageable, HiveSnapshotRqDto hiveSnapshotRqDto) {
+        return hiveSnapshotService.getSnapshots(pageable, hiveSnapshotRqDto);
     }
 
     @Override

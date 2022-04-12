@@ -11,9 +11,11 @@ import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 @RequiredArgsConstructor
 public class SnapshotListener {
     private final SnapshotProcessor snapshotProcessor;
+    private final String HIVE_SNAPSHOT_QUEUE = "hive-snapshot";
 
-    @RabbitListener(queues = "hive-snapshot")
+    @RabbitListener(queues = HIVE_SNAPSHOT_QUEUE)
     public void hiveSnapshotListener(HiveSnapshotGeneratorDto hiveSnapshotGeneratorDto) {
+        log.debug("Получен снимок улья с hiveId = {}", hiveSnapshotGeneratorDto.getHiveId());
         snapshotProcessor.processHiveSnapshot(hiveSnapshotGeneratorDto);
     }
 }

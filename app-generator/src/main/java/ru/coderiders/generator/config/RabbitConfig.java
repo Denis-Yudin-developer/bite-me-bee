@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 @EnableRabbit
 @Configuration
 public class RabbitConfig {
+    private final String SNAPSHOT_EXCHANGE = "snapshot-exchange";
+
     @Bean
     public ConnectionFactory connectionFactory() {
         return new CachingConnectionFactory("localhost");
@@ -31,7 +33,7 @@ public class RabbitConfig {
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
         rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
-        rabbitTemplate.setExchange("snapshot-exchange");
+        rabbitTemplate.setExchange(SNAPSHOT_EXCHANGE);
         return rabbitTemplate;
     }
 
@@ -52,7 +54,7 @@ public class RabbitConfig {
 
     @Bean
     public DirectExchange directExchange() {
-        return new DirectExchange("snapshot-exchange");
+        return new DirectExchange(SNAPSHOT_EXCHANGE);
     }
 
     @Bean

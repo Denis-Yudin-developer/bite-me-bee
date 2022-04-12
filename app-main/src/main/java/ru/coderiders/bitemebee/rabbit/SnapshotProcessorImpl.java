@@ -19,13 +19,13 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
 
     @Override
     @Transactional
-    public void processHiveSnapshot(@NonNull HiveSnapshotGeneratorDto hiveSnapshotGeneratorDto) {
-        Long hiveId = hiveSnapshotGeneratorDto.getHiveId();
+    public void processHiveSnapshot(@NonNull HiveSnapshotGeneratorDto hiveSnapshot) {
+        Long hiveId = hiveSnapshot.getHiveId();
         if(!hiveService.hiveExists(hiveId)) {
             log.warn("Не найден улей по идентификатору, id = {}", hiveId);
             return;
         }
-        HiveSnapshot hiveSnapshot = hiveSnapshotService.createSnapshot(hiveSnapshotGeneratorDto);
-        hiveService.updateHoneyAmount(hiveId, hiveSnapshot.getHoneyIncrease());
+        HiveSnapshot created = hiveSnapshotService.createSnapshot(hiveSnapshot);
+        hiveService.updateHoneyAmount(hiveId, created.getHoneyIncrease());
     }
 }

@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.objectToJsonString;
+import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.toJsonString;
 import static ru.coderiders.bitemebee.data.HiveData.HIVE_RQ_DTO_1;
 import static ru.coderiders.bitemebee.data.HiveData.HIVE_RS_DTO_1;
 import static ru.coderiders.bitemebee.data.HiveData.HIVE_RS_DTO_2;
@@ -50,28 +50,32 @@ public class HiveControllerTest {
     @Test
     public void getSnapshots_validData_returnOk() throws Exception {
         List<HiveSnapshotGeneratorDto> hiveSnapshotGeneratorDtoList = Arrays.asList(HIVE_SNAPSHOT_RS_DTO_1, HIVE_SNAPSHOT_RS_DTO_2);
-        when(hiveSnapshotService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenReturn(hiveSnapshotGeneratorDtoList);
+        when(hiveSnapshotService.getSnapshots(PageRequest.of(0, 20), HIVE_SNAPSHOT_RQ_DTO_1))
+                .thenReturn(hiveSnapshotGeneratorDtoList);
         mockMvc.perform(post("/api/hives/snapshots")
-                        .content(objectToJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
+                        .content(toJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(hiveSnapshotGeneratorDtoList)))
+                .andExpect(content().json(toJsonString(hiveSnapshotGeneratorDtoList)))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].hiveId").value(1));
-        verify(hiveSnapshotService, times(1)).getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1);
+        verify(hiveSnapshotService, times(1))
+                .getSnapshots(PageRequest.of(0, 20), HIVE_SNAPSHOT_RQ_DTO_1);
     }
 
     @Test
     public void getSnapshots_invalidData_returnNotFound() throws Exception {
-        when(hiveSnapshotService.getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1)).thenThrow(new NotFoundException("Улей не найден"));
+        when(hiveSnapshotService.getSnapshots(PageRequest.of(0, 20), HIVE_SNAPSHOT_RQ_DTO_1))
+                .thenThrow(new NotFoundException("Улей не найден"));
         mockMvc.perform(post("/api/hives/snapshots")
-                        .content(objectToJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
+                        .content(toJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        verify(hiveSnapshotService, times(1)).getSnapshots(HIVE_SNAPSHOT_RQ_DTO_1);
+        verify(hiveSnapshotService, times(1))
+                .getSnapshots(PageRequest.of(0, 20), HIVE_SNAPSHOT_RQ_DTO_1);
     }
 
     @Test
@@ -80,7 +84,7 @@ public class HiveControllerTest {
         when(hiveService.getAll(PageRequest.of(0, 20))).thenReturn(hiveRsDtoPage);
         mockMvc.perform(get("/api/hives"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(hiveRsDtoPage)))
+                .andExpect(content().json(toJsonString(hiveRsDtoPage)))
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content", hasSize(2)))
                 .andExpect(jsonPath("$.content[0].beeFamilies[0].beeType.title")
@@ -93,7 +97,7 @@ public class HiveControllerTest {
         when(hiveService.getById(1L)).thenReturn(HIVE_RS_DTO_1);
         mockMvc.perform(get("/api/hives/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(HIVE_RS_DTO_1)))
+                .andExpect(content().json(toJsonString(HIVE_RS_DTO_1)))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.beeFamilies[0].isAlive").isBoolean())
                 .andExpect(jsonPath("$.beeFamilies[0].beeType.title")
@@ -113,11 +117,11 @@ public class HiveControllerTest {
     public void create_validData_returnCreated() throws Exception {
         when(hiveService.create(HIVE_RQ_DTO_1)).thenReturn(HIVE_RS_DTO_1);
         mockMvc.perform(post("/api/hives/")
-                        .content(objectToJsonString(HIVE_RQ_DTO_1))
+                        .content(toJsonString(HIVE_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectToJsonString(HIVE_RS_DTO_1)))
+                .andExpect(content().json(toJsonString(HIVE_RS_DTO_1)))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.beeFamilies[0].isAlive").isBoolean())
                 .andExpect(jsonPath("$.beeFamilies[0].beeType.title")
@@ -130,7 +134,7 @@ public class HiveControllerTest {
         when(hiveService.create(HIVE_RQ_DTO_1))
                 .thenThrow(new BadRequestException("Ошибка в теле запроса при добавлении улья"));
         mockMvc.perform(post("/api/hives/")
-                        .content(objectToJsonString(HIVE_RQ_DTO_1))
+                        .content(toJsonString(HIVE_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());

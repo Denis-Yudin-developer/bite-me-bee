@@ -36,7 +36,7 @@ public interface HiveApi {
                             schema = @Schema(implementation = HiveSnapshotGeneratorDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST")
     })
-    List<HiveSnapshotGeneratorDto> getSnapshots(@Valid @RequestBody HiveSnapshotRqDto hiveSnapshotRqDto);
+    List<HiveSnapshotGeneratorDto> getSnapshots(Pageable pageable, @Valid @RequestBody HiveSnapshotRqDto hiveSnapshotRqDto);
 
     @GetMapping
     @Operation(description = "Получить все ульи", method = "GET")

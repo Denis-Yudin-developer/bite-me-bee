@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.objectToJsonString;
+import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.toJsonString;
 import static ru.coderiders.bitemebee.data.BeeTypeData.BEE_TYPE_RQ_DTO_1;
 import static ru.coderiders.bitemebee.data.BeeTypeData.BEE_TYPE_RS_DTO_1;
 import static ru.coderiders.bitemebee.data.BeeTypeData.BEE_TYPE_RS_DTO_2;
@@ -45,7 +45,7 @@ public class BeeTypeControllerTest {
         when(beeTypeService.getAll(PageRequest.of(0, 20))).thenReturn(beeTypeRsDtoPage);
         mockMvc.perform(get("/api/bee_types"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(beeTypeRsDtoPage)))
+                .andExpect(content().json(toJsonString(beeTypeRsDtoPage)))
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content", hasSize(2)))
                 .andExpect(jsonPath("$.content[0].title").value("Медоносная пчела"));
@@ -57,7 +57,7 @@ public class BeeTypeControllerTest {
         when(beeTypeService.getById(1L)).thenReturn(BEE_TYPE_RS_DTO_1);
         mockMvc.perform(get("/api/bee_types/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(BEE_TYPE_RS_DTO_1)))
+                .andExpect(content().json(toJsonString(BEE_TYPE_RS_DTO_1)))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Медоносная пчела"));
         verify(beeTypeService, times(1)).getById(1L);
@@ -75,11 +75,11 @@ public class BeeTypeControllerTest {
     public void create_validData_returnCreated() throws Exception {
         when(beeTypeService.create(BEE_TYPE_RQ_DTO_1)).thenReturn(BEE_TYPE_RS_DTO_1);
         mockMvc.perform(post("/api/bee_types/")
-                        .content(objectToJsonString(BEE_TYPE_RQ_DTO_1))
+                        .content(toJsonString(BEE_TYPE_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectToJsonString(BEE_TYPE_RS_DTO_1)))
+                .andExpect(content().json(toJsonString(BEE_TYPE_RS_DTO_1)))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Медоносная пчела"));
         verify(beeTypeService, times(1)).create(BEE_TYPE_RQ_DTO_1);
@@ -90,7 +90,7 @@ public class BeeTypeControllerTest {
         when(beeTypeService.create(BEE_TYPE_RQ_DTO_1))
                 .thenThrow(new BadRequestException("Вид пчёл с таким названием уже существует"));
         mockMvc.perform(post("/api/bee_types/")
-                        .content(objectToJsonString(BEE_TYPE_RQ_DTO_1))
+                        .content(toJsonString(BEE_TYPE_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());

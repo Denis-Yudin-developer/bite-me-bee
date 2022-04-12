@@ -3,6 +3,7 @@ package ru.coderiders.bitemebee.service.impl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.Hive;
@@ -30,14 +31,14 @@ public class HiveSnapshotServiceImpl implements HiveSnapshotService {
 
     @Override
     @Transactional
-    public List<HiveSnapshotGeneratorDto> getSnapshots(@NonNull HiveSnapshotRqDto hiveSnapshotRqDto) {
+    public List<HiveSnapshotGeneratorDto> getSnapshots(@NonNull Pageable pageable, @NonNull HiveSnapshotRqDto hiveSnapshotRqDto) {
         log.debug("Запрос на получение всех снимков улья за период, hiveSnapshotRqDto = {}", hiveSnapshotRqDto);
         Long hiveId = hiveSnapshotRqDto.getHiveId();
         Instant dateFrom = hiveSnapshotRqDto.getDateFrom();
         Instant dateTo = hiveSnapshotRqDto.getDateTo();
         hiveRepository.findById(hiveId)
                 .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, hiveId)));
-        return hiveSnapshotRepository.findByCreatedAtBetweenAndHive_Id(dateFrom, dateTo, hiveId)
+        return hiveSnapshotRepository.findByCreatedAtBetweenAndHive_Id(pageable, dateFrom, dateTo, hiveId)
                 .stream()
                 .map(hiveSnapshotMapper::toDto)
                 .collect(Collectors.toList());

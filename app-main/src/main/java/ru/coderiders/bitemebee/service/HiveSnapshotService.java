@@ -1,6 +1,7 @@
 package ru.coderiders.bitemebee.service;
 
 import lombok.NonNull;
+import org.springframework.data.domain.Pageable;
 import ru.coderiders.bitemebee.entity.HiveSnapshot;
 import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
@@ -8,7 +9,7 @@ import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 import java.util.List;
 
 public interface HiveSnapshotService {
-    List<HiveSnapshotGeneratorDto> getSnapshots(@NonNull HiveSnapshotRqDto hiveSnapshotRqDto);
+    List<HiveSnapshotGeneratorDto> getSnapshots(@NonNull Pageable pageable, @NonNull HiveSnapshotRqDto hiveSnapshotRqDto);
 
     HiveSnapshot createSnapshot(@NonNull HiveSnapshotGeneratorDto hiveSnapshotRsDto);
 }
