@@ -1,7 +1,6 @@
 package ru.coderiders.bitemebee.rest.api.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import ru.coderiders.bitemebee.rest.dto.ScheduleRqDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRsDto;
 import ru.coderiders.bitemebee.service.ScheduleService;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController implements ScheduleApi {

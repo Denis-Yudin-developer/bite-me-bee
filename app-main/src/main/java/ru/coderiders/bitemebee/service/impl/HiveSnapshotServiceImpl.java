@@ -50,8 +50,7 @@ public class HiveSnapshotServiceImpl implements HiveSnapshotService {
         log.debug("Запрос на создание нового снимка улья, hiveSnapshotDto = {}", hiveSnapshotGeneratorDto);
         HiveSnapshot hiveSnapshot = hiveSnapshotMapper.toEntity(hiveSnapshotGeneratorDto);
         Long hiveId = hiveSnapshotGeneratorDto.getHiveId();
-        Hive hive = Hive.builder()
-                .id(hiveId).build();
+        Hive hive = new Hive(hiveId);
         Instant snapshotTime = Instant.parse(hiveSnapshotGeneratorDto.getCreatedAt());
         hiveSnapshot.setHive(hive);
         hiveSnapshot.setCreatedAt(snapshotTime);
