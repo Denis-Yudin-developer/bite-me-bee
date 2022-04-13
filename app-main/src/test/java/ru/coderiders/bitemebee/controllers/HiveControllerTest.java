@@ -13,7 +13,7 @@ import ru.coderiders.bitemebee.rest.api.impl.HiveController;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.HiveSnapshotService;
-import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
@@ -21,21 +21,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.toJsonString;
-import static ru.coderiders.bitemebee.data.HiveData.HIVE_RQ_DTO_1;
-import static ru.coderiders.bitemebee.data.HiveData.HIVE_RS_DTO_1;
-import static ru.coderiders.bitemebee.data.HiveData.HIVE_RS_DTO_2;
-import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RQ_DTO_1;
-import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RS_DTO_1;
-import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RS_DTO_2;
+import static ru.coderiders.bitemebee.data.HiveData.*;
+import static ru.coderiders.bitemebee.data.HiveSnapshotData.*;
 
 @WebMvcTest(HiveController.class)
 public class HiveControllerTest {
@@ -49,15 +41,15 @@ public class HiveControllerTest {
 
     @Test
     public void getSnapshots_validData_returnOk() throws Exception {
-        List<HiveSnapshotGeneratorDto> hiveSnapshotGeneratorDtoList = Arrays.asList(HIVE_SNAPSHOT_RS_DTO_1, HIVE_SNAPSHOT_RS_DTO_2);
+        List<HiveSnapshotDto> hiveSnapshotDtoList = Arrays.asList(HIVE_SNAPSHOT_RS_DTO_1, HIVE_SNAPSHOT_RS_DTO_2);
         when(hiveSnapshotService.getSnapshots(PageRequest.of(0, 20), HIVE_SNAPSHOT_RQ_DTO_1))
-                .thenReturn(hiveSnapshotGeneratorDtoList);
+                .thenReturn(hiveSnapshotDtoList);
         mockMvc.perform(post("/api/hives/snapshots")
                         .content(toJsonString(HIVE_SNAPSHOT_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJsonString(hiveSnapshotGeneratorDtoList)))
+                .andExpect(content().json(toJsonString(hiveSnapshotDtoList)))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].hiveId").value(1));
