@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import ru.coderiders.commons.config.HiveFeignConfig;
+import ru.coderiders.commons.client.HiveFeignConfig;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
 
 @FeignClient(name = "hiveFeignApi",
