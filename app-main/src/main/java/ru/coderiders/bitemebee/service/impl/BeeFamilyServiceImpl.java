@@ -152,7 +152,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     @Transactional
     public void deleteByBeeType(@NonNull Long beeTypeId) {
         log.debug("Запрос на удаление семей с beeTypeId = {}", beeTypeId);
-        List<BeeFamily> beeFamiliesList = beeFamilyRepository.findByBeeTypeIdAndIsDeletedFalseAndIsAliveTrue(beeTypeId)
+        List<BeeFamily> beeFamiliesList = beeFamilyRepository.findByBeeTypeId(beeTypeId)
                 .stream().map(found -> {
                     found.setIsDeleted(true);
                     found.setIsAlive(false);
