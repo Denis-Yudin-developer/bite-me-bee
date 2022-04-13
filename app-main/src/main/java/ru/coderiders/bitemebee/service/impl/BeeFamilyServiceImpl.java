@@ -55,16 +55,16 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
             log.warn("Улей уже занят, id = {}", hiveId);
             throw new BadRequestException(HIVE_IS_OCCUPIED);
         }
+        if (beeTypeService.getById(beeTypeId).getIsDeleted()) {
+            log.warn("Карточка вида уже удалена, beeTypeId = {}", beeTypeId);
+            throw new BadRequestException(BEE_TYPE_IS_DELETED);
+        }
         BeeType beeType = BeeType.builder()
                 .id(beeTypeId)
                 .build();
         Hive hive = Hive.builder()
                 .id(hiveId)
                 .build();
-        /*if (beeTypeService.getById(beeTypeId).getIsDeleted()) {
-            log.warn("Карточка вида уже удалена, beeTypeId = {}", beeTypeId);
-            throw new BadRequestException(BEE_TYPE_IS_DELETED);
-        }*/
         long totalPopulation = beeFamilyRqDto.getDronePopulation() +
                 beeFamilyRqDto.getQueenPopulation() +
                 beeFamilyRqDto.getWorkerPopulation();

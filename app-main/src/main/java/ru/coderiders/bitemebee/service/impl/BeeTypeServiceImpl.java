@@ -1,9 +1,10 @@
 package ru.coderiders.bitemebee.service.impl;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,9 @@ import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
 import java.util.List;
+
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class BeeTypeServiceImpl implements BeeTypeService {
     private static final String[] IGNORED_ON_COPY_FIELDS = {"id"};
     private final String BEE_TYPE_NOT_FOUND = "Вид пчёл с id=%s не найден";
@@ -33,7 +34,15 @@ public class BeeTypeServiceImpl implements BeeTypeService {
     private final BeeTypeRepository beeTypeRepository;
     private final BeeTypeMapper beeTypeMapper;
     private final ScheduleService scheduleService;
-    private final BeeFamilyService beeFamilyService;
+    @Lazy
+    @Autowired
+    private BeeFamilyService beeFamilyService;
+
+    public BeeTypeServiceImpl(BeeTypeRepository beeTypeRepository, BeeTypeMapper beeTypeMapper, ScheduleService scheduleService) {
+        this.beeTypeRepository = beeTypeRepository;
+        this.beeTypeMapper = beeTypeMapper;
+        this.scheduleService = scheduleService;
+    }
 
     @Override
     @Transactional
