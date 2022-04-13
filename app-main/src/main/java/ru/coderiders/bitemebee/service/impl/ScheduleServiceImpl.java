@@ -35,11 +35,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .ifPresent(found -> {
                     throw new BadRequestException(SCHEDULE_ALREADY_EXISTS);
                 });
-        BeeType currentType = BeeType.builder()
-                .id(beeTypeId)
-                .build();
+        BeeType beeType = new BeeType(beeTypeId);
         Schedule toCreate = scheduleMapper.toEntity(scheduleRqDto);
-        toCreate.setBeeType(currentType);
+        toCreate.setBeeType(beeType);
         Schedule created = scheduleRepository.save(toCreate);
         return scheduleMapper.toDto(created);
     }

@@ -1,7 +1,6 @@
 package ru.coderiders.bitemebee.rest.api.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +11,11 @@ import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.HiveSnapshotService;
-import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class HiveController implements HiveApi {
@@ -25,8 +23,8 @@ public class HiveController implements HiveApi {
     private final HiveSnapshotService hiveSnapshotService;
 
     @Override
-    public List<HiveSnapshotGeneratorDto> getSnapshots(HiveSnapshotRqDto hiveSnapshotRqDto) {
-        return hiveSnapshotService.getSnapshots(hiveSnapshotRqDto);
+    public List<HiveSnapshotDto> getSnapshots(Pageable pageable, HiveSnapshotRqDto hiveSnapshotRqDto) {
+        return hiveSnapshotService.getSnapshots(pageable, hiveSnapshotRqDto);
     }
 
     @Override
