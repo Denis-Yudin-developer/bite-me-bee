@@ -2,14 +2,14 @@ package ru.coderiders.generator.service;
 
 import lombok.NonNull;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 import ru.coderiders.generator.entity.BeeFamily;
 import ru.coderiders.generator.entity.Hive;
 
 import java.util.List;
 
 public interface HiveService {
-    HiveSnapshotGeneratorDto createHiveSnapshot(Hive hive);
+    HiveSnapshotDto createHiveSnapshot(Hive hive);
 
     List<Hive> findAllWithBeeFamilies();
 

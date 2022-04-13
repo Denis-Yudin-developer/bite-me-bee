@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.commons.client.OpenWeatherFeignClient;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 import ru.coderiders.commons.rest.dto.openweather.WeatherDto;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 import ru.coderiders.generator.entity.BeeFamily;
@@ -28,12 +28,12 @@ public class HiveServiceImpl implements HiveService {
     private final OpenWeatherFeignClient openWeatherFeignClient;
 
     @Override
-    public HiveSnapshotGeneratorDto createHiveSnapshot(Hive hive) {
+    public HiveSnapshotDto createHiveSnapshot(Hive hive) {
         String snapshotTime = Instant.now().toString();
         WeatherDto weatherDto = openWeatherFeignClient.getWeather();
         double co2 = ThreadLocalRandom.current().nextDouble(100.0, 1000.0);
         double heatFactor = hive.getIsOverheated() ? 5.0 : 0.0;
-        double temperature = ((weatherDto.getMain().getTemp() / 10) + 30 + heatFactor) ;
+        double temperature = ((weatherDto.getMain().getTemp() / 10) + 30 + heatFactor);
         double healthFactor = hive.getBeeFamily().getIsInfected() ? 0.2 : 1.0;
         double honeyIncrease =
                 ((hive.getBeeFamily().getHoneyProductivity() * hive.getDelta()) / 100)
@@ -44,7 +44,7 @@ public class HiveServiceImpl implements HiveService {
         double currentHoneyAmount = hive.getCurrentHoneyAmount() + honeyIncrease;
         hive.setCurrentHoneyAmount(currentHoneyAmount);
         hiveRepository.save(hive);
-        return HiveSnapshotGeneratorDto.builder()
+        return HiveSnapshotDto.builder()
                 .hiveId(hive.getId())
                 .createdAt(snapshotTime)
                 .temperature(temperature)

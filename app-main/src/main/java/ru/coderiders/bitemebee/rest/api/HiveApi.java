@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 
 import javax.validation.Valid;
@@ -33,10 +33,10 @@ public interface HiveApi {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = HiveSnapshotGeneratorDto.class))}),
+                            schema = @Schema(implementation = HiveSnapshotDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST")
     })
-    List<HiveSnapshotGeneratorDto> getSnapshots(Pageable pageable, @Valid @RequestBody HiveSnapshotRqDto hiveSnapshotRqDto);
+    List<HiveSnapshotDto> getSnapshots(Pageable pageable, @Valid @RequestBody HiveSnapshotRqDto hiveSnapshotRqDto);
 
     @GetMapping
     @Operation(description = "Получить все ульи", method = "GET")

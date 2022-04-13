@@ -11,13 +11,15 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @EnableRabbit
 @Configuration
 public class RabbitConfig {
-    private final String SNAPSHOT_EXCHANGE = "snapshot-exchange";
+    @Value("${rabbit.titles.exchange:snapshot-exchange}")
+    private String SNAPSHOT_EXCHANGE;
 
     @Bean
     public ConnectionFactory connectionFactory() {
