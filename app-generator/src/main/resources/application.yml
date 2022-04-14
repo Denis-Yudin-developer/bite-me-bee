@@ -21,6 +21,16 @@ server:
 feign-client:
   families-url: http://localhost:8081/api/generator_families
   hives-url: http://localhost:8081/api/generator_hives
+
 open-weather-client:
   url: https://api.openweathermap.org
   app-id: f3be4625645bd229b3c449602e5c8226
+
+rabbit:
+  titles:
+    hive-queue: hive-snapshot
+    family-queue: family-snapshot
+    exchange: snapshot-exchange
+
+generator:
+  delay: 5000

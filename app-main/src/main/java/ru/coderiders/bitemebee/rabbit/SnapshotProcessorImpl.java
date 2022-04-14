@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.HiveSnapshot;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.HiveSnapshotService;
-import ru.coderiders.commons.rest.dto.HiveSnapshotGeneratorDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 
 @Slf4j
 @Service
@@ -19,13 +19,13 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
 
     @Override
     @Transactional
-    public void processHiveSnapshot(@NonNull HiveSnapshotGeneratorDto hiveSnapshotGeneratorDto) {
-        Long hiveId = hiveSnapshotGeneratorDto.getHiveId();
-        if(!hiveService.hiveExists(hiveId)) {
+    public void processHiveSnapshot(@NonNull HiveSnapshotDto hiveSnapshot) {
+        Long hiveId = hiveSnapshot.getHiveId();
+        if (!hiveService.hiveExists(hiveId)) {
             log.warn("Не найден улей по идентификатору, id = {}", hiveId);
             return;
         }
-        HiveSnapshot hiveSnapshot = hiveSnapshotService.createSnapshot(hiveSnapshotGeneratorDto);
-        hiveService.updateHoneyAmount(hiveId, hiveSnapshot.getHoneyIncrease());
+        HiveSnapshot created = hiveSnapshotService.createSnapshot(hiveSnapshot);
+        hiveService.updateHoneyAmount(hiveId, created.getHoneyIncrease());
     }
 }
