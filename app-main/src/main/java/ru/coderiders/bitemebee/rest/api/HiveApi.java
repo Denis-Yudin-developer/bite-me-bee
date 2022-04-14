@@ -23,7 +23,6 @@ import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RequestMapping("/api/hives")
 @Tag(name = "Контроллер улья", description = "Позволяет управлять записями об улье")
@@ -36,7 +35,7 @@ public interface HiveApi {
                             schema = @Schema(implementation = HiveSnapshotDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST")
     })
-    List<HiveSnapshotDto> getSnapshots(Pageable pageable, @Valid @RequestBody HiveSnapshotRqDto hiveSnapshotRqDto);
+    Page<HiveSnapshotDto> getSnapshots(Pageable pageable, @Valid @RequestBody HiveSnapshotRqDto hiveSnapshotRqDto);
 
     @GetMapping
     @Operation(description = "Получить все ульи", method = "GET")
