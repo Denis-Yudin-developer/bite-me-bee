@@ -8,12 +8,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.BeeFamily;
+import ru.coderiders.bitemebee.entity.BeeType;
+import ru.coderiders.bitemebee.entity.Hive;
 import ru.coderiders.bitemebee.mapper.BeeFamilyMapper;
 import ru.coderiders.bitemebee.repository.BeeFamilyRepository;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
+import ru.coderiders.bitemebee.service.BeeTypeService;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.commons.rest.api.generator.BeeFamilyFeignApi;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
@@ -31,6 +34,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     private final BeeFamilyRepository beeFamilyRepository;
     private final BeeFamilyMapper beeFamilyMapper;
     private final HiveService hiveService;
+    private final BeeTypeService beeTypeService;
     private final BeeFamilyFeignApi beeFamilyFeignApi;
 
     @Override
@@ -38,14 +42,29 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     public BeeFamilyRsDto create(@NonNull BeeFamilyRqDto beeFamilyRqDto) {
         log.debug("Запрос на создание новой пчелиной семьи, beeFamilyRqDto = {}", beeFamilyRqDto);
         var hiveId = beeFamilyRqDto.getHiveId();
+        var beeTypeId = beeFamilyRqDto.getBeeTypeId();
+        try {
+            hiveService.getById(hiveId);
+            beeTypeService.getById(beeTypeId);
+        } catch (NotFoundException e) {
+            throw new BadRequestException(e.getMessage());
+        }
         if (hiveService.isOccupied(hiveId)) {
             log.warn("Улей уже занят, id = {}", hiveId);
             throw new BadRequestException(HIVE_IS_OCCUPIED);
         }
+        BeeType beeType = BeeType.builder()
+                .id(beeTypeId)
+                .build();
+        Hive hive = Hive.builder()
+                .id(hiveId)
+                .build();
         long totalPopulation = beeFamilyRqDto.getDronePopulation() +
                 beeFamilyRqDto.getQueenPopulation() +
                 beeFamilyRqDto.getWorkerPopulation();
         BeeFamily toCreate = beeFamilyMapper.toEntity(beeFamilyRqDto);
+        toCreate.setBeeType(beeType);
+        toCreate.setHive(hive);
         toCreate.setPopulation(totalPopulation);
         toCreate.setCreatedAt(Instant.now());
         BeeFamily created = beeFamilyRepository.save(toCreate);
@@ -97,25 +116,13 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
 
     @Override
     @Transactional
-    public BeeFamilyRsDto release(@NonNull Long id) {
+    public void release(@NonNull Long id) {
         log.debug("Запрос на выселение пчелиной семьи по id = {}", id);
-        BeeFamilyRsDto beeFamilyRsDto = beeFamilyRepository.findById(id)
-                .map(found -> {
-                    found.setIsAlive(false);
-                    return found;
-                })
-                .map(beeFamilyMapper::toDto)
-                .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
-        beeFamilyFeignApi.deleteById(id);
-        return beeFamilyRsDto;
-    }
-
-    @Override
-    @Transactional
-    public void deleteById(@NonNull Long id) {
-        log.debug("Запрос на удаление пчелиной семьи по id = {}", id);
         beeFamilyRepository.findById(id)
-                .ifPresent(beeFamilyRepository::delete);
+                .ifPresentOrElse(found -> found.setIsAlive(false),
+                        () -> {
+                            throw new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id));
+                        });
         beeFamilyFeignApi.deleteById(id);
     }
 }

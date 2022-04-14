@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.coderiders.bitemebee.entity.HiveSnapshot;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRqDto;
-import ru.coderiders.commons.rest.dto.HiveSnapshotRsDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 
 import javax.annotation.PostConstruct;
 
@@ -16,11 +15,15 @@ public class HiveSnapshotMapper {
 
     @PostConstruct
     private void init() {
-        modelMapper.createTypeMap(HiveSnapshotRqDto.class, HiveSnapshot.class);
-        modelMapper.createTypeMap(HiveSnapshot.class, HiveSnapshotRsDto.class);
+        modelMapper.createTypeMap(HiveSnapshotDto.class, HiveSnapshot.class);
+        modelMapper.createTypeMap(HiveSnapshot.class, HiveSnapshotDto.class);
     }
 
-    public HiveSnapshotRsDto toDto(HiveSnapshot hiveSnapshot) {
-        return modelMapper.map(hiveSnapshot, HiveSnapshotRsDto.class);
+    public HiveSnapshotDto toDto(HiveSnapshot hiveSnapshot) {
+        return modelMapper.map(hiveSnapshot, HiveSnapshotDto.class);
+    }
+
+    public HiveSnapshot toEntity(HiveSnapshotDto hiveSnapshotDto) {
+        return modelMapper.map(hiveSnapshotDto, HiveSnapshot.class);
     }
 }

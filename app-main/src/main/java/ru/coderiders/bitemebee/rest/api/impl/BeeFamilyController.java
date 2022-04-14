@@ -1,7 +1,6 @@
 package ru.coderiders.bitemebee.rest.api.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
 
-@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class BeeFamilyController implements BeeFamilyAPI {
@@ -27,11 +25,6 @@ public class BeeFamilyController implements BeeFamilyAPI {
                 .buildAndExpand(created.getId())
                 .toUri();
         return ResponseEntity.created(location).body(created);
-    }
-
-    @Override
-    public BeeFamilyRsDto release(Long id) {
-        return beeFamilyService.release(id);
     }
 
     @Override
@@ -50,8 +43,8 @@ public class BeeFamilyController implements BeeFamilyAPI {
     }
 
     @Override
-    public ResponseEntity<Void> delete(Long id) {
-        beeFamilyService.deleteById(id);
+    public ResponseEntity<Void> release(Long id) {
+        beeFamilyService.release(id);
         return ResponseEntity.accepted().build();
     }
 }

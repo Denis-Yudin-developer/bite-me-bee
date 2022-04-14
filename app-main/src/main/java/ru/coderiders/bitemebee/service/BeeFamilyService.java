@@ -16,7 +16,5 @@ public interface BeeFamilyService {
 
     BeeFamilyRsDto update(@NonNull Long id, @NonNull BeeFamilyNoteRqDto beeFamilyNoteRqDto);
 
-    BeeFamilyRsDto release(@NonNull Long id);
-
-    void deleteById(@NonNull Long id);
+    void release(@NonNull Long id);
 }

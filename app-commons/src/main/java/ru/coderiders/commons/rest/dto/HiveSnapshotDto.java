@@ -6,18 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Выходной DTO снимка улья")
-public class HiveSnapshotRsDto {
+public class HiveSnapshotDto {
     @Schema(description = "Идентификатор улья", example = "1")
     private Long hiveId;
     @Schema(description = "Дата снимка", example = "2022-02-27T19:34:50.630Z")
-    private Instant createdAt;
+    private String createdAt;
     @Schema(description = "Температура в улье", example = "30.3", minimum = "-40.0", maximum = "60.0")
     private Double temperature;
     @Schema(description = "Влажность в улье", example = "31.0", minimum = "0.0", maximum = "100.0")
