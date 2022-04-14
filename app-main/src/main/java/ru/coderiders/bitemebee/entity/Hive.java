@@ -36,4 +36,8 @@ public class Hive {
     @Builder.Default
     @Column(name = "honey_amount", nullable = false)
     private Double honeyAmount = 0D;
+
+    public Hive(Long id) {
+        this.id = id;
+    }
 }

@@ -10,12 +10,17 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @EnableRabbit
 @Configuration
 public class RabbitConfig {
+    @Value("${rabbit.titles.exchange:snapshot-exchange}")
+    private String SNAPSHOT_EXCHANGE;
+
     @Bean
     public ConnectionFactory connectionFactory() {
         return new CachingConnectionFactory("localhost");
@@ -29,8 +34,14 @@ public class RabbitConfig {
     @Bean
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
-        rabbitTemplate.setExchange("snapshot-exchange");
+        rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
+        rabbitTemplate.setExchange(SNAPSHOT_EXCHANGE);
         return rabbitTemplate;
+    }
+
+    @Bean
+    public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 
     @Bean
@@ -45,7 +56,7 @@ public class RabbitConfig {
 
     @Bean
     public DirectExchange directExchange() {
-        return new DirectExchange("snapshot-exchange");
+        return new DirectExchange(SNAPSHOT_EXCHANGE);
     }
 
     @Bean
