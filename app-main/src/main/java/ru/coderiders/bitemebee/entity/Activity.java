@@ -26,6 +26,6 @@ public class Activity {
     private Long id;
     @Column(name = "title", nullable = false, unique = true)
     private String title;
-    @Column(name = "is_planned", nullable = false)
+    @Column(name = "is_planned")
     private Boolean isPlanned;
 }
