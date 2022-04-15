@@ -18,8 +18,6 @@ public class UserRsDto {
     private String username;
     @Schema(description = "Email пользователя", example = "email@gmail.com")
     private String email;
-    @Schema(description = "Пароль пользователя", example = "qweasd123")
-    private String password;
     @Schema(description = "Роль пользователя", example = "Admin")
     private String roleId;
 }
