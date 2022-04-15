@@ -115,6 +115,22 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     }
 
     @Override
+    public void updatePopulation(@NonNull Long id, @NonNull Integer dronePopulation,
+                                 @NonNull Integer workerPopulation, @NonNull Integer queenPopulation,
+                                 @NonNull Integer population) {
+        log.debug("Запрос на обновление популяции семьи по id = {}, population = {}", id, population);
+        beeFamilyRepository.findById(id)
+                .map(found -> {
+                    found.setDronePopulation(found.getDronePopulation() + dronePopulation);
+                    found.setWorkerPopulation(found.getWorkerPopulation() + workerPopulation);
+                    found.setQueenPopulation(found.getQueenPopulation() + queenPopulation);
+                    found.setPopulation(found.getPopulation() + population);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
+    }
+
+    @Override
     @Transactional
     public void release(@NonNull Long id) {
         log.debug("Запрос на выселение пчелиной семьи по id = {}", id);
@@ -124,5 +140,12 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
                             throw new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id));
                         });
         beeFamilyFeignApi.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public boolean beeFamilyExists(@NonNull Long id) {
+        log.debug("Запрос на проверку существование пчелиной семьи по id = {}", id);
+        return beeFamilyRepository.existsById(id);
     }
 }
