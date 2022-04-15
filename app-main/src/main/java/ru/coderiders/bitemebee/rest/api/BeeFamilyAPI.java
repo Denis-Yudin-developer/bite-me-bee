@@ -22,13 +22,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
+import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
+import ru.coderiders.commons.rest.dto.BeeFamilySnapshotRqDto;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Validated
 @RequestMapping("/api/bee_families")
 @Tag(name = "Контроллер пчелиной семьи", description = "Позволяет управлять записями о пчелиных семьях")
 public interface BeeFamilyAPI {
+    @PostMapping("/snapshots")
+    @Operation(description = "Получить все снимки пчелиной семьи за определенный период", method = "POST")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = BeeFamilySnapshotDto.class))}),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST")
+    })
+    List<BeeFamilySnapshotDto> getSnapshots(@Valid @RequestBody BeeFamilySnapshotRqDto beeFamilySnapshotRqDto);
+
     @PostMapping
     @Operation(description = "Создание записи о пчелиной семье", method = "POST")
     @ApiResponses({

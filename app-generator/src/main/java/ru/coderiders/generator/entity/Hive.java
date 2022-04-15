@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Entity
 @Table(name = "generator_hives")
-public class Hive {
+public class    Hive {
     @Id
     private Long id;
     @OneToOne

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
@@ -12,6 +13,10 @@ import ru.coderiders.generator.entity.BeeFamily;
 import ru.coderiders.generator.repository.BeeFamilyRepository;
 import ru.coderiders.generator.service.BeeFamilyService;
 import ru.coderiders.generator.service.HiveService;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Service
@@ -21,6 +26,43 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     private static final String HIVE_IS_OCCUPIED = "Улей занят другой пчелиной семьёй";
     private final BeeFamilyRepository beeFamilyRepository;
     private final HiveService hiveService;
+
+    @Override
+    public BeeFamilySnapshotDto createBeeFamilySnapshot(BeeFamily beeFamily) {
+        String snapshotTime = Instant.now().toString();
+        long dronePopulationIncrease = (long) (((ThreadLocalRandom.current()
+                .nextDouble(0.01, 0.1))) * beeFamily.getDronePopulation());
+        long workerPopulationIncrease = (long) ((ThreadLocalRandom.current()
+                .nextDouble(0.01, 0.1) * beeFamily.getWorkerPopulation()));
+        long queenPopulationIncrease = (long) (ThreadLocalRandom.current()
+                .nextDouble(0.00000001, 1.0));
+        if (beeFamily.getIsInfected()) {
+            dronePopulationIncrease = -dronePopulationIncrease;
+            workerPopulationIncrease = -workerPopulationIncrease;
+        }
+        long populationIncrease = dronePopulationIncrease + workerPopulationIncrease + queenPopulationIncrease;
+        beeFamily.setDronePopulation(beeFamily.getDronePopulation() + dronePopulationIncrease);
+        beeFamily.setWorkerPopulation(beeFamily.getWorkerPopulation() + workerPopulationIncrease);
+        beeFamily.setQueenPopulation(beeFamily.getQueenPopulation() + queenPopulationIncrease);
+        beeFamily.setPopulation(beeFamily.getPopulation() + populationIncrease);
+        beeFamilyRepository.save(beeFamily);
+        double activity = ThreadLocalRandom.current().nextDouble(0.7, 1.3);
+        double mood = ThreadLocalRandom.current().nextDouble(0.7, 1.3);
+        return BeeFamilySnapshotDto.builder()
+                .familyId(beeFamily.getId())
+                .createdAt(snapshotTime)
+                .populationIncrease(populationIncrease)
+                .dronePopulationIncrease(dronePopulationIncrease)
+                .workerPopulationIncrease(workerPopulationIncrease)
+                .queenPopulationIncrease(queenPopulationIncrease)
+                .activity(activity)
+                .mood(mood).build();
+    }
+
+    @Override
+    public List<BeeFamily> findAll() {
+        return beeFamilyRepository.findAll();
+    }
 
     @Override
     @Transactional
