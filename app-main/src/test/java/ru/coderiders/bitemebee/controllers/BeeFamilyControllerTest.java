@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.coderiders.bitemebee.rest.api.impl.BeeFamilyController;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
+import ru.coderiders.bitemebee.service.BeeFamilySnapshotService;
+import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
@@ -30,14 +32,51 @@ import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.toJsonStri
 import static ru.coderiders.bitemebee.data.BeeFamilyData.BEE_FAMILY_RQ_DTO_1;
 import static ru.coderiders.bitemebee.data.BeeFamilyData.BEE_FAMILY_RS_DTO_1;
 import static ru.coderiders.bitemebee.data.BeeFamilyData.BEE_FAMILY_RS_DTO_2;
+import static ru.coderiders.bitemebee.data.BeeFamilySnapshotData.BEE_FAMILY_SNAPSHOT_DTO_1;
+import static ru.coderiders.bitemebee.data.BeeFamilySnapshotData.BEE_FAMILY_SNAPSHOT_DTO_2;
+import static ru.coderiders.bitemebee.data.BeeFamilySnapshotData.BEE_FAMILY_SNAPSHOT_RQ_DTO_1;
 
 @WebMvcTest(BeeFamilyController.class)
 public class BeeFamilyControllerTest {
     @MockBean
     private BeeFamilyService beeFamilyService;
+    @MockBean
+    private BeeFamilySnapshotService beeFamilySnapshotService;
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Test
+    public void getSnapshots_validData_returnOk() throws Exception {
+        Page<BeeFamilySnapshotDto> familySnapshotDtoDtoList =
+                new PageImpl<>(Arrays.asList(BEE_FAMILY_SNAPSHOT_DTO_1, BEE_FAMILY_SNAPSHOT_DTO_2));
+        when(beeFamilySnapshotService.getSnapshots(PageRequest.of(0, 20), BEE_FAMILY_SNAPSHOT_RQ_DTO_1))
+                .thenReturn(familySnapshotDtoDtoList);
+        mockMvc.perform(post("/api/bee_families/snapshots")
+                        .content(toJsonString(BEE_FAMILY_SNAPSHOT_RQ_DTO_1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJsonString(familySnapshotDtoDtoList)))
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.content[0].familyId").value(1));
+        verify(beeFamilySnapshotService, times(1))
+                .getSnapshots(PageRequest.of(0, 20), BEE_FAMILY_SNAPSHOT_RQ_DTO_1);
+    }
+
+    @Test
+    public void getSnapshots_invalidData_returnNotFound() throws Exception {
+        when(beeFamilySnapshotService.getSnapshots(PageRequest.of(0, 20), BEE_FAMILY_SNAPSHOT_RQ_DTO_1))
+                .thenThrow(new NotFoundException("Семья не найдена"));
+        mockMvc.perform(post("/api/bee_families/snapshots")
+                        .content(toJsonString(BEE_FAMILY_SNAPSHOT_RQ_DTO_1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(beeFamilySnapshotService, times(1))
+                .getSnapshots(PageRequest.of(0, 20), BEE_FAMILY_SNAPSHOT_RQ_DTO_1);
+    }
 
     @Test
     public void getAll_validData_returnOk() throws Exception {

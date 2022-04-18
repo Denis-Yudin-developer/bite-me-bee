@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import ru.coderiders.commons.superclass.BaseEntity;
+import ru.coderiders.commons.entity.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

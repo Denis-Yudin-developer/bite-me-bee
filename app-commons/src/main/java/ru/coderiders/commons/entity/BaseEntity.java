@@ -1,4 +1,4 @@
-package ru.coderiders.commons.superclass;
+package ru.coderiders.commons.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -59,12 +59,8 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
             log.warn("Карточка вида уже удалена, beeTypeId = {}", beeTypeId);
             throw new BadRequestException(BEE_TYPE_IS_DELETED);
         }
-        BeeType beeType = BeeType.builder()
-                .id(beeTypeId)
-                .build();
-        Hive hive = Hive.builder()
-                .id(hiveId)
-                .build();
+        BeeType beeType = new BeeType(beeTypeId);
+        Hive hive = new Hive(hiveId);
         long totalPopulation = beeFamilyRqDto.getDronePopulation() +
                 beeFamilyRqDto.getQueenPopulation() +
                 beeFamilyRqDto.getWorkerPopulation();

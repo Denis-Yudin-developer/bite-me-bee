@@ -26,7 +26,6 @@ import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotRqDto;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Validated
 @RequestMapping("/api/bee_families")
@@ -40,7 +39,7 @@ public interface BeeFamilyAPI {
                             schema = @Schema(implementation = BeeFamilySnapshotDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST")
     })
-    List<BeeFamilySnapshotDto> getSnapshots(@Valid @RequestBody BeeFamilySnapshotRqDto beeFamilySnapshotRqDto);
+    Page<BeeFamilySnapshotDto> getSnapshots(Pageable pageable, @Valid @RequestBody BeeFamilySnapshotRqDto beeFamilySnapshotRqDto);
 
     @PostMapping
     @Operation(description = "Создание записи о пчелиной семье", method = "POST")

@@ -15,8 +15,6 @@ import ru.coderiders.bitemebee.service.BeeFamilySnapshotService;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotRqDto;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @RestController
 public class BeeFamilyController implements BeeFamilyAPI {
@@ -24,8 +22,8 @@ public class BeeFamilyController implements BeeFamilyAPI {
     private final BeeFamilySnapshotService beeFamilySnapshotService;
 
     @Override
-    public List<BeeFamilySnapshotDto> getSnapshots(BeeFamilySnapshotRqDto beeFamilySnapshotRqDto) {
-        return beeFamilySnapshotService.getSnapshots(beeFamilySnapshotRqDto);
+    public Page<BeeFamilySnapshotDto> getSnapshots(Pageable pageable, BeeFamilySnapshotRqDto beeFamilySnapshotRqDto) {
+        return beeFamilySnapshotService.getSnapshots(pageable, beeFamilySnapshotRqDto);
     }
 
     @Override
