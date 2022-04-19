@@ -16,5 +16,11 @@ public interface BeeFamilyService {
 
     BeeFamilyRsDto update(@NonNull Long id, @NonNull BeeFamilyNoteRqDto beeFamilyNoteRqDto);
 
+    void updatePopulation(@NonNull Long id, @NonNull Integer dronePopulation,
+                          @NonNull Integer workerPopulation, @NonNull Integer queenPopulation,
+                          @NonNull Integer population);
+
     void release(@NonNull Long id);
+
+    boolean beeFamilyExists(@NonNull Long id);
 }
