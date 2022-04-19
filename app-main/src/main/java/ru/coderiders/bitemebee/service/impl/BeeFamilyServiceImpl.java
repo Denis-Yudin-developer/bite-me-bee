@@ -15,6 +15,7 @@ import ru.coderiders.bitemebee.repository.BeeFamilyRepository;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
+import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
 import ru.coderiders.bitemebee.service.BeeTypeService;
 import ru.coderiders.bitemebee.service.HiveService;
@@ -70,6 +71,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         toCreate.setPopulation(totalPopulation);
         toCreate.setCreatedAt(Instant.now());
         BeeFamily created = beeFamilyRepository.save(toCreate);
+        BeeTypeRsDto newFamilyType = beeTypeService.getById(created.getBeeType().getId());
         log.debug("Пчелиная семья успешно добавлена в улей, id = {}, toCreate = {}", hiveId, toCreate);
         GeneratorFamilyRqDto generatorFamilyRqDto = GeneratorFamilyRqDto.builder()
                 .id(created.getId())
@@ -78,9 +80,9 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
                 .workerPopulation(created.getWorkerPopulation())
                 .queenPopulation(created.getQueenPopulation())
                 .population(created.getPopulation())
-                .diseaseResistance(created.getBeeType().getDiseaseResistance())
-                .honeyProductivity(created.getBeeType().getHoneyProductivity())
-                .eggProductivity(created.getBeeType().getEggProductivity())
+                .diseaseResistance(newFamilyType.getDiseaseResistance())
+                .honeyProductivity(newFamilyType.getHoneyProductivity())
+                .eggProductivity(newFamilyType.getEggProductivity())
                 .build();
         beeFamilyFeignApi.addFamily(generatorFamilyRqDto);
         return beeFamilyMapper.toDto(created);

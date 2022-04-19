@@ -105,6 +105,7 @@ public class HiveServiceImpl implements HiveService {
     }
 
     @Override
+    @Transactional
     public void releaseFamily(@NonNull Long id) {
         hiveRepository.findByBeeFamilyId(id)
                 .map(found -> {

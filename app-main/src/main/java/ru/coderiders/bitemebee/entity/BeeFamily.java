@@ -31,7 +31,7 @@ public class BeeFamily extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bee_type_id", nullable = false)
     private BeeType beeType;
     @ManyToOne(fetch = FetchType.LAZY)
