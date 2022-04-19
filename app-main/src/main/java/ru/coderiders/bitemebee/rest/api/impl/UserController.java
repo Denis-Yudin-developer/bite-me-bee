@@ -13,7 +13,6 @@ import ru.coderiders.bitemebee.rest.dto.UserRqDto;
 import ru.coderiders.bitemebee.rest.dto.UserRsDto;
 import ru.coderiders.bitemebee.service.UserService;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController implements UserApi {

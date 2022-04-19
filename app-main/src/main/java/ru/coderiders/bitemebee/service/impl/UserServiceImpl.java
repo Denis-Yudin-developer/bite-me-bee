@@ -23,8 +23,8 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private static final String[] IGNORED_ON_COPY_FIELDS = {"id"};
-    private final String USER_NOT_FOUND = "Юзер с id=%s не найден";
-    private final String USER_ALREADY_EXISTS = "Юзер с таким никнеймом уже существует";
+    private final String USER_NOT_FOUND = "Пользователь с id=%s не найден";
+    private final String USER_ALREADY_EXISTS = "Пользователь с таким email-адресом уже существует";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -49,11 +49,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserRsDto create(@NonNull UserRqDto userRqDto) {
         log.debug("Запрос на создание нового пользователя, userRqDto = {}", userRqDto);
-        var username = userRqDto.getUsername();
-        userRepository.findByUsername(username)
-                .ifPresent(found -> {
-                    throw new BadRequestException(USER_ALREADY_EXISTS);
-                });
+        var email = userRqDto.getEmail();
+        if(userRepository.existsByEmail(email)){
+            throw new BadRequestException(USER_ALREADY_EXISTS);
+        }
         User toCreate = userMapper.toEntity(userRqDto);
         User created = userRepository.save(toCreate);
         return userMapper.toDto(created);

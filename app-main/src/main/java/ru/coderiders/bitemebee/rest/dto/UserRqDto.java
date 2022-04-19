@@ -15,8 +15,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Schema(description = "Входной DTO записи о пользователе")
 public class UserRqDto {
-    @NotNull(message = "Не указан юзернейм пользователя")
-    @Schema(description = "Юзернейм пользоватея", example = "userName123")
+    @NotNull(message = "Не указано имя пользователя")
+    @Schema(description = "Имя пользователя", example = "userName123")
     private String username;
     @Email
     @NotNull(message = "Не указан email пользователя")
@@ -25,7 +25,4 @@ public class UserRqDto {
     @NotNull(message = "Не указан пароль пользователя")
     @Schema(description = "Пароль пользователя", example = "qweasd123")
     private String password;
-    @NotNull(message = "Не указана роль пользователя")
-    @Schema(description = "Роль пользователя", example = "Admin")
-    private String roleId;
 }

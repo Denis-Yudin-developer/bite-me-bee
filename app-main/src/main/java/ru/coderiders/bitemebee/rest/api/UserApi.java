@@ -50,7 +50,7 @@ public interface UserApi {
     UserRsDto getById(@PathVariable(name = "id") Long id);
 
     @PostMapping
-    @Operation(description = "Добавить записи о пользователе", method = "POST")
+    @Operation(description = "Добавить запись о пользователе", method = "POST")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "CREATED",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
