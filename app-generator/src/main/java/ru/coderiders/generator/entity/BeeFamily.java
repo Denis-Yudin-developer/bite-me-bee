@@ -40,4 +40,14 @@ public class BeeFamily extends BaseEntity {
     private Double honeyProductivity;
     @Column(name = "egg_productivity", nullable = false)
     private Double eggProductivity;
+    @Builder.Default
+    @Column(name = "activity", nullable = false)
+    private Double activity = 1.0;
+    @Builder.Default
+    @Column(name = "mood", nullable = false)
+    private Double mood = 1.0;
+    @Builder.Default
+    @Column(name = "delta", nullable = false)
+    private Double delta = 1.0;
+
 }

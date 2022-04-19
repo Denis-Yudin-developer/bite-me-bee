@@ -17,5 +17,7 @@ public interface BeeFamilyService {
     void delete(@NonNull Long id);
 
     void updateInfectedStatus(@NonNull Long id, @NonNull Boolean isInfected);
+
+    void updateDelta(@NonNull Long id, @NonNull Double delta);
 }
 

@@ -40,5 +40,5 @@ public class Hive {
     private Double honeyCapacity;
     @Builder.Default
     @Column(name = "delta", nullable = false)
-    private Double delta = 10D;
+    private Double delta = 1.0;
 }

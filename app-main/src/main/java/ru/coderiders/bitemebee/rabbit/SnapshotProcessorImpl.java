@@ -11,8 +11,8 @@ import ru.coderiders.bitemebee.service.BeeFamilyService;
 import ru.coderiders.bitemebee.service.BeeFamilySnapshotService;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.HiveSnapshotService;
-import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 
 @Slf4j
 @Service

@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/generator_panel")
 @Tag(name = "Панель управления ульем", description = "Позволяет управлять состояниями улья и пчелиной семьи")
 public interface GenPanelApi {
-    @PutMapping("/{id}/change_delta")
+    @PutMapping("/{id}/change_hive_delta")
     @Operation(description = "Обновить дельту улья", method = "PUT")
-    void updateDelta(@PathVariable Long id, @RequestBody Double delta);
+    void updateHiveDelta(@PathVariable Long id, @RequestBody Double delta);
+
+    @PutMapping("/{id}/change_family_delta")
+    @Operation(description = "Обновить дельту пчелиной семьи", method = "PUT")
+    void updateBeeFamilyDelta(@PathVariable Long id, @RequestBody Double delta);
 
     @PutMapping("/{id}/overheat")
     @Operation(description = "Перегреть улей", method = "PUT")
