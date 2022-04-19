@@ -1,11 +1,8 @@
-package ru.coderiders.commons.config;
+package ru.coderiders.commons.client;
 
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import ru.coderiders.commons.client.BeeFamilyErrorDecoder;
 
-@Configuration
 public class BeeFamilyFeignConfig {
     @Bean
     public ErrorDecoder familyErrorDecoder() {

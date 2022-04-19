@@ -57,4 +57,8 @@ public class BeeType {
     private Double roilingLevel;
     @OneToMany(mappedBy = "beeType", fetch = FetchType.EAGER)
     private List<Schedule> schedules;
+
+    public BeeType(Long id) {
+        this.id = id;
+    }
 }

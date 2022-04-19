@@ -5,12 +5,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.coderiders.commons.client.OpenWeatherFeignClient;
 import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
+import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
+import ru.coderiders.commons.rest.dto.openweather.WeatherDto;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 import ru.coderiders.generator.entity.BeeFamily;
 import ru.coderiders.generator.entity.Hive;
 import ru.coderiders.generator.repository.HiveRepository;
 import ru.coderiders.generator.service.HiveService;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Service
@@ -18,6 +25,38 @@ import ru.coderiders.generator.service.HiveService;
 public class HiveServiceImpl implements HiveService {
     private final String HIVE_NOT_FOUND = "Улей с id=%s не найден";
     private final HiveRepository hiveRepository;
+    private final OpenWeatherFeignClient openWeatherFeignClient;
+
+    @Override
+    public HiveSnapshotDto createHiveSnapshot(Hive hive) {
+        String snapshotTime = Instant.now().toString();
+        WeatherDto weatherDto = openWeatherFeignClient.getWeather();
+        double co2 = ThreadLocalRandom.current().nextDouble(100.0, 1000.0);
+        double heatFactor = hive.getIsOverheated() ? 5.0 : 0.0;
+        double temperature = ((weatherDto.getMain().getTemp() / 10) + 30 + heatFactor);
+        double healthFactor = hive.getBeeFamily().getIsInfected() ? 0.2 : 1.0;
+        double honeyIncrease =
+                ((hive.getBeeFamily().getHoneyProductivity() * hive.getDelta()) / 100)
+                        * ThreadLocalRandom.current().nextDouble(1.0, 2.0) * healthFactor;
+        if (hive.getCurrentHoneyAmount() + honeyIncrease > hive.getHoneyCapacity()) {
+            honeyIncrease = hive.getHoneyCapacity() - hive.getCurrentHoneyAmount();
+        }
+        double currentHoneyAmount = hive.getCurrentHoneyAmount() + honeyIncrease;
+        hive.setCurrentHoneyAmount(currentHoneyAmount);
+        hiveRepository.save(hive);
+        return HiveSnapshotDto.builder()
+                .hiveId(hive.getId())
+                .createdAt(snapshotTime)
+                .temperature(temperature)
+                .humidity(weatherDto.getMain().getHumidity())
+                .co2(co2)
+                .honeyIncrease(honeyIncrease).build();
+    }
+
+    @Override
+    public List<Hive> findAllWithBeeFamilies() {
+        return hiveRepository.findAllByBeeFamilyNotNull();
+    }
 
     @Override
     @Transactional

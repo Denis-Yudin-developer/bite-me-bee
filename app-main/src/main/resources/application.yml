@@ -15,10 +15,7 @@ spring:
     user: ${DB_USER:bitemebee}
     password: ${DB_PASS:bitemebee}
 
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
+rabbit:
+  titles:
+    hive-queue: hive-snapshot
+    family-queue: family-snapshot

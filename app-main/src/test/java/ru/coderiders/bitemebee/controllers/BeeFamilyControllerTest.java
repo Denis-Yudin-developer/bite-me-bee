@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.objectToJsonString;
+import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.toJsonString;
 import static ru.coderiders.bitemebee.data.BeeFamilyData.BEE_FAMILY_RQ_DTO_1;
 import static ru.coderiders.bitemebee.data.BeeFamilyData.BEE_FAMILY_RS_DTO_1;
 import static ru.coderiders.bitemebee.data.BeeFamilyData.BEE_FAMILY_RS_DTO_2;
@@ -45,7 +45,7 @@ public class BeeFamilyControllerTest {
         when(beeFamilyService.getAll(PageRequest.of(0, 20))).thenReturn(beeFamilyRsDtoPage);
         mockMvc.perform(get("/api/bee_families"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(beeFamilyRsDtoPage)))
+                .andExpect(content().json(toJsonString(beeFamilyRsDtoPage)))
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content", hasSize(2)))
                 .andExpect(jsonPath("$.content[0].beeType.title").value("Медоносная пчела"));
@@ -57,7 +57,7 @@ public class BeeFamilyControllerTest {
         when(beeFamilyService.getById(1L)).thenReturn(BEE_FAMILY_RS_DTO_1);
         mockMvc.perform(get("/api/bee_families/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectToJsonString(BEE_FAMILY_RS_DTO_1)))
+                .andExpect(content().json(toJsonString(BEE_FAMILY_RS_DTO_1)))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.isAlive").isBoolean())
                 .andExpect(jsonPath("$.beeType.title").value("Медоносная пчела"));
@@ -66,7 +66,7 @@ public class BeeFamilyControllerTest {
 
     @Test
     public void getById_invalidData_returnNotFound() throws Exception {
-        when(beeFamilyService.getById(10L)).thenThrow(new NotFoundException("Семья с id=10 не найден"));
+        when(beeFamilyService.getById(10L)).thenThrow(new NotFoundException("Семья с id=10 не найдена"));
         mockMvc.perform(get("/api/bee_families/10"))
                 .andExpect(status().isNotFound());
         verify(beeFamilyService, times(1)).getById(10L);
@@ -76,11 +76,11 @@ public class BeeFamilyControllerTest {
     public void create_validData_returnCreated() throws Exception {
         when(beeFamilyService.create(BEE_FAMILY_RQ_DTO_1)).thenReturn(BEE_FAMILY_RS_DTO_1);
         mockMvc.perform(post("/api/bee_families/")
-                        .content(objectToJsonString(BEE_FAMILY_RQ_DTO_1))
+                        .content(toJsonString(BEE_FAMILY_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectToJsonString(BEE_FAMILY_RS_DTO_1)))
+                .andExpect(content().json(toJsonString(BEE_FAMILY_RS_DTO_1)))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.isAlive").isBoolean())
                 .andExpect(jsonPath("$.beeType.title").value("Медоносная пчела"));
@@ -92,7 +92,7 @@ public class BeeFamilyControllerTest {
         when(beeFamilyService.create(BEE_FAMILY_RQ_DTO_1))
                 .thenThrow(new BadRequestException("Ошибка в теле запроса при добавлении семьи"));
         mockMvc.perform(post("/api/bee_families/")
-                        .content(objectToJsonString(BEE_FAMILY_RQ_DTO_1))
+                        .content(toJsonString(BEE_FAMILY_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());

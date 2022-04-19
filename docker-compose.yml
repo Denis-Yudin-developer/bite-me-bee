@@ -1,13 +1,17 @@
 version: '3'
 services:
   rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:management
+    restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
+
   postgres:
     container_name: postgres
     image: postgres:12
+    restart: always
     environment:
       - TZ=Europe/Moscow
       - POSTGRES_DB=bitemebee
@@ -15,30 +19,40 @@ services:
       - POSTGRES_PASSWORD=bitemebee
       - POSTGRES_SCHEMA=public
     ports:
-      - "5433:5432"
+      - "5433:5433"
 
-#    networks:
-#      - bitemebee-network
-#
-#  bitemebee-app:
-#    container_name: bitemebee-app
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    image: bitemebee-app:latest
+#  app-main:
+#    container_name: app-main
+#    image: registry.codeinside.ru/bite-me-bee/bite-me-bee/app-main:latest
+#    restart: always
 #    depends_on:
 #      - postgres
+#    ports:
+#      - "8080:8080"
 #    environment:
-#      - DB_HOST=database
-#      - DB_PORT=5432
+#      - DB_HOST=postgres
+#      - DB_PORT=5433
 #      - DB_NAME=bitemebee
 #      - DB_USER=bitemebee
 #      - DB_PASS=bitemebee
+#
+#  app-generator:
+#    container_name: app-generator
+#    image: registry.codeinside.ru/bite-me-bee/bite-me-bee/app-generator:latest
+#    restart: always
+#    depends_on:
+#      - app-main
 #    ports:
-#      - "8080:8080"
+#      - "8081:8081"
+#    environment:
+#      - DB_HOST=postgres
+#      - DB_PORT=5433
+#      - DB_NAME=generator
+#      - DB_USER=generator
+#      - DB_PASS=generator
 #    networks:
 #      - bitemebee-network
-#
+
 #networks:
 #  bitemebee-network:
 #    driver: bridge

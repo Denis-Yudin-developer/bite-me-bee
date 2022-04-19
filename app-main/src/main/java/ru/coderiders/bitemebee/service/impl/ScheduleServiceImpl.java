@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.coderiders.bitemebee.entity.Activity;
 import ru.coderiders.bitemebee.entity.BeeType;
 import ru.coderiders.bitemebee.entity.Schedule;
 import ru.coderiders.bitemebee.mapper.ScheduleMapper;
@@ -35,11 +36,15 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .ifPresent(found -> {
                     throw new BadRequestException(SCHEDULE_ALREADY_EXISTS);
                 });
-        BeeType currentType = BeeType.builder()
+        Activity activity = Activity.builder()
+                .id(activityId)
+                .build();
+        BeeType beeType = BeeType.builder()
                 .id(beeTypeId)
                 .build();
         Schedule toCreate = scheduleMapper.toEntity(scheduleRqDto);
-        toCreate.setBeeType(currentType);
+        toCreate.setBeeType(beeType);
+        toCreate.setActivity(activity);
         Schedule created = scheduleRepository.save(toCreate);
         return scheduleMapper.toDto(created);
     }

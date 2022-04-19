@@ -1,7 +1,6 @@
 package ru.coderiders.bitemebee.rest.api.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +11,22 @@ import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
+import ru.coderiders.bitemebee.service.BeeFamilySnapshotService;
+import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
+import ru.coderiders.commons.rest.dto.BeeFamilySnapshotRqDto;
 
-@Slf4j
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 public class BeeFamilyController implements BeeFamilyAPI {
     private final BeeFamilyService beeFamilyService;
+    private final BeeFamilySnapshotService beeFamilySnapshotService;
+
+    @Override
+    public List<BeeFamilySnapshotDto> getSnapshots(BeeFamilySnapshotRqDto beeFamilySnapshotRqDto) {
+        return beeFamilySnapshotService.getSnapshots(beeFamilySnapshotRqDto);
+    }
 
     @Override
     public ResponseEntity<BeeFamilyRsDto> create(BeeFamilyRqDto beeFamilyRqDto) {

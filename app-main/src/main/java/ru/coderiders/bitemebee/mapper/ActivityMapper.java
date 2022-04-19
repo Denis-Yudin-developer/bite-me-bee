@@ -16,7 +16,8 @@ public class ActivityMapper {
 
     @PostConstruct
     private void init() {
-        modelMapper.createTypeMap(ActivityRqDto.class, Activity.class);
+        modelMapper.createTypeMap(ActivityRqDto.class, Activity.class)
+                        .addMappings(mapping -> mapping.skip(Activity::setIsPlanned));
         modelMapper.createTypeMap(Activity.class, ActivityRsDto.class);
     }
 
