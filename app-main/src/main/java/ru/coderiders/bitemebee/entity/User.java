@@ -30,6 +30,7 @@ public class User {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @Builder.Default
     @Column(name = "is_admin", nullable = false)
-    private String isAdmin;
+    private boolean isAdmin = false;
 }
