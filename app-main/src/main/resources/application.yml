@@ -5,7 +5,7 @@ spring:
     username: ${DB_USER:bitemebee}
     password: ${DB_PASS:bitemebee}
   jpa:
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create
     open-in-view: false
   flyway:
     enabled: false

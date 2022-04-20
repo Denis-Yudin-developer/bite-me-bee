@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.coderiders.bitemebee.entity.User;
-import ru.coderiders.bitemebee.rest.dto.HiveRqDto;
-import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
+
 import ru.coderiders.bitemebee.rest.dto.UserRqDto;
 import ru.coderiders.bitemebee.rest.dto.UserRsDto;
 
