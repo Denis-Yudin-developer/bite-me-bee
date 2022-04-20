@@ -4,13 +4,14 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.coderiders.commons.client.BeeFamilyFeignConfig;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
 
 @FeignClient(name = "beeFamilyFeignApi",
              configuration = BeeFamilyFeignConfig.class,
-             url = "${feign-client.families-url:http://localhost:8081/api/generator_families}")
+             url = "${feign-client.families-url:http://localhost:8082/api/generator_families}")
 public interface BeeFamilyFeignApi {
     @PostMapping
     void addFamily(@RequestBody GeneratorFamilyRqDto generatorFamilyRqDto);
@@ -20,4 +21,7 @@ public interface BeeFamilyFeignApi {
 
     @PostMapping("/{id}/infect")
     void updateInfectedStatus(@PathVariable Long id, @RequestBody Boolean isInfected);
+
+    @PutMapping("/{id}/change_delta")
+    void updateDelta(@PathVariable Long id, @RequestBody Double delta);
 }

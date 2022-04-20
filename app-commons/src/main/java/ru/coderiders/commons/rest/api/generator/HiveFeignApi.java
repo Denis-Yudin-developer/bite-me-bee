@@ -10,7 +10,7 @@ import ru.coderiders.commons.rest.dto.GeneratorHiveRqDto;
 
 @FeignClient(name = "hiveFeignApi",
              configuration = HiveFeignConfig.class,
-             url = "${feign-client.families-url:http://localhost:8081/api/generator_hives}")
+             url = "${feign-client.families-url:http://localhost:8082/api/generator_hives}")
 public interface HiveFeignApi {
     @PostMapping
     void addHive(@RequestBody GeneratorHiveRqDto generatorHiveRqDto);

@@ -25,4 +25,9 @@ public class BeeFamilyController implements BeeFamilyApi {
     public void updateInfectedStatus(Long id, Boolean isInfected) {
         beeFamilyService.updateInfectedStatus(id, isInfected);
     }
+
+    @Override
+    public void updateDelta(Long id, Double delta) {
+        beeFamilyService.updateDelta(id, delta);
+    }
 }

@@ -16,11 +16,11 @@ spring:
     password: ${DB_PASS:bitemebee}
 
 server:
-  port: 8081
+  port: 8082
 
 feign-client:
-  families-url: http://localhost:8081/api/generator_families
-  hives-url: http://localhost:8081/api/generator_hives
+  families-url: http://localhost:8082/api/generator_families
+  hives-url: http://localhost:8082/api/generator_hives
 
 open-weather-client:
   url: https://api.openweathermap.org

@@ -1,10 +1,11 @@
 package ru.coderiders.bitemebee.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import ru.coderiders.commons.entity.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,12 +19,12 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "bee_types")
-public class BeeType {
+public class BeeType extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

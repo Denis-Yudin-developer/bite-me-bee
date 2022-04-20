@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
-import ru.coderiders.generator.entity.BeeFamily;
 import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
+import ru.coderiders.generator.entity.BeeFamily;
 import ru.coderiders.generator.entity.Hive;
 import ru.coderiders.generator.service.BeeFamilyService;
 import ru.coderiders.generator.service.HiveService;
@@ -32,6 +32,7 @@ public class SnapshotScheduling {
         log.info("Создание новых снимков улья");
         List<Hive> hiveList = hiveService.findAllWithBeeFamilies();
         for (Hive hive : hiveList) {
+            if(hive.getBeeFamily().getIsDeleted()) continue;
             HiveSnapshotDto hiveSnapshotRsDto = hiveService.createHiveSnapshot(hive);
             log.debug("Создан новый снимок улья, snapshot = {}", hiveSnapshotRsDto);
             template.convertAndSend(HIVE_SNAPSHOT_QUEUE, hiveSnapshotRsDto);
@@ -43,6 +44,7 @@ public class SnapshotScheduling {
         log.info("Создание новых снимков пчелиной семьи");
         List<BeeFamily> beeFamilyList = beeFamilyService.findAll();
         for (BeeFamily beeFamily : beeFamilyList) {
+            if(beeFamily.getIsDeleted()) continue;
             BeeFamilySnapshotDto beeFamilySnapshotRsDto = beeFamilyService.createBeeFamilySnapshot(beeFamily);
             log.debug("Создан новый снимок семьи, snapshot = {}", beeFamilySnapshotRsDto);
             template.convertAndSend(FAMILY_SNAPSHOT_QUEUE, beeFamilySnapshotRsDto);
