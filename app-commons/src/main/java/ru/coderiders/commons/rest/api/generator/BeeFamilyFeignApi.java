@@ -10,8 +10,8 @@ import ru.coderiders.commons.client.BeeFamilyFeignConfig;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
 
 @FeignClient(name = "beeFamilyFeignApi",
-             configuration = BeeFamilyFeignConfig.class,
-             url = "${feign-client.families-url:http://localhost:8082/api/generator_families}")
+        configuration = BeeFamilyFeignConfig.class,
+        url = "${feign-client.families-url}")
 public interface BeeFamilyFeignApi {
     @PostMapping
     void addFamily(@RequestBody GeneratorFamilyRqDto generatorFamilyRqDto);
