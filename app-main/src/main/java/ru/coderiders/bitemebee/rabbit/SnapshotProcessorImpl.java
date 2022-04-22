@@ -40,7 +40,7 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
     public void processBeeFamilySnapshot(@NonNull BeeFamilySnapshotDto beeFamilySnapshotGeneratorDto) {
         Long beeFamilyId = beeFamilySnapshotGeneratorDto.getFamilyId();
         if(!beeFamilyService.beeFamilyExists(beeFamilyId)) {
-            log.warn("Не найдена пчелиная семья по идентифактору, id = {}", beeFamilyId);
+            log.warn("Не найдена пчелиная семья по идентификатору, id = {}", beeFamilyId);
             return;
         }
         BeeFamilySnapshot beeFamilySnapshot = beeFamilySnapshotService.createSnapshot(beeFamilySnapshotGeneratorDto);
