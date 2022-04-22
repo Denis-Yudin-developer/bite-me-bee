@@ -28,6 +28,7 @@ public class HiveServiceImpl implements HiveService {
     private final OpenWeatherFeignClient openWeatherFeignClient;
 
     @Override
+    @Transactional
     public HiveSnapshotDto createHiveSnapshot(Hive hive) {
         String snapshotTime = Instant.now().toString();
         WeatherDto weatherDto = openWeatherFeignClient.getWeather();
@@ -36,8 +37,9 @@ public class HiveServiceImpl implements HiveService {
         double temperature = ((weatherDto.getMain().getTemp() / 10) + 30 + heatFactor);
         double healthFactor = hive.getBeeFamily().getIsInfected() ? 0.2 : 1.0;
         double honeyIncrease =
-                ((hive.getBeeFamily().getHoneyProductivity() * hive.getDelta()) / 100)
-                        * ThreadLocalRandom.current().nextDouble(1.0, 2.0) * healthFactor;
+                ((hive.getBeeFamily().getHoneyProductivity() * hive.getDelta()))
+                        * ThreadLocalRandom.current().nextDouble(1.0, 2.0)
+                        * healthFactor * hive.getBeeFamily().getDelta() * hive.getBeeFamily().getMood();
         if (hive.getCurrentHoneyAmount() + honeyIncrease > hive.getHoneyCapacity()) {
             honeyIncrease = hive.getHoneyCapacity() - hive.getCurrentHoneyAmount();
         }
@@ -54,6 +56,7 @@ public class HiveServiceImpl implements HiveService {
     }
 
     @Override
+    @Transactional
     public List<Hive> findAllWithBeeFamilies() {
         return hiveRepository.findAllByBeeFamilyNotNull();
     }
@@ -105,6 +108,7 @@ public class HiveServiceImpl implements HiveService {
     }
 
     @Override
+    @Transactional
     public void releaseFamily(@NonNull Long id) {
         hiveRepository.findByBeeFamilyId(id)
                 .map(found -> {

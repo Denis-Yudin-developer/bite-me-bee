@@ -14,13 +14,11 @@ spring:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:bitemebee}
     user: ${DB_USER:bitemebee}
     password: ${DB_PASS:bitemebee}
+  rabbitmq:
+    host: ${RABBIT_HOST:rabbitmq}
 
 server:
-  port: 8081
-
-feign-client:
-  families-url: http://localhost:8081/api/generator_families
-  hives-url: http://localhost:8081/api/generator_hives
+  port: ${SELF_PORT:8081}
 
 open-weather-client:
   url: https://api.openweathermap.org
@@ -31,6 +29,7 @@ rabbit:
     hive-queue: hive-snapshot
     family-queue: family-snapshot
     exchange: snapshot-exchange
+  host-name: ${RABBIT_HOST:rabbitmq}
 
 generator:
   delay: 5000

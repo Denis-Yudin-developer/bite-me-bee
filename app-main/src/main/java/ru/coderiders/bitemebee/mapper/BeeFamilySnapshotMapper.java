@@ -16,7 +16,8 @@ public class BeeFamilySnapshotMapper {
     @PostConstruct
     private void init() {
         modelMapper.createTypeMap(BeeFamilySnapshotDto.class, BeeFamilySnapshot.class);
-        modelMapper.createTypeMap(BeeFamilySnapshot.class, BeeFamilySnapshotDto.class);
+        modelMapper.createTypeMap(BeeFamilySnapshot.class, BeeFamilySnapshotDto.class)
+                .addMappings(mapper -> mapper.map(src -> src.getBeeFamily().getId(), BeeFamilySnapshotDto::setFamilyId));
     }
 
     public BeeFamilySnapshotDto toDto(BeeFamilySnapshot beeFamilySnapshot) {

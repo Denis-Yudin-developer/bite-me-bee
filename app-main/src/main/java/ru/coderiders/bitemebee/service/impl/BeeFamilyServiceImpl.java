@@ -15,6 +15,7 @@ import ru.coderiders.bitemebee.repository.BeeFamilyRepository;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
+import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
 import ru.coderiders.bitemebee.service.BeeTypeService;
 import ru.coderiders.bitemebee.service.HiveService;
@@ -24,6 +25,7 @@ import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -31,6 +33,7 @@ import java.time.Instant;
 public class BeeFamilyServiceImpl implements BeeFamilyService {
     private static final String BEE_FAMILY_NOT_FOUND = "Пчелиная семья с id=%s не найдена";
     private static final String HIVE_IS_OCCUPIED = "Улей занят другой пчелиной семьёй";
+    private static final String BEE_TYPE_IS_DELETED = "Карточка вида удалена";
     private final BeeFamilyRepository beeFamilyRepository;
     private final BeeFamilyMapper beeFamilyMapper;
     private final HiveService hiveService;
@@ -53,12 +56,12 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
             log.warn("Улей уже занят, id = {}", hiveId);
             throw new BadRequestException(HIVE_IS_OCCUPIED);
         }
-        BeeType beeType = BeeType.builder()
-                .id(beeTypeId)
-                .build();
-        Hive hive = Hive.builder()
-                .id(hiveId)
-                .build();
+        if (beeTypeService.getById(beeTypeId).getIsDeleted()) {
+            log.warn("Карточка вида уже удалена, beeTypeId = {}", beeTypeId);
+            throw new BadRequestException(BEE_TYPE_IS_DELETED);
+        }
+        BeeType beeType = new BeeType(beeTypeId);
+        Hive hive = new Hive(hiveId);
         long totalPopulation = beeFamilyRqDto.getDronePopulation() +
                 beeFamilyRqDto.getQueenPopulation() +
                 beeFamilyRqDto.getWorkerPopulation();
@@ -68,6 +71,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         toCreate.setPopulation(totalPopulation);
         toCreate.setCreatedAt(Instant.now());
         BeeFamily created = beeFamilyRepository.save(toCreate);
+        BeeTypeRsDto newFamilyType = beeTypeService.getById(created.getBeeType().getId());
         log.debug("Пчелиная семья успешно добавлена в улей, id = {}, toCreate = {}", hiveId, toCreate);
         GeneratorFamilyRqDto generatorFamilyRqDto = GeneratorFamilyRqDto.builder()
                 .id(created.getId())
@@ -76,9 +80,9 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
                 .workerPopulation(created.getWorkerPopulation())
                 .queenPopulation(created.getQueenPopulation())
                 .population(created.getPopulation())
-                .diseaseResistance(created.getBeeType().getDiseaseResistance())
-                .honeyProductivity(created.getBeeType().getHoneyProductivity())
-                .eggProductivity(created.getBeeType().getEggProductivity())
+                .diseaseResistance(newFamilyType.getDiseaseResistance())
+                .honeyProductivity(newFamilyType.getHoneyProductivity())
+                .eggProductivity(newFamilyType.getEggProductivity())
                 .build();
         beeFamilyFeignApi.addFamily(generatorFamilyRqDto);
         return beeFamilyMapper.toDto(created);
@@ -140,6 +144,20 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
                             throw new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id));
                         });
         beeFamilyFeignApi.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByBeeType(@NonNull Long beeTypeId) {
+        log.debug("Запрос на удаление семей с beeTypeId = {}", beeTypeId);
+        List<BeeFamily> beeFamiliesList = beeFamilyRepository.findByBeeTypeId(beeTypeId)
+                .stream().map(found -> {
+                    found.setIsDeleted(true);
+                    found.setIsAlive(false);
+                    beeFamilyFeignApi.deleteById(found.getId());
+                    return found;
+                }).toList();
+        beeFamilyRepository.saveAll(beeFamiliesList);
     }
 
     @Override

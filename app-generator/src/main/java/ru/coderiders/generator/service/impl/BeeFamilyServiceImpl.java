@@ -28,26 +28,37 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     private final HiveService hiveService;
 
     @Override
+    @Transactional
     public BeeFamilySnapshotDto createBeeFamilySnapshot(BeeFamily beeFamily) {
         String snapshotTime = Instant.now().toString();
         long dronePopulationIncrease = (long) (((ThreadLocalRandom.current()
-                .nextDouble(0.01, 0.1))) * beeFamily.getDronePopulation());
+                .nextDouble(0.01, 0.05))) * beeFamily.getDronePopulation() * beeFamily.getDelta());
         long workerPopulationIncrease = (long) ((ThreadLocalRandom.current()
-                .nextDouble(0.01, 0.1) * beeFamily.getWorkerPopulation()));
+                .nextDouble(0.01, 0.05) * beeFamily.getWorkerPopulation()) * beeFamily.getDelta());
         long queenPopulationIncrease = (long) (ThreadLocalRandom.current()
-                .nextDouble(0.00000001, 1.0));
+                .nextDouble(0.00000001, 1.0) * beeFamily.getDelta());
         if (beeFamily.getIsInfected()) {
-            dronePopulationIncrease = -dronePopulationIncrease;
-            workerPopulationIncrease = -workerPopulationIncrease;
+            if(beeFamily.getDronePopulation() - dronePopulationIncrease < 0) {
+                dronePopulationIncrease = -beeFamily.getDronePopulation();
+            } else {
+                dronePopulationIncrease = -dronePopulationIncrease;
+            }
+            if(beeFamily.getWorkerPopulation() - workerPopulationIncrease < 0) {
+                workerPopulationIncrease = -beeFamily.getWorkerPopulation();
+            } else {
+                workerPopulationIncrease = -workerPopulationIncrease;
+            }
         }
         long populationIncrease = dronePopulationIncrease + workerPopulationIncrease + queenPopulationIncrease;
         beeFamily.setDronePopulation(beeFamily.getDronePopulation() + dronePopulationIncrease);
         beeFamily.setWorkerPopulation(beeFamily.getWorkerPopulation() + workerPopulationIncrease);
         beeFamily.setQueenPopulation(beeFamily.getQueenPopulation() + queenPopulationIncrease);
         beeFamily.setPopulation(beeFamily.getPopulation() + populationIncrease);
-        beeFamilyRepository.save(beeFamily);
         double activity = ThreadLocalRandom.current().nextDouble(0.7, 1.3);
         double mood = ThreadLocalRandom.current().nextDouble(0.7, 1.3);
+        beeFamily.setActivity(activity);
+        beeFamily.setMood(mood);
+        beeFamilyRepository.save(beeFamily);
         return BeeFamilySnapshotDto.builder()
                 .familyId(beeFamily.getId())
                 .createdAt(snapshotTime)
@@ -60,6 +71,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     }
 
     @Override
+    @Transactional
     public List<BeeFamily> findAll() {
         return beeFamilyRepository.findAll();
     }
@@ -75,6 +87,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         }
         BeeFamily toCreate = BeeFamily.builder()
                 .id(generatorFamilyRqDto.getId())
+                .isDeleted(false)
                 .dronePopulation(generatorFamilyRqDto.getDronePopulation())
                 .workerPopulation(generatorFamilyRqDto.getWorkerPopulation())
                 .queenPopulation(generatorFamilyRqDto.getQueenPopulation())
@@ -91,6 +104,12 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     @Transactional
     public void delete(@NonNull Long id) {
         log.debug("Запрос на выселение семьи в генераторе, id = {}", id);
+        beeFamilyRepository.findById(id)
+                .map(found -> {
+                    found.setIsDeleted(true);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
         hiveService.releaseFamily(id);
     }
 
@@ -101,6 +120,18 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         beeFamilyRepository.findById(id)
                 .map(found -> {
                     found.setIsInfected(isInfected);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
+    }
+
+    @Override
+    @Transactional
+    public void updateDelta(@NonNull Long id, @NonNull Double delta) {
+        log.debug("Запрос на изменение дельты семьи в генераторе, id = {}", id);
+        beeFamilyRepository.findById(id)
+                .map(found -> {
+                    found.setDelta(delta);
                     return found;
                 })
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));

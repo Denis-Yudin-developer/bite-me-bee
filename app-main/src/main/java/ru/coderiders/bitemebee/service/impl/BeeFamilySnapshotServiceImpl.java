@@ -3,6 +3,8 @@ package ru.coderiders.bitemebee.service.impl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import ru.coderiders.bitemebee.entity.BeeFamily;
@@ -11,12 +13,10 @@ import ru.coderiders.bitemebee.mapper.BeeFamilySnapshotMapper;
 import ru.coderiders.bitemebee.repository.BeeFamilyRepository;
 import ru.coderiders.bitemebee.repository.BeeFamilySnapshotRepository;
 import ru.coderiders.bitemebee.service.BeeFamilySnapshotService;
-import ru.coderiders.commons.rest.dto.BeeFamilySnapshotRqDto;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
+import ru.coderiders.commons.rest.dto.BeeFamilySnapshotRqDto;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,7 +28,7 @@ public class BeeFamilySnapshotServiceImpl implements BeeFamilySnapshotService {
     private final BeeFamilySnapshotMapper beeFamilySnapshotMapper;
 
     @Override
-    public List<BeeFamilySnapshotDto> getSnapshots(@NonNull BeeFamilySnapshotRqDto beeFamilySnapshotRqDto) {
+    public Page<BeeFamilySnapshotDto> getSnapshots(@NonNull Pageable pageable, @NonNull BeeFamilySnapshotRqDto beeFamilySnapshotRqDto) {
         log.debug("Запрос на получение всех снимков пчелиной семьи за период beeFamilySnapshotRqDto = {}",
                 beeFamilySnapshotRqDto);
         Long beeFamilyId = beeFamilySnapshotRqDto.getFamilyId();
@@ -36,10 +36,8 @@ public class BeeFamilySnapshotServiceImpl implements BeeFamilySnapshotService {
         Instant dateTo = beeFamilySnapshotRqDto.getDateTo();
         beeFamilyRepository.findById(beeFamilyId)
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, beeFamilyId)));
-        return beeFamilySnapshotRepository.findByCreatedAtBetweenAndBeeFamily_Id(dateFrom, dateTo, beeFamilyId)
-                .stream()
-                .map(beeFamilySnapshotMapper::toDto)
-                .collect(Collectors.toList());
+        return beeFamilySnapshotRepository.findByCreatedAtBetweenAndBeeFamily_Id(pageable, dateFrom, dateTo, beeFamilyId)
+                .map(beeFamilySnapshotMapper::toDto);
     }
 
     @Override
