@@ -24,6 +24,8 @@ public class RequestFilterConfig {
         registrationBean.addUrlPatterns("/api/generator_panel");
         registrationBean.addUrlPatterns("/api/jobs");
         registrationBean.addUrlPatterns("/api/jobs/*");
+        registrationBean.addUrlPatterns("/api/users");
+        registrationBean.addUrlPatterns("/api/users/*");
         return registrationBean;
     }
 }
