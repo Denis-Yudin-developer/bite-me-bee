@@ -1,6 +1,7 @@
 package ru.coderiders.bitemebee.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.coderiders.bitemebee.entity.Activity;
@@ -17,7 +18,8 @@ public class ActivityMapper {
     @PostConstruct
     private void init() {
         modelMapper.createTypeMap(ActivityRqDto.class, Activity.class)
-                        .addMappings(mapping -> mapping.skip(Activity::setIsPlanned));
+                .addMappings(mapping -> mapping.skip(Activity::setIsPlanned))
+                .setPostConverter(toEntityPostConverter());
         modelMapper.createTypeMap(Activity.class, ActivityRsDto.class);
     }
 
@@ -27,5 +29,16 @@ public class ActivityMapper {
 
     public ActivityRsDto toDto(Activity activity) {
         return modelMapper.map(activity, ActivityRsDto.class);
+    }
+
+    private Converter<ActivityRqDto, Activity> toEntityPostConverter() {
+        return context -> {
+            var src = context.getSource();
+            var dst = context.getDestination();
+
+            String isPlanned = src.getIsPlanned();
+            dst.setIsPlanned(Boolean.parseBoolean(isPlanned));
+            return dst;
+        };
     }
 }

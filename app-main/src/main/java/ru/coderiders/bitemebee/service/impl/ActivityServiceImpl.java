@@ -55,8 +55,6 @@ public class ActivityServiceImpl implements ActivityService {
                     throw new BadRequestException(ACTIVITY_ALREADY_EXISTS);
                 });
         Activity toSave = activityMapper.toEntity(activityRqDto);
-        Boolean isPlanned = Boolean.getBoolean(activityRqDto.getIsPlanned());
-        toSave.setIsPlanned(isPlanned);
         Activity activityDst = activityRepository.save(toSave);
         return activityMapper.toDto(activityDst);
     }
