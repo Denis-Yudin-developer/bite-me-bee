@@ -1,6 +1,7 @@
 package ru.coderiders.bitemebee.rest.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/api/generator_panel")
 @Tag(name = "Панель управления ульем", description = "Позволяет управлять состояниями улья и пчелиной семьи")
+//@SecurityRequirement(name = "bitemebee")
 public interface GenPanelApi {
     @PutMapping("/{id}/change_hive_delta")
     @Operation(description = "Обновить дельту улья", method = "PUT")

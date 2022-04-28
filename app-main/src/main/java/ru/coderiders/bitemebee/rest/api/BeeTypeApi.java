@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 
 @RequestMapping("/api/bee_types")
 @Tag(name = "Контроллер вида пчёл", description = "Позволяет управлять записями о пчелиных видах")
+//@SecurityRequirement(name = "bitemebee")
 public interface BeeTypeApi {
     @GetMapping
     @Operation(description = "Получить все виды пчёл", method = "GET")

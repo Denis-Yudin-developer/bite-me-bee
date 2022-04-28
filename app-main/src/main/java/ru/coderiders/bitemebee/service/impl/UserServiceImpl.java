@@ -6,8 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.coderiders.bitemebee.entity.Role;
 import ru.coderiders.bitemebee.mapper.UserMapper;
 import ru.coderiders.bitemebee.repository.UserRepository;
 import ru.coderiders.bitemebee.rest.dto.UserRqDto;
@@ -24,7 +28,7 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 public class UserServiceImpl implements UserService {
     private static final String[] IGNORED_ON_COPY_FIELDS = {"id"};
     private final String USER_NOT_FOUND = "Пользователь с id=%s не найден";
-    private final String USER_ALREADY_EXISTS = "Пользователь с таким email-адресом уже существует";
+    private final String USER_ALREADY_EXISTS = "Пользователь с таким именем уже существует";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -49,11 +53,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserRsDto create(@NonNull UserRqDto userRqDto) {
         log.debug("Запрос на создание нового пользователя, userRqDto = {}", userRqDto);
-        var email = userRqDto.getEmail();
-        if(userRepository.existsByEmail(email)){
+        if(userRepository.existsByUsername(userRqDto.getUsername())){
             throw new BadRequestException(USER_ALREADY_EXISTS);
         }
         User toCreate = userMapper.toEntity(userRqDto);
+        toCreate.setRole(Role.USER);
         User created = userRepository.save(toCreate);
         return userMapper.toDto(created);
     }
@@ -82,5 +86,14 @@ public class UserServiceImpl implements UserService {
                         () -> {
                             throw new NotFoundException(String.format(USER_NOT_FOUND, id));
                         });
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Пользователь с таким именем не найден");
+        }
+        return user;
     }
 }

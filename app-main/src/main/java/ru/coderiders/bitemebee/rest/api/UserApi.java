@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import javax.validation.Valid;
 
 @RequestMapping("/api/users")
 @Tag(name = "Контроллер пользователей", description = "Позволяет управлять записями об пользователях")
+//@SecurityRequirement(name = "bitemebee")
 public interface UserApi {
     @GetMapping
     @Operation(description = "Получить все записи о пользователях", method = "GET")

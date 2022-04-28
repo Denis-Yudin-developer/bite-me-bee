@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 
 @RequestMapping("/api/hives")
 @Tag(name = "Контроллер улья", description = "Позволяет управлять записями об улье")
+//@SecurityRequirement(name = "bitemebee")
 public interface HiveApi {
     @PostMapping("/snapshots")
     @Operation(description = "Получить все снимки улья за определенный период", method = "POST")

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.coderiders.bitemebee.entity.Role;
 
 @Data
 @Builder
@@ -16,6 +17,6 @@ public class UserRsDto {
     private Long id;
     @Schema(description = "Имя пользователя", example = "userName123")
     private String username;
-    @Schema(description = "Email пользователя", example = "email@gmail.com")
-    private String email;
+    @Schema(description = "Роль пользователя", example = "USER")
+    private Role role;
 }

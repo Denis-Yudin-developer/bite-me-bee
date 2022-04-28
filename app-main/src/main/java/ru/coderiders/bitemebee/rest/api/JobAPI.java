@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 @Validated
 @RequestMapping("/api/jobs")
 @Tag(name = "Контроллер работ", description = "Позволяет управлять записями о работах на пасеке")
+//@SecurityRequirement(name = "bitemebee")
 public interface JobAPI {
     @PostMapping
     @Operation(description = "Создание записи о работе", method = "POST")

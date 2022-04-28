@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 @Validated
 @RequestMapping("/api/activities")
 @Tag(name = "Контроллер типовых работ", description = "Позволяет управлять записями о типовых видах работ")
+//@SecurityRequirement(name = "bitemebee")
 public interface ActivityApi {
     @GetMapping
     @Operation(description = "Получить все типовые работы", method = "GET")

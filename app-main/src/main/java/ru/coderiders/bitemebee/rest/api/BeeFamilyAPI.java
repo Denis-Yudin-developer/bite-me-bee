@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ import javax.validation.Valid;
 @Validated
 @RequestMapping("/api/bee_families")
 @Tag(name = "Контроллер пчелиной семьи", description = "Позволяет управлять записями о пчелиных семьях")
+//@SecurityRequirement(name = "bitemebee")
 public interface BeeFamilyAPI {
     @PostMapping("/snapshots")
     @Operation(description = "Получить все снимки пчелиной семьи за определенный период", method = "POST")

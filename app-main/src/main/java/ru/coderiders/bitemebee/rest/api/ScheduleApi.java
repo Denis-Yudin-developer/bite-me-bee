@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ import javax.validation.Valid;
 @Validated
 @RequestMapping("/api")
 @Tag(name = "Контроллер расписаний плановых работ", description = "Позволяет управлять расписанием плановых работ")
+//@SecurityRequirement(name = "bitemebee")
 public interface ScheduleApi {
     @PostMapping("/bee_types/{id}/schedules")
     @Operation(description = "Создание расписания для плановой работы", method = "POST")
