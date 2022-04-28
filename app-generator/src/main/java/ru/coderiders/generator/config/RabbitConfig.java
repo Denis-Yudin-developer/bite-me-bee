@@ -11,27 +11,39 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @EnableRabbit
 @Configuration
 public class RabbitConfig {
     @Value("${rabbit.titles.exchange:snapshot-exchange}")
-    private String SNAPSHOT_EXCHANGE;
+    private String snapshotExchange;
+    @Value("${rabbit.host-name}")
+    private String rabbitHostName;
+    @Value("${rabbit.titles.hive-queue:hive-snapshot}")
+    private String hiveQueueName;
+    @Value("${rabbit.titles.family-queue:family-snapshot}")
+    private String familyQueueName;
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new CachingConnectionFactory("localhost");
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setHost(rabbitHostName);
+        return connectionFactory;
     }
 
     @Bean
-    public AmqpAdmin amqpAdmin() {
-        return new RabbitAdmin(connectionFactory());
+    public AmqpAdmin amqpAdmin(List<Queue> queues) {
+        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
+        queues.forEach(rabbitAdmin::declareQueue);
+        return rabbitAdmin;
     }
 
     @Bean
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
         rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
-        rabbitTemplate.setExchange(SNAPSHOT_EXCHANGE);
+        rabbitTemplate.setExchange(snapshotExchange);
         return rabbitTemplate;
     }
 
@@ -42,26 +54,26 @@ public class RabbitConfig {
 
     @Bean
     public Queue hiveSnapshotQueue() {
-        return new Queue("hive-snapshot");
+        return new Queue(hiveQueueName);
     }
 
     @Bean
     public Queue familySnapshotQueue() {
-        return new Queue("family-snapshot");
+        return new Queue(familyQueueName);
     }
 
     @Bean
     public DirectExchange directExchange() {
-        return new DirectExchange(SNAPSHOT_EXCHANGE);
+        return new DirectExchange(snapshotExchange);
     }
 
     @Bean
     public Binding hiveSnapshotBinding() {
-        return BindingBuilder.bind(hiveSnapshotQueue()).to(directExchange()).with("hive-snapshot");
+        return BindingBuilder.bind(hiveSnapshotQueue()).to(directExchange()).with(hiveQueueName);
     }
 
     @Bean
     public Binding familySnapshotBinding() {
-        return BindingBuilder.bind(familySnapshotQueue()).to(directExchange()).with("family-snapshot");
+        return BindingBuilder.bind(familySnapshotQueue()).to(directExchange()).with(familyQueueName);
     }
 }

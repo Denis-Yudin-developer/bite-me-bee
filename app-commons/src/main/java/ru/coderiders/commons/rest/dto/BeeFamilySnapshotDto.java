@@ -18,9 +18,9 @@ public class BeeFamilySnapshotDto {
     private String createdAt;
     @Schema(description = "Прирост числа пчел в улье", example = "5")
     private Long populationIncrease;
-    @Schema(description = "Прирост числа трутней в улье", example = "5")
+    @Schema(description = "Прирост числа трутней в улье", example = "1")
     private Long dronePopulationIncrease;
-    @Schema(description = "Прирост числа рабочих пчел в улье", example = "5")
+    @Schema(description = "Прирост числа рабочих пчел в улье", example = "4")
     private Long workerPopulationIncrease;
     @Schema(description = "Прирост числа маток в улье", example = "0")
     private Long queenPopulationIncrease;

@@ -16,7 +16,8 @@ public class HiveSnapshotMapper {
     @PostConstruct
     private void init() {
         modelMapper.createTypeMap(HiveSnapshotDto.class, HiveSnapshot.class);
-        modelMapper.createTypeMap(HiveSnapshot.class, HiveSnapshotDto.class);
+        modelMapper.createTypeMap(HiveSnapshot.class, HiveSnapshotDto.class)
+                .addMappings(mapper -> mapper.map(src -> src.getHive().getId(), HiveSnapshotDto::setHiveId));
     }
 
     public HiveSnapshotDto toDto(HiveSnapshot hiveSnapshot) {

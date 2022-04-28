@@ -5,9 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -15,13 +18,14 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "generator_hives")
-public class    Hive {
+public class Hive {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
     @JoinColumn(name = "bee_family_id")
@@ -36,5 +40,5 @@ public class    Hive {
     private Double honeyCapacity;
     @Builder.Default
     @Column(name = "delta", nullable = false)
-    private Double delta = 10D;
+    private Double delta = 1.0;
 }

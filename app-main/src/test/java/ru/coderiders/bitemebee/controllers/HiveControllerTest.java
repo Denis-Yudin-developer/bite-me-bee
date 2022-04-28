@@ -32,9 +32,9 @@ import static ru.coderiders.bitemebee.converter.ObjectToJsonConverter.toJsonStri
 import static ru.coderiders.bitemebee.data.HiveData.HIVE_RQ_DTO_1;
 import static ru.coderiders.bitemebee.data.HiveData.HIVE_RS_DTO_1;
 import static ru.coderiders.bitemebee.data.HiveData.HIVE_RS_DTO_2;
+import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_DTO_1;
+import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_DTO_2;
 import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RQ_DTO_1;
-import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RS_DTO_1;
-import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RS_DTO_2;
 
 @WebMvcTest(HiveController.class)
 public class HiveControllerTest {
@@ -49,7 +49,7 @@ public class HiveControllerTest {
     @Test
     public void getSnapshots_validData_returnOk() throws Exception {
         Page<HiveSnapshotDto> hiveSnapshotDtoList =
-                new PageImpl<>(Arrays.asList(HIVE_SNAPSHOT_RS_DTO_1, HIVE_SNAPSHOT_RS_DTO_2));
+                new PageImpl<>(Arrays.asList(HIVE_SNAPSHOT_DTO_1, HIVE_SNAPSHOT_DTO_2));
         when(hiveSnapshotService.getSnapshots(PageRequest.of(0, 20), HIVE_SNAPSHOT_RQ_DTO_1))
                 .thenReturn(hiveSnapshotDtoList);
         mockMvc.perform(post("/api/hives/snapshots")

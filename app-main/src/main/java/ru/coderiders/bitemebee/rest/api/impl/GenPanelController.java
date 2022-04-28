@@ -13,8 +13,13 @@ public class GenPanelController implements GenPanelApi {
     private final HiveFeignApi hiveFeignApi;
 
     @Override
-    public void updateDelta(Long id, Double delta) {
+    public void updateHiveDelta(Long id, Double delta) {
         hiveFeignApi.updateDelta(id, delta);
+    }
+
+    @Override
+    public void updateBeeFamilyDelta(Long id, Double delta) {
+        beeFamilyFeignApi.updateDelta(id, delta);
     }
 
     @Override

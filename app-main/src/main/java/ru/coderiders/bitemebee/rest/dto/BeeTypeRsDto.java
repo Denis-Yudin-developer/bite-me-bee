@@ -17,6 +17,8 @@ import java.util.List;
 public class BeeTypeRsDto {
     @Schema(description = "Идентификатор вида", example = "1")
     private Long id;
+    @Schema(description = "Удалена ли карточка", example = "false")
+    private Boolean isDeleted;
     @Schema(description = "Название вида", example = "Медоносная пчела", maxLength = 100)
     private String title;
     @Schema(description = "Описание вида",
