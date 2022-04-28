@@ -1,0 +1,33 @@
+version: '3'
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    hostname: rabbitmq
+    image: rabbitmq:management
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - bitemebee-network
+
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    restart: always
+    environment:
+      - TZ=Europe/Moscow
+      - POSTGRES_DB=bitemebee
+      - POSTGRES_USER=bitemebee
+      - POSTGRES_PASSWORD=bitemebee
+      - POSTGRES_SCHEMA=public
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./docker-data/postgres/init:/docker-entrypoint-initdb.d/
+    networks:
+      - bitemebee-network
+
+networks:
+  bitemebee-network:
+    driver: bridge

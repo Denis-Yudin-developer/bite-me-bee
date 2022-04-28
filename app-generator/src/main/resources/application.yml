@@ -5,7 +5,7 @@ spring:
     username: ${DB_USER:bitemebee}
     password: ${DB_PASS:bitemebee}
   jpa:
-    hibernate.ddl-auto: createstart app_stop.bat
+    hibernate.ddl-auto: create
     open-in-view: false
   flyway:
     enabled: false
@@ -14,8 +14,6 @@ spring:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:bitemebee}
     user: ${DB_USER:bitemebee}
     password: ${DB_PASS:bitemebee}
-  rabbitmq:
-    host: ${RABBIT_HOST:rabbitmq}
 
 server:
   port: ${SELF_PORT:8081}
@@ -29,7 +27,7 @@ rabbit:
     hive-queue: hive-snapshot
     family-queue: family-snapshot
     exchange: snapshot-exchange
-  host-name: ${RABBIT_HOST:rabbitmq}
+  host-name: ${RABBIT_HOST:localhost}
 
 generator:
   delay: 5000
