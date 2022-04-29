@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.coderiders.bitemebee.entity.Role;
 
 @Data
@@ -18,5 +19,5 @@ public class UserRsDto {
     @Schema(description = "Имя пользователя", example = "userName123")
     private String username;
     @Schema(description = "Роль пользователя", example = "USER")
-    private Role role;
+    private SimpleGrantedAuthority role;
 }
