@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import ru.coderiders.bitemebee.entity.Role;
 import ru.coderiders.bitemebee.service.UserService;
 
 @Configuration
@@ -25,20 +24,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable().authorizeRequests().anyRequest().permitAll().and().logout().permitAll();
+    }
+ /*
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf()
                 .disable()
                 .authorizeRequests()
                 //Доступ только для не зарегистрированных пользователей
-                .antMatchers("/api/registration", "/api/login").not().fullyAuthenticated()
+        //        .antMatchers("/api/registration", "/api/login").not().fullyAuthenticated()
                 //Доступ только для пользователей с ролью Администратор
-                .antMatchers("/api/hives").hasRole("USER")
+        //        .antMatchers("/api/hives").hasRole("USER")
                 //Доступ разрешен всем пользователей
-                .antMatchers("/", "/resources/**", "/swagger-ui/*", "/v3/**").permitAll()
+        //        .antMatchers("/", "/resources/**", "/swagger-ui/*", "/v3/**").permitAll()
                 //Все остальные страницы требуют аутентификации
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
 
-        /*
+
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
@@ -47,33 +51,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
                 //.antMatchers("/api/*").fullyAuthenticated()
                // .antMatchers("/swagger-ui/*").permitAll();
-
-
-        httpSecurity
-                .antMatcher("/**")
-                .authorizeRequests()
-                .antMatchers("/api/hives", "/swagger-ui/*").permitAll()
-                .anyRequest().authenticated(); *\
-
-
-/*
-        httpSecurity
-                .csrf().disable()
-                .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
-                //  .antMatchers("/api/registration").not().fullyAuthenticated()
-                //Доступ только для пользователей с ролью Администратор
-             //   .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/hives").hasRole("USER")
-                //Доступ разрешен всем пользователей
-                .antMatchers("/", "/resources/**").permitAll(); */
-    }
+  //  }
+  */
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
         auth.inMemoryAuthentication()
                 .withUser("admin").password(bCryptPasswordEncoder().encode("admin")).roles("ADMIN");
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService());
     }
 
     @Bean

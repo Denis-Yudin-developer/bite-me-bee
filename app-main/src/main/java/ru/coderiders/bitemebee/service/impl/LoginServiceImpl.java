@@ -34,10 +34,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public UserRsDto authorize(UserRqDto userRqDto, HttpServletRequest req) {
-    //    User dbUser = userRepository.findByUsername(userRqDto.getUsername());
+        User dbUser = userRepository.findByUsername(userRqDto.getUsername());
 
         login(req, userRqDto.getUsername(), userRqDto.getPassword());
-        return userMapper.toDto(null);
+        return userMapper.toDto(dbUser);
     }
 
     @Override

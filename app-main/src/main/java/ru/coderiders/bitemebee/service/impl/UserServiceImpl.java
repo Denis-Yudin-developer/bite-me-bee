@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException(USER_ALREADY_EXISTS);
         }
         User toCreate = userMapper.toEntity(userRqDto);
-        toCreate.setRole(Role.USER);
+        toCreate.setRole(new SimpleGrantedAuthority(Role.USER.getAuthority()));
         User created = userRepository.save(toCreate);
         return userMapper.toDto(created);
     }
