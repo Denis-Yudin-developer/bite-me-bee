@@ -8,8 +8,6 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    networks:
-      - bitemebee-network
 
   postgres:
     container_name: postgres
@@ -22,12 +20,6 @@ services:
       - POSTGRES_PASSWORD=bitemebee
       - POSTGRES_SCHEMA=public
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - ./docker-data/postgres/init:/docker-entrypoint-initdb.d/
-    networks:
-      - bitemebee-network
-
-networks:
-  bitemebee-network:
-    driver: bridge
