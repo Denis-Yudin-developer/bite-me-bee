@@ -31,7 +31,6 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 public class UserServiceImpl implements UserService {
     private static final String[] IGNORED_ON_COPY_FIELDS = {"id"};
     private final String USER_NOT_FOUND = "Пользователь с id=%s не найден";
-    private final String USER_ALREADY_EXISTS = "Пользователь с таким именем уже существует";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder encoder;
@@ -58,6 +57,7 @@ public class UserServiceImpl implements UserService {
     public UserRsDto create(@NonNull UserRqDto userRqDto) {
         log.debug("Запрос на создание нового пользователя, userRqDto = {}", userRqDto);
         if(userRepository.existsByUsername(userRqDto.getUsername())){
+            String USER_ALREADY_EXISTS = "Пользователь с таким именем уже существует";
             throw new BadRequestException(USER_ALREADY_EXISTS);
         }
         User toCreate = userMapper.toEntity(userRqDto);
