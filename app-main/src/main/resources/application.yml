@@ -1,21 +1,21 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:bitemebee}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:bitemebee}
     username: ${DB_USER:bitemebee}
     password: ${DB_PASS:bitemebee}
   jpa:
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
     open-in-view: false
   flyway:
     enabled: false
     baseline-on-migrate: true
     schemas: public
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:bitemebee}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:bitemebee}
     user: ${DB_USER:bitemebee}
     password: ${DB_PASS:bitemebee}
   rabbitmq:
-    host: ${RABBIT_HOST:rabbitmq}
+    host: ${RABBIT_HOST:localhost}
     port: 5672
 
 server:
@@ -27,5 +27,5 @@ rabbit:
     family-queue: family-snapshot
 
 feign-client:
-  families-url: http://${GENERATOR_HOST:app-generator}:${GENERATOR_PORT:8081}/api/generator_families
-  hives-url: http://${GENERATOR_HOST:app-generator}:${GENERATOR_PORT:8081}/api/generator_hives
+  families-url: http://${GENERATOR_HOST:localhost}:${GENERATOR_PORT:8081}/api/generator_families
+  hives-url: http://${GENERATOR_HOST:localhost}:${GENERATOR_PORT:8081}/api/generator_hives
