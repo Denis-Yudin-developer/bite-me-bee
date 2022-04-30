@@ -119,9 +119,9 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     }
 
     @Override
-    public void updatePopulation(@NonNull Long id, @NonNull Integer dronePopulation,
-                                 @NonNull Integer workerPopulation, @NonNull Integer queenPopulation,
-                                 @NonNull Integer population) {
+    public void updatePopulation(@NonNull Long id, @NonNull Long dronePopulation,
+                                 @NonNull Long workerPopulation, @NonNull Long queenPopulation,
+                                 @NonNull Long population) {
         log.debug("Запрос на обновление популяции семьи по id = {}, population = {}", id, population);
         beeFamilyRepository.findById(id)
                 .map(found -> {
