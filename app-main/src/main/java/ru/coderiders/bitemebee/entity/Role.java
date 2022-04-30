@@ -1,13 +1,21 @@
 package ru.coderiders.bitemebee.entity;
 
-import java.io.Serializable;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.*;
 
-public enum Role implements GrantedAuthority, Serializable {
-    USER, ADMIN;
+import javax.persistence.*;
 
-    @Override
-    public String getAuthority() {
-        return name();
-    }
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "roles")
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ERole name;
 }

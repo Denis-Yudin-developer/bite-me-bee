@@ -29,12 +29,11 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
 public class LoginServiceImpl implements LoginService {
     private final AuthenticationManager authManager;
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
     private final UserMapper userMapper;
 
     @Override
     public UserRsDto authorize(UserRqDto userRqDto, HttpServletRequest req) {
-        User dbUser = userRepository.findByUsername(userRqDto.getUsername());
+        User dbUser = userRepository.findByUsername(userRqDto.getUsername()).get();
 
         login(req, userRqDto.getUsername(), userRqDto.getPassword());
         return userMapper.toDto(dbUser);

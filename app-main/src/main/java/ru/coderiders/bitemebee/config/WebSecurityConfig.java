@@ -1,71 +1,68 @@
 package ru.coderiders.bitemebee.config;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.coderiders.bitemebee.jwt.AuthEntryPointJwt;
+import ru.coderiders.bitemebee.jwt.AuthTokenFilter;
 import ru.coderiders.bitemebee.service.UserService;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
+    private final AuthEntryPointJwt unauthorizedHandler;
     private final PasswordEncoder encoder;
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().authorizeRequests().anyRequest().permitAll().and().logout().permitAll();
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
     }
- /*
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf()
-                .disable()
-                .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
-        //        .antMatchers("/api/registration", "/api/login").not().fullyAuthenticated()
-                //Доступ только для пользователей с ролью Администратор
-        //        .antMatchers("/api/hives").hasRole("USER")
-                //Доступ разрешен всем пользователей
-        //        .antMatchers("/", "/resources/**", "/swagger-ui/*", "/v3/**").permitAll()
-                //Все остальные страницы требуют аутентификации
-                .anyRequest().permitAll();
-
-
-        httpSecurity
-                .csrf().disable()
-                .authorizeRequests()
-                    .antMatchers("/api/registration").not().fullyAuthenticated()
-                    .antMatchers("/swagger-ui/*", "/v3/**", "/api/login", "/api/logout").permitAll()
-                .anyRequest().authenticated();
-                //.antMatchers("/api/*").fullyAuthenticated()
-               // .antMatchers("/swagger-ui/*").permitAll();
-  //  }
-  */
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(encoder);
-        auth.inMemoryAuthentication().withUser("admin").password(encoder.encode("admin")).roles("ADMIN");
     }
-/*
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService());
-    }
-*/
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests(ar -> ar
+                        .antMatchers(
+                                "/",
+                                "/api/auth/**",
+                                "/swagger-ui/index.html**",
+                                "/swagger-ui/**",
+                                "/v*/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/*",
+                                "/swagger-resources/**",
+                                "/v*/api-docs", "/api/test/**", "/api/generator_hives/", "/api/generator_hives/**", "/api/generator_families/**").permitAll()
+               // .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+               // .antMatchers("/api/test/**", "/swagger-ui/**", "/v3/**").permitAll()
+                .anyRequest().authenticated());
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

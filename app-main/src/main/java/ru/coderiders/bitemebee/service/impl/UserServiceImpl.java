@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.Role;
+import ru.coderiders.bitemebee.entity.UserDetailsImpl;
 import ru.coderiders.bitemebee.mapper.UserMapper;
 import ru.coderiders.bitemebee.repository.UserRepository;
 import ru.coderiders.bitemebee.rest.dto.UserRqDto;
@@ -31,6 +32,7 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 public class UserServiceImpl implements UserService {
     private static final String[] IGNORED_ON_COPY_FIELDS = {"id"};
     private final String USER_NOT_FOUND = "Пользователь с id=%s не найден";
+    private final String USERNAME_NOT_FOUND = "Пользователь с именем=%s не найден";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder encoder;
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException(USER_ALREADY_EXISTS);
         }
         User toCreate = userMapper.toEntity(userRqDto);
-        toCreate.setRole(new SimpleGrantedAuthority(Role.USER.getAuthority()));
+       // toCreate.setRole(new SimpleGrantedAuthority(Role.USER.getAuthority()));
         toCreate.setPassword(encoder.encode(toCreate.getPassword()));
         User created = userRepository.save(toCreate);
         return userMapper.toDto(created);
@@ -94,11 +96,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Пользователь с таким именем не найден");
-        }
-        return user;
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(USERNAME_NOT_FOUND, username)));
+        return UserDetailsImpl.build(user);
     }
 }
