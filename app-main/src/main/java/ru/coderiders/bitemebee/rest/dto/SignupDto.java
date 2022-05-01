@@ -6,10 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collections;
 import java.util.Set;
-
-import javax.validation.constraints.*;
 
 @Data
 @Builder
@@ -21,9 +21,6 @@ public class SignupDto {
     @NotNull(message = "Не указано имя пользователя")
     @Schema(description = "Имя пользователя", example = "userName123")
     private String username;
-    @Builder.Default
-    @Schema(description = "Массив с интервалами для типовых работ")
-    private Set<String> role = Collections.emptySet();
     @Size(min = 4, max = 20,  message = "Длина пароля должна быть в диапозоне от 4 до 20 символов")
     @NotNull(message = "Не указан пароль пользователя")
     @Schema(description = "Пароль пользователя", example = "qweasd123")

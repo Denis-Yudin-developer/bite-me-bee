@@ -1,11 +1,5 @@
 package ru.coderiders.bitemebee.rest.api.impl;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.validation.Valid;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,8 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.coderiders.bitemebee.entity.ERole;
 import ru.coderiders.bitemebee.entity.Role;
 import ru.coderiders.bitemebee.entity.User;
@@ -23,67 +19,44 @@ import ru.coderiders.bitemebee.entity.UserDetailsImpl;
 import ru.coderiders.bitemebee.repository.RoleRepository;
 import ru.coderiders.bitemebee.repository.UserRepository;
 import ru.coderiders.bitemebee.rest.api.AuthApi;
-import ru.coderiders.bitemebee.rest.dto.*;
+import ru.coderiders.bitemebee.rest.dto.JwtDto;
+import ru.coderiders.bitemebee.rest.dto.LoginDto;
+import ru.coderiders.bitemebee.rest.dto.MessageResponse;
+import ru.coderiders.bitemebee.rest.dto.SignupDto;
+import ru.coderiders.bitemebee.rest.dto.UserDto;
+import ru.coderiders.bitemebee.service.AuthService;
 import ru.coderiders.bitemebee.utils.JwtUtils;
+import ru.coderiders.commons.rest.exception.BadRequestException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController implements AuthApi {
-    private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder encoder;
-    private final JwtUtils jwtUtils;
+    private final AuthService authService;
 
     @Override
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        return ResponseEntity.ok(authService.authenticateUser(loginDto));
+    }
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(new JwtDto(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                roles));
+    @Override
+    public void customLogout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null){
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
     }
 
     @Override
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupDto signUpDto) {
-        if (userRepository.existsByUsername(signUpDto.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
-        User user = User.builder()
-                .username(signUpDto.getUsername())
-                .password(encoder.encode(signUpDto.getPassword()))
-                .build();
-        Set<String> strRoles = signUpDto.getRole();
-        Set<Role> roles = new HashSet<>();
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                if ("admin".equals(role)) {
-                    Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    roles.add(adminRole);
-                } else {
-                    Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    roles.add(userRole);
-                }
-            });
-        }
-        user.setRoles(roles);
-        userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        UserDto created = authService.registerUser(signUpDto);
+        var location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 }

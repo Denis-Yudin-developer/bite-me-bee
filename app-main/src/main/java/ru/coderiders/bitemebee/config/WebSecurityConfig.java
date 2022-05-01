@@ -1,8 +1,5 @@
 package ru.coderiders.bitemebee.config;
 
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +48,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests(ar -> ar
                         .antMatchers(
-                                "/",
                                 "/api/auth/**",
                                 "/swagger-ui/index.html**",
                                 "/swagger-ui/**",
@@ -59,9 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 "/swagger-ui.html",
                                 "/swagger-ui/*",
                                 "/swagger-resources/**",
-                                "/v*/api-docs", "/api/test/**", "/api/generator_hives/", "/api/generator_hives/**", "/api/generator_families/**").permitAll()
-               // .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-               // .antMatchers("/api/test/**", "/swagger-ui/**", "/v3/**").permitAll()
+                                "/v*/api-docs").permitAll()
                 .anyRequest().authenticated());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }

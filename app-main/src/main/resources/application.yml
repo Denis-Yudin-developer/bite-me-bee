@@ -32,4 +32,4 @@ feign-client:
 
 jwt:
   jwtSecret: bitemebeeSecret
-  jwtExpirationMs: 86400000
+  jwtExpiration: 10000
