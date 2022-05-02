@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +36,10 @@ public interface JobAPI {
             @ApiResponse(responseCode = "201", description = "CREATED",
                 content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                         schema = @Schema(implementation = JobRsDto.class))}),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST")
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     ResponseEntity<JobRsDto> create(@Valid @RequestBody JobRqDto jobRqDto);
 
     @GetMapping("/{id}")
@@ -46,16 +49,20 @@ public interface JobAPI {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = JobRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     JobRsDto getById(@Parameter(required = true, description = "Идентификатор") @PathVariable(name = "id") Long id);
 
     @GetMapping
     @Operation(description = "Получение всех записей о работе", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST")
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     Page<JobRsDto> getAll(Pageable pageable);
 
     @PutMapping("/{id}")
@@ -65,8 +72,10 @@ public interface JobAPI {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = JobRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     JobRsDto update(@Parameter(required = true, description = "Идентификатор")
                     @PathVariable(name = "id") Long id,
                     @Valid @RequestBody JobNoteRqDto jobNoteRqDto);
@@ -76,8 +85,10 @@ public interface JobAPI {
     @ApiResponses({
             @ApiResponse(responseCode = "202", description = "ACCEPTED"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     ResponseEntity<Void> complete(@Parameter(required = true, description = "Идентификатор")
                                   @PathVariable(name = "id") Long id);
 }

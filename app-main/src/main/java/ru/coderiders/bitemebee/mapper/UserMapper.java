@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.coderiders.bitemebee.entity.User;
-import ru.coderiders.bitemebee.rest.dto.UserRqDto;
-import ru.coderiders.bitemebee.rest.dto.UserRsDto;
+import ru.coderiders.bitemebee.rest.dto.UserDto;
 
 import javax.annotation.PostConstruct;
 
@@ -16,15 +15,10 @@ public class UserMapper {
 
     @PostConstruct
     private void init(){
-        modelMapper.createTypeMap(UserRqDto.class, User.class);
-        modelMapper.createTypeMap(User.class, UserRsDto.class);
+        modelMapper.createTypeMap(User.class, UserDto.class);
     }
 
-    public User toEntity(UserRqDto userRqDto){
-        return modelMapper.map(userRqDto, User.class);
-    }
-
-    public UserRsDto toDto(User user){
-        return modelMapper.map(user, UserRsDto.class);
+    public UserDto toDto(User user){
+        return modelMapper.map(user, UserDto.class);
     }
 }

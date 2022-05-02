@@ -119,6 +119,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     }
 
     @Override
+    @Transactional
     public void updatePopulation(@NonNull Long id, @NonNull Long dronePopulation,
                                  @NonNull Long workerPopulation, @NonNull Long queenPopulation,
                                  @NonNull Long population) {
