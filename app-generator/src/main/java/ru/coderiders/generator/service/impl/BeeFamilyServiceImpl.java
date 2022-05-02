@@ -32,11 +32,11 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     public BeeFamilySnapshotDto createBeeFamilySnapshot(BeeFamily beeFamily) {
         String snapshotTime = Instant.now().toString();
         long dronePopulationIncrease = (long) (((ThreadLocalRandom.current()
-                .nextDouble(0.01, 0.05))) * beeFamily.getDronePopulation() * beeFamily.getDelta());
+                .nextDouble(0.01, 0.05))) * beeFamily.getDronePopulation() * beeFamily.getDelta()) + 1;
         long workerPopulationIncrease = (long) ((ThreadLocalRandom.current()
                 .nextDouble(0.01, 0.05) * beeFamily.getWorkerPopulation()) * beeFamily.getDelta());
         long queenPopulationIncrease = (long) (ThreadLocalRandom.current()
-                .nextDouble(0.00000001, 1.0) * beeFamily.getDelta());
+                .nextDouble(0.00000001, 1.0) * beeFamily.getDelta() * 0.01);
         if (beeFamily.getIsInfected()) {
             if(beeFamily.getDronePopulation() - dronePopulationIncrease < 0) {
                 dronePopulationIncrease = -beeFamily.getDronePopulation();
@@ -47,6 +47,11 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
                 workerPopulationIncrease = -beeFamily.getWorkerPopulation();
             } else {
                 workerPopulationIncrease = -workerPopulationIncrease;
+            }
+            if(beeFamily.getQueenPopulation() - queenPopulationIncrease < 0) {
+                queenPopulationIncrease = -beeFamily.getQueenPopulation();
+            } else {
+                queenPopulationIncrease = -queenPopulationIncrease;
             }
         }
         long populationIncrease = dronePopulationIncrease + workerPopulationIncrease + queenPopulationIncrease;

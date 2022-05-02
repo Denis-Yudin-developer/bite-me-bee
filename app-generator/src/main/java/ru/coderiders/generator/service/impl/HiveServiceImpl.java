@@ -38,7 +38,7 @@ public class HiveServiceImpl implements HiveService {
         double healthFactor = hive.getBeeFamily().getIsInfected() ? 0.2 : 1.0;
         double honeyIncrease =
                 ((hive.getBeeFamily().getHoneyProductivity() * hive.getDelta()))
-                        * ThreadLocalRandom.current().nextDouble(1.0, 2.0)
+                        * ThreadLocalRandom.current().nextDouble(0.1, 0.3)
                         * healthFactor * hive.getBeeFamily().getDelta() * hive.getBeeFamily().getMood();
         if (hive.getCurrentHoneyAmount() + honeyIncrease > hive.getHoneyCapacity()) {
             honeyIncrease = hive.getHoneyCapacity() - hive.getCurrentHoneyAmount();

@@ -44,7 +44,7 @@ public class SnapshotScheduling {
         log.info("Создание новых снимков пчелиной семьи");
         List<BeeFamily> beeFamilyList = beeFamilyService.findAll();
         for (BeeFamily beeFamily : beeFamilyList) {
-            if(beeFamily.getIsDeleted()) continue;
+            if(beeFamily.getIsDeleted() || beeFamily.getPopulation() == 0) continue;
             BeeFamilySnapshotDto beeFamilySnapshotRsDto = beeFamilyService.createBeeFamilySnapshot(beeFamily);
             log.debug("Создан новый снимок семьи, snapshot = {}", beeFamilySnapshotRsDto);
             template.convertAndSend(FAMILY_SNAPSHOT_QUEUE, beeFamilySnapshotRsDto);
