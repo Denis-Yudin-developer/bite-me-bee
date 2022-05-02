@@ -27,9 +27,8 @@ public class JobRsDto {
     private String note;
     @Schema(description = "Идентификатор улья", example = "1")
     private HiveRsDto hive;
-
-    //TODO поле userId
-
+    @Schema(description = "Идентификатор пользователя", example = "1")
+    private UserRsDto user;
     @NotNull(message = "Не указано время создания работы")
     @Schema(description = "Время создания работы", example = "2022-03-14T18:30:50.630Z")
     private Instant createdAt;

@@ -27,9 +27,9 @@ public class JobRqDto {
     @NotNull(message = "Не указан идентификатор улья")
     @Schema(description = "Идентификатор улья", example = "1")
     private Long hiveId;
-
-    // TODO поле userId
-
+    @NotNull(message = "Не указан идентификатор пользователя")
+    @Schema(description = "Идентификатор пользователя", example = "1")
+    private Long userId;
     @Schema(description = "Время создания работы", example = "2022-03-14T18:30:50.630Z")
     private Instant createdAt;
 }

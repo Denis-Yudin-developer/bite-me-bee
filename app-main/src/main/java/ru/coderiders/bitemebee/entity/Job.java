@@ -40,9 +40,9 @@ public class Job {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hive_id")
     private Hive hive;
-
-    //TODO добавить user_id
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
     @Column(name = "created_at")
     private Instant createdAt;
     @Column(name = "closed_at")
