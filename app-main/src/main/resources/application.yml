@@ -29,3 +29,7 @@ rabbit:
 feign-client:
   families-url: http://${GENERATOR_HOST:localhost}:${GENERATOR_PORT:8081}/api/generator_families
   hives-url: http://${GENERATOR_HOST:localhost}:${GENERATOR_PORT:8081}/api/generator_hives
+
+jwt:
+  jwtSecret: bitemebeeSecret
+  jwtExpiration: 10000

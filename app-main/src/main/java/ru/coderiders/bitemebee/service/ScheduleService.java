@@ -7,7 +7,6 @@ import ru.coderiders.bitemebee.rest.dto.ScheduleRqDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRsDto;
 
 public interface ScheduleService {
-
     ScheduleRsDto create(@NonNull Long beeTypeId, @NonNull ScheduleRqDto scheduleRqDto);
 
     Page<ScheduleRsDto> getAll(@NonNull Long beeTypeId, @NonNull Pageable pageable);
