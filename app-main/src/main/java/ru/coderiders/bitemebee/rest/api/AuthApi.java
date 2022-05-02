@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.coderiders.bitemebee.rest.dto.ActivityRsDto;
 import ru.coderiders.bitemebee.rest.dto.JwtDto;
 import ru.coderiders.bitemebee.rest.dto.LoginDto;
-import ru.coderiders.bitemebee.rest.dto.SignupDto;
+import ru.coderiders.bitemebee.rest.dto.RegisterDto;
+import ru.coderiders.bitemebee.rest.dto.UserDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,11 +36,11 @@ public interface AuthApi {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED"),
     })
-    ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDto loginDto);
+    ResponseEntity<JwtDto> login(@Valid @RequestBody LoginDto loginDto);
 
     @GetMapping("/logout")
     @Operation(description = "Выйти из аккаунта", method = "GET")
-    void customLogout(HttpServletRequest request, HttpServletResponse response);
+    void logout(HttpServletRequest request, HttpServletResponse response);
 
     @PostMapping("/register")
     @Operation(description = "Зарегистрировать пользователя", method = "POST")
@@ -49,5 +50,5 @@ public interface AuthApi {
                             schema = @Schema(implementation = ActivityRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST")
     })
-    ResponseEntity<?> registerUser(@Valid @RequestBody SignupDto signUpDto);
+    ResponseEntity<UserDto> register(@Valid @RequestBody RegisterDto signUpDto);
 }

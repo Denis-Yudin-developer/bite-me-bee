@@ -21,8 +21,8 @@ import ru.coderiders.commons.rest.exception.NotFoundException;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final String USER_NOT_FOUND = "Пользователь с id=%s не найден";
-    private final String USERNAME_NOT_FOUND = "Пользователь с именем=%s не найден";
+    private final String USER_ID_NOT_FOUND = "Пользователь с id=%s не найден";
+    private final String USERNAME_NOT_FOUND = "Пользователь с таким именем не найден";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -40,14 +40,14 @@ public class UserServiceImpl implements UserService {
         log.debug("Запрос на получение пользователя по id = {}", id);
         return userRepository.findById(id)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND, id)));
+                .orElseThrow(() -> new NotFoundException(String.format(USER_ID_NOT_FOUND, id)));
     }
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format(USERNAME_NOT_FOUND, username)));
+                .orElseThrow(() -> new UsernameNotFoundException(USERNAME_NOT_FOUND));
         return UserDetailsImpl.build(user);
     }
 }

@@ -13,14 +13,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Выходной DTO работы на пасеке")
+@Schema(description = "DTO jwt токена")
 public class JwtDto {
-    @Schema(description = "Jwt токен")
+    @Schema(description = "Jwt токен", example = "some long JWT token..")
     private String token;
     private String type = "Bearer";
-    @Schema(description = "1")
+    @Schema(description = "Идентификатор пользователя", example = "1")
     private Long id;
-    @Schema(description = "user")
+    @Schema(description = "Имя пользователя", example = "user")
     private String username;
     @Schema(description = "Список ролей")
     @Builder.Default

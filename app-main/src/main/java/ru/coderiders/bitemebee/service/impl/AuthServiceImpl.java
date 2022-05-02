@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.ERole;
 import ru.coderiders.bitemebee.entity.Role;
 import ru.coderiders.bitemebee.entity.User;
@@ -19,7 +20,7 @@ import ru.coderiders.bitemebee.repository.RoleRepository;
 import ru.coderiders.bitemebee.repository.UserRepository;
 import ru.coderiders.bitemebee.rest.dto.JwtDto;
 import ru.coderiders.bitemebee.rest.dto.LoginDto;
-import ru.coderiders.bitemebee.rest.dto.SignupDto;
+import ru.coderiders.bitemebee.rest.dto.RegisterDto;
 import ru.coderiders.bitemebee.rest.dto.UserDto;
 import ru.coderiders.bitemebee.service.AuthService;
 import ru.coderiders.bitemebee.utils.JwtUtils;
@@ -43,7 +44,8 @@ public class AuthServiceImpl implements AuthService {
     private final UserMapper userMapper;
 
     @Override
-    public JwtDto authenticateUser(@NonNull LoginDto loginDto) {
+    @Transactional
+    public JwtDto login(@NonNull LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -60,7 +62,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserDto registerUser(@NonNull SignupDto signUpDto) {
+    @Transactional
+    public UserDto register(@NonNull RegisterDto signUpDto) {
         if (userRepository.existsByUsername(signUpDto.getUsername())) {
             throw new BadRequestException(USERNAME_ALREADY_EXISTS);
         }
@@ -79,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
                     .build();
             roleRepository.save(roleAdmin);
         }
-        Role userRole = roleRepository.findByName(ERole.ROLE_USER).get();
+        Role userRole = roleRepository.getByName(ERole.ROLE_USER);
         roles.add(userRole);
         user.setRoles(roles);
         return userMapper.toDto(userRepository.save(user));

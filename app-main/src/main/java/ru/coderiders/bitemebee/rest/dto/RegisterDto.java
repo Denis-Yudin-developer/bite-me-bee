@@ -8,15 +8,13 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Collections;
-import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "DTO регистрации")
-public class SignupDto {
+public class RegisterDto {
     @Size(min = 2, max = 15,  message = "Длина имени должна быть в диапозоне от 2 до 15 символов")
     @NotNull(message = "Не указано имя пользователя")
     @Schema(description = "Имя пользователя", example = "userName123")
