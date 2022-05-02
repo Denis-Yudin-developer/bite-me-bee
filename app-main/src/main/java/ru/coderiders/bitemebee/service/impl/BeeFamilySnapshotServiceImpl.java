@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 import ru.coderiders.bitemebee.entity.BeeFamily;
 import ru.coderiders.bitemebee.entity.BeeFamilySnapshot;
@@ -28,6 +29,7 @@ public class BeeFamilySnapshotServiceImpl implements BeeFamilySnapshotService {
     private final BeeFamilySnapshotMapper beeFamilySnapshotMapper;
 
     @Override
+    @Transactional
     public Page<BeeFamilySnapshotDto> getSnapshots(@NonNull Pageable pageable, @NonNull BeeFamilySnapshotRqDto beeFamilySnapshotRqDto) {
         log.debug("Запрос на получение всех снимков пчелиной семьи за период beeFamilySnapshotRqDto = {}",
                 beeFamilySnapshotRqDto);
@@ -41,6 +43,7 @@ public class BeeFamilySnapshotServiceImpl implements BeeFamilySnapshotService {
     }
 
     @Override
+    @Transactional
     public BeeFamilySnapshot createSnapshot(@NonNull BeeFamilySnapshotDto beeFamilySnapshotGeneratorDto) {
         log.debug("Запрос на создание нового снимка пчелиной семьи, beeFamilySnapshotGeneratorDto = {}",
                 beeFamilySnapshotGeneratorDto);

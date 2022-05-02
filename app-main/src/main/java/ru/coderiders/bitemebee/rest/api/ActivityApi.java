@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +34,10 @@ public interface ActivityApi {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ActivityRsDto.class))}),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST")
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED"),
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     Page<ActivityRsDto> getAll(Pageable pageable);
 
     @GetMapping("/{id}")
@@ -44,8 +47,10 @@ public interface ActivityApi {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ActivityRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     ActivityRsDto getById(@PathVariable(name = "id") Long id);
 
     @PostMapping
@@ -54,8 +59,10 @@ public interface ActivityApi {
             @ApiResponse(responseCode = "201", description = "CREATED",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ActivityRsDto.class))}),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST")
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     ResponseEntity<ActivityRsDto> create(@Valid @RequestBody ActivityRqDto activityRqDto);
 
     @PutMapping("/{id}")
@@ -66,8 +73,10 @@ public interface ActivityApi {
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ActivityRsDto.class))}),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     ActivityRsDto update(@PathVariable Long id, @Valid @RequestBody ActivityRqDto activityRqDto);
 
     @DeleteMapping("/{id}")
@@ -75,7 +84,9 @@ public interface ActivityApi {
     @ApiResponses({
             @ApiResponse(responseCode = "202", description = "ACCEPTED"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     ResponseEntity<Void> deleteById(@PathVariable(name = "id") Long id);
 }
