@@ -33,13 +33,13 @@ public class BeeFamilySnapshot {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
     @Column(name = "population_increase", nullable = false)
-    private Integer populationIncrease;
+    private Long populationIncrease;
     @Column(name = "drone_population_increase", nullable = false)
-    private Integer dronePopulationIncrease;
+    private Long dronePopulationIncrease;
     @Column(name = "worker_population_increase", nullable = false)
-    private Integer workerPopulationIncrease;
+    private Long workerPopulationIncrease;
     @Column(name = "queen_population_increase", nullable = false)
-    private Integer queenPopulationIncrease;
+    private Long queenPopulationIncrease;
     @Column(name = "activity", nullable = false)
     private Double activity;
     @Column(name = "mood", nullable = false)
