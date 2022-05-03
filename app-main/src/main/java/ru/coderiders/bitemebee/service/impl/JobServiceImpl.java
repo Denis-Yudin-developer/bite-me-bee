@@ -17,6 +17,7 @@ import ru.coderiders.bitemebee.rest.dto.JobRsDto;
 import ru.coderiders.bitemebee.service.ActivityService;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.JobService;
+import ru.coderiders.bitemebee.service.UserService;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 
 import java.time.Instant;
@@ -31,6 +32,7 @@ public class JobServiceImpl implements JobService {
     private final JobMapper jobMapper;
     private final ActivityService activityService;
     private final HiveService hiveService;
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -55,9 +57,11 @@ public class JobServiceImpl implements JobService {
         log.debug("Запрос на создание новой работы, jobRqDto = {}", jobRqDto);
         var hiveId = jobRqDto.getHiveId();
         var activityId = jobRqDto.getActivityId();
+        var userId = jobRqDto.getUserId();
         try {
             hiveService.getById(hiveId);
             activityService.getById(activityId);
+            userService.getById(userId);
         } catch (NotFoundException e) {
             throw new BadRequestException(e.getMessage());
         }
@@ -65,6 +69,7 @@ public class JobServiceImpl implements JobService {
             throw new BadRequestException(JOB_ALREADY_EXIST);
         }
         Job toCreate = jobMapper.toEntity(jobRqDto);
+        toCreate.setCreatedAt(Instant.now());
         Job created = jobRepository.save(toCreate);
         log.debug("Работа для улья создана, id = {}", hiveId);
         return jobMapper.toDto(created);

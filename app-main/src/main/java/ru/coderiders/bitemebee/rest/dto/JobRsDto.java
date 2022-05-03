@@ -23,10 +23,9 @@ public class JobRsDto {
             example = "Нужно снять мед с улья номер 23", maxLength = 1000)
     private String note;
     @Schema(description = "Идентификатор улья", example = "1")
-    private HiveRsDto hive;
-
-    //TODO поле userId
-
+    private Long hiveId;
+    @Schema(description = "Идентификатор пользователя", example = "1")
+    private UserDto user;
     @NotNull(message = "Не указано время создания работы")
     @Schema(description = "Время создания работы", example = "2022-03-14T18:30:50.630Z")
     private Instant createdAt;
