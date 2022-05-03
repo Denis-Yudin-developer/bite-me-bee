@@ -32,9 +32,9 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     public BeeFamilySnapshotDto createBeeFamilySnapshot(BeeFamily beeFamily) {
         String snapshotTime = Instant.now().toString();
         long dronePopulationIncrease = (long) (((ThreadLocalRandom.current()
-                .nextDouble(0.01, 0.05))) * beeFamily.getDronePopulation() * beeFamily.getDelta()) + 1;
+                .nextDouble(0.008, 0.013)) * beeFamily.getDronePopulation()) * beeFamily.getDelta()) + 1;
         long workerPopulationIncrease = (long) ((ThreadLocalRandom.current()
-                .nextDouble(0.01, 0.05) * beeFamily.getWorkerPopulation()) * beeFamily.getDelta());
+                .nextDouble(0.008, 0.013) * beeFamily.getWorkerPopulation()) * beeFamily.getDelta()) + 1;
         long queenPopulationIncrease = (long) (ThreadLocalRandom.current()
                 .nextDouble(0.00000001, 1.0) * beeFamily.getDelta() * 0.01);
         if (beeFamily.getIsInfected()) {
