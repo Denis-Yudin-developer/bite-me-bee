@@ -10,4 +10,6 @@ public interface UserService extends UserDetailsService {
     Page<UserDto> getAll(@NonNull Pageable pageable);
 
     UserDto getById(@NonNull Long id);
+
+    Long getRandomUserId();
 }

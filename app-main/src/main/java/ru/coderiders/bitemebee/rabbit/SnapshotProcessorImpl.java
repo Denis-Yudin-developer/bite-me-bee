@@ -18,6 +18,7 @@ import ru.coderiders.bitemebee.service.BeeFamilySnapshotService;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.HiveSnapshotService;
 import ru.coderiders.bitemebee.service.JobService;
+import ru.coderiders.bitemebee.service.UserService;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 
@@ -28,11 +29,11 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class SnapshotProcessorImpl implements SnapshotProcessor {
     private final HiveService hiveService;
+    private final UserService userService;
     private final BeeFamilyService beeFamilyService;
     private final JobService jobService;
     private final HiveSnapshotService hiveSnapshotService;
     private final BeeFamilySnapshotService beeFamilySnapshotService;
-
     private final BeeFamilyRepository beeFamilyRepository;
 
     @Override
@@ -50,7 +51,7 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
                         .activityId(3L)
                         .note("Улей перегрет")
                         .hiveId(hiveSnapshot.getHiveId())
-                        .createdAt(Instant.now())
+                        .userId(userService.getRandomUserId())
                         .build();
                 jobService.create(jobRqDto);
             }
@@ -63,7 +64,7 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
                     .activityId(1L)
                     .note("Улей переполнен мёдом")
                     .hiveId(hiveSnapshot.getHiveId())
-                    .createdAt(Instant.now())
+                    .userId(userService.getRandomUserId())
                     .build();
             jobService.create(jobRqDto);
         }
@@ -84,7 +85,7 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
                         .activityId(4L)
                         .note("Семья заболела")
                         .hiveId(hiveId)
-                        .createdAt(Instant.now())
+                        .userId(userService.getRandomUserId())
                         .build();
                 jobService.create(jobRqDto);
             }
@@ -93,7 +94,7 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
                         .activityId(2L)
                         .note("В семья родилась лишняя матка")
                         .hiveId(hiveId)
-                        .createdAt(Instant.now())
+                        .userId(userService.getRandomUserId())
                         .build();
                 jobService.create(jobRqDto);
             }
