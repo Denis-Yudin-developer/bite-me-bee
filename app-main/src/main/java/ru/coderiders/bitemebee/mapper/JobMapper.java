@@ -30,7 +30,7 @@ public class JobMapper {
                 .addMappings(mapping -> mapping.skip(Job::setUser))
                 .setPostConverter(toEntityPostConverter());
         modelMapper.createTypeMap(Job.class, JobRsDto.class)
-                .addMappings(mapping -> mapping.skip(JobRsDto::setHive))
+                .addMappings(mapping -> mapping.skip(JobRsDto::setHiveId))
                 .setPostConverter(toDtoPostConverter());
     }
 
@@ -69,9 +69,9 @@ public class JobMapper {
             var jobDst = context.getDestination();
 
             Optional.of(jobSrc.getHive().getId())
-                    .ifPresent(jobDst::setHive);
+                    .ifPresent(jobDst::setHiveId);
 
-            return  jobDst;
+            return jobDst;
         };
     }
 }

@@ -69,6 +69,7 @@ public class JobServiceImpl implements JobService {
             throw new BadRequestException(JOB_ALREADY_EXIST);
         }
         Job toCreate = jobMapper.toEntity(jobRqDto);
+        toCreate.setCreatedAt(Instant.now());
         Job created = jobRepository.save(toCreate);
         log.debug("Работа для улья создана, id = {}", hiveId);
         return jobMapper.toDto(created);
