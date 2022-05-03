@@ -22,6 +22,11 @@ public class HiveController implements HiveApi {
     }
 
     @Override
+    public void clearHoney(Long id) {
+        hiveService.clearHoney(id);
+    }
+
+    @Override
     public void updateOverheatedStatus(Long id, Boolean isOverheated) {
         hiveService.updateOverheatedStatus(id, isOverheated);
     }

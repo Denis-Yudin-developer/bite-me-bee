@@ -1,6 +1,7 @@
 package ru.coderiders.generator.service;
 
 import lombok.NonNull;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
 import ru.coderiders.commons.rest.dto.GeneratorFamilyRqDto;
 import ru.coderiders.generator.entity.BeeFamily;
@@ -19,5 +20,7 @@ public interface BeeFamilyService {
     void updateInfectedStatus(@NonNull Long id, @NonNull Boolean isInfected);
 
     void updateDelta(@NonNull Long id, @NonNull Double delta);
+
+    void removeExtraQueen(@NonNull Long id);
 }
 

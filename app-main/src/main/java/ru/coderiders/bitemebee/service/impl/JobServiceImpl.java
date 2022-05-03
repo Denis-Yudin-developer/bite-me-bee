@@ -66,7 +66,9 @@ public class JobServiceImpl implements JobService {
             throw new BadRequestException(e.getMessage());
         }
         if (!jobRepository.findByCompletedJobs(hiveId, activityId).isEmpty()){
-            throw new BadRequestException(JOB_ALREADY_EXIST);
+            log.warn("Работа уже создана, activityId = {}", activityId);
+            Job alreadyCreated = jobRepository.findByHiveIdAndActivity_Id(hiveId, activityId);
+            return jobMapper.toDto(alreadyCreated);
         }
         Job toCreate = jobMapper.toEntity(jobRqDto);
         toCreate.setCreatedAt(Instant.now());
