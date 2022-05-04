@@ -85,6 +85,18 @@ public class HiveServiceImpl implements HiveService {
 
     @Override
     @Transactional
+    public void clearHoney(@NonNull Long id) {
+        log.debug("Запрос на уборку мёда улья в генераторе, id = {}", id);
+        hiveRepository.findById(id)
+                .map(found -> {
+                    found.setCurrentHoneyAmount(0d);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(HIVE_NOT_FOUND, id)));
+    }
+
+    @Override
+    @Transactional
     public void updateOverheatedStatus(@NonNull Long id, @NonNull Boolean isOverheated) {
         log.debug("Запрос на изменение перегрева улья в генераторе, id = {}", id);
         hiveRepository.findById(id)

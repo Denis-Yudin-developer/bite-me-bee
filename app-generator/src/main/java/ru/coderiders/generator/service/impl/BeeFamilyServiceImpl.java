@@ -141,4 +141,15 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
                 })
                 .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
     }
+
+    @Override
+    public void removeExtraQueens(@NonNull Long id) {
+        log.debug("Запрос на удаление лишних маток в семье в генераторе, id = {}", id);
+        beeFamilyRepository.findById(id)
+                .map(found -> {
+                    found.setQueenPopulation(1L);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
+    }
 }

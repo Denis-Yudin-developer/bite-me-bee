@@ -24,4 +24,7 @@ public interface BeeFamilyFeignApi {
 
     @PutMapping("/{id}/change_delta")
     void updateDelta(@PathVariable Long id, @RequestBody Double delta);
+
+    @PutMapping("/{id}/remove_extra_queens")
+    void removeExtraQueens(@PathVariable Long id);
 }

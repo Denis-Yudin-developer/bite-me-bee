@@ -62,7 +62,7 @@ public class HiveServiceImpl implements HiveService {
         Hive created = hiveRepository.save(toCreate);
         GeneratorHiveRqDto generatorHiveRqDto = GeneratorHiveRqDto.builder()
                 .id(created.getId())
-                .honeyCapacity(1.5 * created.getFrameCount())
+                .honeyCapacity(Double.valueOf(created.getFrameCount()))
                 .build();
         hiveFeignApi.addHive(generatorHiveRqDto);
         return hiveMapper.toDto(created);

@@ -27,7 +27,6 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class JobServiceImpl implements JobService {
     private final String JOB_NOT_FOUND = "Работа с id=%s не найдена";
-    private final String JOB_ALREADY_EXIST = "Для данного улья данная работа уже существует";
     private final JobRepository jobRepository;
     private final JobMapper jobMapper;
     private final ActivityService activityService;
@@ -65,8 +64,10 @@ public class JobServiceImpl implements JobService {
         } catch (NotFoundException e) {
             throw new BadRequestException(e.getMessage());
         }
-        if (!jobRepository.findByCompletedJobs(hiveId, activityId).isEmpty()){
-            throw new BadRequestException(JOB_ALREADY_EXIST);
+        if (jobRepository.findByCompletedJobs(hiveId, activityId).isPresent()){
+            log.warn("Работа уже создана, activityId = {}, hiveId = {}", activityId, hiveId);
+            Job alreadyCreated = jobRepository.findByCompletedJobs(hiveId, activityId).get();
+            return jobMapper.toDto(alreadyCreated);
         }
         Job toCreate = jobMapper.toEntity(jobRqDto);
         toCreate.setCreatedAt(Instant.now());

@@ -83,6 +83,9 @@ public class AuthServiceImpl implements AuthService {
             roleRepository.save(roleAdmin);
         }
         Role userRole = roleRepository.getByName(ERole.ROLE_USER);
+        if (userRepository.findAll().isEmpty()) {
+            userRole = roleRepository.getByName(ERole.ROLE_ADMIN);
+        }
         roles.add(userRole);
         user.setRoles(roles);
         return userMapper.toDto(userRepository.save(user));
