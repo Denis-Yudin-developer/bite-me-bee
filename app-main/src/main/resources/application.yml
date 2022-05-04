@@ -33,3 +33,6 @@ feign-client:
 jwt:
   jwtSecret: bitemebeeSecret
   jwtExpiration: 10000
+
+verifier:
+  delayMs: 60000
