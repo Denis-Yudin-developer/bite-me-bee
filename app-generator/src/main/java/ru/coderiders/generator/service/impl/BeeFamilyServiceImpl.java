@@ -143,8 +143,8 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     }
 
     @Override
-    public void removeExtraQueen(@NonNull Long id) {
-        log.debug("Запрос на удаление лишней королевы в семье в генераторе, id = {}", id);
+    public void removeExtraQueens(@NonNull Long id) {
+        log.debug("Запрос на удаление лишних маток в семье в генераторе, id = {}", id);
         beeFamilyRepository.findById(id)
                 .map(found -> {
                     found.setQueenPopulation(1L);

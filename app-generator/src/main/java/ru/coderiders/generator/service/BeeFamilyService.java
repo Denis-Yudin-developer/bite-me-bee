@@ -21,6 +21,6 @@ public interface BeeFamilyService {
 
     void updateDelta(@NonNull Long id, @NonNull Double delta);
 
-    void removeExtraQueen(@NonNull Long id);
+    void removeExtraQueens(@NonNull Long id);
 }
 

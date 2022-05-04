@@ -32,7 +32,7 @@ public class BeeFamilyController implements BeeFamilyApi {
     }
 
     @Override
-    public void removeExtraQueen(Long id) {
-        beeFamilyService.removeExtraQueen(id);
+    public void removeExtraQueens(Long id) {
+        beeFamilyService.removeExtraQueens(id);
     }
 }
