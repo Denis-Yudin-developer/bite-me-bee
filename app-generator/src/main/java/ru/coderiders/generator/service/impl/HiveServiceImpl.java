@@ -34,7 +34,7 @@ public class HiveServiceImpl implements HiveService {
         WeatherDto weatherDto = openWeatherFeignClient.getWeather();
         double co2 = ThreadLocalRandom.current().nextDouble(100.0, 1000.0);
         double heatFactor = hive.getIsOverheated() ? 5.0 : 0.0;
-        double chillFactor = hive.getIsOverheated() ? -5.0 : 0.0;
+        double chillFactor = hive.getIsChilled() ? -5.0 : 0.0;
         double temperature = ((weatherDto.getMain().getTemp() / 10) + 30 + heatFactor + chillFactor);
         double healthFactor = hive.getBeeFamily().getIsInfected() ? 0.2 : 1.0;
         double honeyIncrease =
@@ -109,6 +109,7 @@ public class HiveServiceImpl implements HiveService {
     }
 
     @Override
+    @Transactional
     public void updateChilledStatus(@NonNull Long id, @NonNull Boolean isChilled) {
         log.debug("Запрос на изменение охлаждения улья в генераторе, id = {}", id);
         hiveRepository.findById(id)

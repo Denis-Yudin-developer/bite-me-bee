@@ -26,6 +26,11 @@ public interface GenPanelApi {
     @PreAuthorize("hasRole('ADMIN')")
     void overheatHive(@PathVariable Long id);
 
+    @PutMapping("/{id}/chill")
+    @Operation(description = "Заморозить улей", method = "PUT")
+    @PreAuthorize("hasRole('ADMIN')")
+    void chillHive(@PathVariable Long id);
+
     @PutMapping("/{id}/infect")
     @Operation(description = "Заразить семью", method = "PUT")
     @PreAuthorize("hasRole('ADMIN')")

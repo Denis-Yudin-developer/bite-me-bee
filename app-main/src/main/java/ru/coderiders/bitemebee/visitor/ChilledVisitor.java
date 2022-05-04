@@ -16,7 +16,7 @@ public class ChilledVisitor implements BeeTypeVisitor {
 
     @Override
     public void visit(BeeType beeType, HiveSnapshotDto hiveSnapshot) {
-        if(beeType.getMaxTemperature() < hiveSnapshot.getTemperature()) {
+        if(beeType.getMinTemperature() > hiveSnapshot.getTemperature()) {
             JobRqDto jobRqDto = JobRqDto.builder()
                     .activityId(5L)
                     .note("Температура в улье ниже необходимой")
