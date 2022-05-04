@@ -44,6 +44,7 @@ services:
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=bitemebee
+      - DB_SCHEMA=public
       - DB_USER=bitemebee
       - DB_PASS=bitemebee
       - RABBIT_HOST=rabbitmq
@@ -66,7 +67,8 @@ services:
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_NAME=generator
+      - DB_NAME=bitemebee
+      - DB_SCHEMA=public
       - DB_USER=bitemebee
       - DB_PASS=bitemebee
       - RABBIT_HOST=rabbitmq

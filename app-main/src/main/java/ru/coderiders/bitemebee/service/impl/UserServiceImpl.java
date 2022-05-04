@@ -17,8 +17,6 @@ import ru.coderiders.bitemebee.rest.dto.UserDto;
 import ru.coderiders.bitemebee.service.UserService;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
-import java.util.Random;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -46,9 +44,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Long getRandomUserId() {
-        Random random = new Random();
-        return random.nextLong(userRepository.findAll().size()) + 1;
+        return userRepository.findAll().stream().findAny().get().getId();
     }
 
     @Override
