@@ -14,7 +14,6 @@ import ru.coderiders.bitemebee.mapper.BeeTypeMapper;
 import ru.coderiders.bitemebee.repository.BeeTypeRepository;
 import ru.coderiders.bitemebee.rest.dto.BeeTypeRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeTypeRsDto;
-import ru.coderiders.bitemebee.rest.dto.ScheduleRqDto;
 import ru.coderiders.bitemebee.rest.dto.ScheduleRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
 import ru.coderiders.bitemebee.service.BeeTypeService;
@@ -74,13 +73,8 @@ public class BeeTypeServiceImpl implements BeeTypeService {
         BeeType created = beeTypeRepository.save(toCreate);
         BeeTypeRsDto beeTypeRsDto = beeTypeMapper.toDto(created);
         List<ScheduleRsDto> schedules = beeTypeRqDto.getSchedules().stream()
-                .map(schedule -> {
-                    ScheduleRqDto scheduleToCreate = ScheduleRqDto.builder()
-                            .activityId(schedule.getActivityId())
-                            .intervalInMinutes(schedule.getIntervalInMinutes())
-                            .build();
-                    return scheduleService.create(toCreate.getId(), scheduleToCreate);
-                }).toList();
+                .map(schedule -> scheduleService.create(toCreate.getId(), schedule))
+                .toList();
         beeTypeRsDto.setSchedules(schedules);
         return beeTypeRsDto;
     }
