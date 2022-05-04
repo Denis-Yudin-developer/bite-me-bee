@@ -33,7 +33,6 @@ import java.util.Optional;
 @EnableScheduling
 public class JobServiceImpl implements JobService {
     private final String JOB_NOT_FOUND = "Работа с id=%s не найдена";
-    private final String JOB_ALREADY_EXIST = "Для данного улья есть открытая работа";
     private final String PLANNED_JOB_CREATED = "Задача создана по расписанию";
     private final JobRepository jobRepository;
     private final JobMapper jobMapper;
@@ -120,41 +119,47 @@ public class JobServiceImpl implements JobService {
         beeFamilyService.getAllEntities().stream()
                 .filter(BeeFamily::getIsAlive)
                 .forEach(beeFamily -> {
-                    var hiveId = beeFamily.getHive().getId();
+                    long hiveId = beeFamily.getHive().getId();
                     beeFamily.getBeeType().getSchedules()
                             .forEach(schedule -> {
-                                var interval = schedule.getIntervalInMinutes();
-                                var activityId = schedule.getActivity().getId();
+                                long interval = schedule.getIntervalInMinutes();
+                                long activityId = schedule.getActivity().getId();
                                 getHiveLastJob(hiveId, schedule.getActivity().getId())
                                         .ifPresentOrElse(job -> {
                                             if (Instant.now().compareTo(job.getClosedAt().plusSeconds(interval * 60)) > 0) {
-                                                log.debug("Превышен интервал между работами");
+                                                log.debug("Подготовка к созданию работы: превышен интервал между плановыми работами");
                                                 JobRqDto newJob = JobRqDto.builder()
                                                         .activityId(activityId)
                                                         .hiveId(hiveId)
                                                         .note(PLANNED_JOB_CREATED)
-                                                        .userId(1L)
+                                                        .userId(userService.getRandomUserId())
                                                         .build();
                                                 try {
                                                     create(newJob);
+                                                    log.debug("Работа создана: {}", newJob);
                                                 } catch (BadRequestException e) {
-                                                    log.warn("Ошибка при создании задачи по расписанию: {}", e.getMessage());
+                                                    log.warn("Ошибка при создании работы по расписанию: {}", e.getMessage());
                                                 }
+                                            } else {
+                                                log.debug("Работа не создана, т.к. интервал между работами не превышен");
                                             }
                                         }, () -> {
-                                            log.debug("Работы не было. Ориентируемся на время подселения пчелиной семьи");
-                                            if (Instant.now().compareTo(beeFamily.getCreatedAt()) > 0) {
+                                            log.debug("Подготовка к созданию работы: ориентируемся на время создания пчелиной семьи");
+                                            if (Instant.now().compareTo(beeFamily.getCreatedAt().plusSeconds(interval * 60)) > 0) {
                                                 JobRqDto newJob = JobRqDto.builder()
                                                         .activityId(activityId)
                                                         .hiveId(hiveId)
                                                         .note(PLANNED_JOB_CREATED)
-                                                        .userId(1L)
+                                                        .userId(userService.getRandomUserId())
                                                         .build();
                                                 try {
                                                     create(newJob);
+                                                    log.debug("Работа создана: {}", newJob);
                                                 } catch (BadRequestException e) {
-                                                    log.warn("Ошибка при создании задачи по расписанию: {}", e.getMessage());
+                                                    log.warn("Ошибка при создании работы по расписанию: {}", e.getMessage());
                                                 }
+                                            } else {
+                                                log.debug("Работа не создана, т.к. интервал выполнения меньше интервала, прошедшего с момента подселения семьи");
                                             }
                                         });
                             });
