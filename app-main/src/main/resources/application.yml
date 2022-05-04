@@ -18,6 +18,10 @@ spring:
     host: ${RABBIT_HOST:localhost}
     port: 5672
 
+logging:
+  level:
+    ru.coderiders: debug
+
 server:
   port: ${SELF_PORT:8080}
 
