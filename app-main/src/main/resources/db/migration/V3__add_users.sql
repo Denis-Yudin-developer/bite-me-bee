@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS users (
 ALTER TABLE IF EXISTS users
     OWNER to bitemebee;
 
-INSERT INTO public.users (id, "password", username) VALUES
-    (1, '$2a$10$RX5M1cZanK0BiRhBef5qrub2cxkrt02MTqNFBlDSmgeUHrXUtZzNC', 'admin');
+INSERT INTO public.users ("password", username) VALUES
+    ('$2a$10$RX5M1cZanK0BiRhBef5qrub2cxkrt02MTqNFBlDSmgeUHrXUtZzNC', 'admin');

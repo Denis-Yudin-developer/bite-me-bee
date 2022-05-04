@@ -9,10 +9,10 @@ CREATE TABLE IF NOT EXISTS activities (
 ALTER TABLE IF EXISTS activities
     OWNER to bitemebee;
 
-INSERT INTO activities (is_planned, title, id) VALUES
-    (false, 'Собрать мёд', 1),
-    (false, 'Выселить лишнюю матку', 2),
-    (false, 'Проветрить улей', 3),
-    (false, 'Вылечить пчелиную семью', 4),
-    (false, 'Утеплить улей', 5),
-    (true, 'Убрать мусор внутри улья', 6);
+INSERT INTO activities (is_planned, title) VALUES
+    (false, 'Собрать мёд'),
+    (false, 'Выселить лишнюю матку'),
+    (false, 'Проветрить улей'),
+    (false, 'Вылечить пчелиную семью'),
+    (false, 'Утеплить улей'),
+    (true, 'Убрать мусор внутри улья');

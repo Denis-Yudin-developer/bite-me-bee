@@ -9,6 +9,3 @@ CREATE TABLE IF NOT EXISTS hives (
 
 ALTER TABLE IF EXISTS hives
     OWNER TO bitemebee;
-
---INSERT INTO hives (id, frame_count, honey_amount, "name") VALUES
---    (1, 8, 8.0, 'Большой жуж');
