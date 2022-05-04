@@ -3,9 +3,12 @@ package ru.coderiders.bitemebee.service;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import ru.coderiders.bitemebee.entity.BeeFamily;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRqDto;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
+
+import java.util.List;
 
 public interface BeeFamilyService {
     BeeFamilyRsDto create(@NonNull BeeFamilyRqDto beeFamilyRqDto);
@@ -25,4 +28,6 @@ public interface BeeFamilyService {
     boolean beeFamilyExists(@NonNull Long id);
 
     void deleteByBeeType(@NonNull Long beeTypeId);
+
+    List<BeeFamily> getAllEntities();
 }

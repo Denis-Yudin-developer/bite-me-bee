@@ -17,4 +17,6 @@ public interface JobService {
     JobRsDto update(@NonNull Long id, @NonNull JobNoteRqDto jobNoteRqDto);
 
     void complete(@NonNull Long id);
+
+    void verifyPlannedJobs();
 }
