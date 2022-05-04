@@ -7,6 +7,6 @@ CREATE TABLE IF NOT EXISTS roles (
 ALTER TABLE IF EXISTS roles
     OWNER to bitemebee;
 
-INSERT INTO roles (id, "name") VALUES
-    (1, 'ROLE_USER'),
-    (2, 'ROLE_ADMIN');
+INSERT INTO roles ("name") VALUES
+    ('ROLE_USER'),
+    ('ROLE_ADMIN');

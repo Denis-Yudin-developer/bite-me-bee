@@ -22,5 +22,5 @@ CREATE TABLE IF NOT EXISTS bee_types (
 ALTER TABLE IF EXISTS bee_types
     OWNER TO bitemebee;
 
-INSERT INTO bee_types (id, is_deleted, aggression_level, cold_resistance, description, disease_resistance, egg_productivity, honey_productivity, max_co2, max_humidity, max_temperature, min_co2, min_humidity, min_temperature, roiling_level, title)
-    VALUES (1, false, 0.9, 0.9, 'Люди разводят медоносных пчёл для получения продуктов пчеловодства: воска, мёда и других.', 0.9, 0.9, 0.9, 640, 83, 34, 310, 75, 27, 0.9, 'Медоносная пчела');
+INSERT INTO bee_types (is_deleted, aggression_level, cold_resistance, description, disease_resistance, egg_productivity, honey_productivity, max_co2, max_humidity, max_temperature, min_co2, min_humidity, min_temperature, roiling_level, title)
+    VALUES (false, 0.9, 0.9, 'Люди разводят медоносных пчёл для получения продуктов пчеловодства: воска, мёда и других.', 0.9, 0.9, 0.9, 640, 83, 34, 310, 75, 27, 0.9, 'Медоносная пчела');

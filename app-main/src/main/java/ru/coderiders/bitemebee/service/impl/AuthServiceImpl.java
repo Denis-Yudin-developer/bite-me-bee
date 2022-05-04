@@ -72,20 +72,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(encoder.encode(signUpDto.getPassword()))
                 .build();
         Set<Role> roles = new HashSet<>();
-        if(roleRepository.findAll().size() == 0) {
-            Role roleUser = Role.builder()
-                    .name(ERole.ROLE_USER)
-                    .build();
-            roleRepository.save(roleUser);
-            Role roleAdmin = Role.builder()
-                    .name(ERole.ROLE_ADMIN)
-                    .build();
-            roleRepository.save(roleAdmin);
-        }
         Role userRole = roleRepository.getByName(ERole.ROLE_USER);
-        if (userRepository.findAll().isEmpty()) {
-            userRole = roleRepository.getByName(ERole.ROLE_ADMIN);
-        }
         roles.add(userRole);
         user.setRoles(roles);
         return userMapper.toDto(userRepository.save(user));
