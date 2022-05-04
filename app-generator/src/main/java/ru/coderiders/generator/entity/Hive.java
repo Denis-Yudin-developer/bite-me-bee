@@ -34,6 +34,9 @@ public class Hive {
     @Column(name = "is_overheated", nullable = false)
     private Boolean isOverheated = false;
     @Builder.Default
+    @Column(name = "is_chilled", nullable = false)
+    private Boolean isChilled = false;
+    @Builder.Default
     @Column(name = "current_honey_amount", nullable = false)
     private Double currentHoneyAmount = 0D;
     @Column(name = "honey_capacity", nullable = false)

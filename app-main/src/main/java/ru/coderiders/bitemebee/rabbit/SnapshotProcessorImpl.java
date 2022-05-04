@@ -19,6 +19,7 @@ import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.HiveSnapshotService;
 import ru.coderiders.bitemebee.service.JobService;
 import ru.coderiders.bitemebee.service.UserService;
+import ru.coderiders.bitemebee.visitor.LinkedVisitor;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
 
@@ -36,6 +37,8 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
     private final BeeFamilySnapshotService beeFamilySnapshotService;
     private final BeeFamilyRepository beeFamilyRepository;
 
+    private final LinkedVisitor linkedVisitor;
+
     @Override
     @Transactional
     public void processHiveSnapshot(@NonNull HiveSnapshotDto hiveSnapshot) {
@@ -46,15 +49,7 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
         }
         beeFamilyRepository.findByHiveIdAndIsAliveTrue(hiveId).ifPresent(beeFamily -> {
             BeeType beeType = beeFamily.getBeeType();
-            if(beeType.getMaxTemperature() < hiveSnapshot.getTemperature()) {
-                JobRqDto jobRqDto = JobRqDto.builder()
-                        .activityId(3L)
-                        .note("Улей перегрет")
-                        .hiveId(hiveSnapshot.getHiveId())
-                        .userId(userService.getRandomUserId())
-                        .build();
-                jobService.create(jobRqDto);
-            }
+            linkedVisitor.visit(beeType, hiveSnapshot);
         });
         HiveSnapshot created = hiveSnapshotService.createSnapshot(hiveSnapshot);
         hiveService.updateHoneyAmount(hiveId, created.getHoneyIncrease());

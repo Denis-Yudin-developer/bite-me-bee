@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 import ru.coderiders.bitemebee.entity.BeeFamily;
+import ru.coderiders.bitemebee.entity.BeeType;
 import ru.coderiders.bitemebee.entity.Job;
 import ru.coderiders.bitemebee.mapper.JobMapper;
+import ru.coderiders.bitemebee.repository.BeeFamilyRepository;
 import ru.coderiders.bitemebee.repository.JobRepository;
 import ru.coderiders.bitemebee.rest.dto.JobNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.JobRqDto;
@@ -22,6 +24,8 @@ import ru.coderiders.bitemebee.service.BeeFamilyService;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.JobService;
 import ru.coderiders.bitemebee.service.UserService;
+import ru.coderiders.commons.rest.api.generator.BeeFamilyFeignApi;
+import ru.coderiders.commons.rest.api.generator.HiveFeignApi;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 
 import java.time.Instant;
@@ -35,11 +39,14 @@ public class JobServiceImpl implements JobService {
     private final String JOB_NOT_FOUND = "Работа с id=%s не найдена";
     private final String PLANNED_JOB_CREATED = "Задача создана по расписанию";
     private final JobRepository jobRepository;
+    private final BeeFamilyRepository beeFamilyRepository;
     private final JobMapper jobMapper;
     private final ActivityService activityService;
     private final HiveService hiveService;
     private final UserService userService;
     private final BeeFamilyService beeFamilyService;
+    private final HiveFeignApi hiveFeignApi;
+    private final BeeFamilyFeignApi beeFamilyFeignApi;
 
     @Override
     @Transactional
@@ -105,6 +112,30 @@ public class JobServiceImpl implements JobService {
                 ifPresentOrElse(found -> {
                             found.setIsCompleted(true);
                             found.setClosedAt(Instant.now());
+                            Long hiveId = found.getHive().getId();
+                            beeFamilyRepository.findByHiveIdAndIsAliveTrue(hiveId).ifPresent(beeFamily -> {
+                                Long beeFamilyId = beeFamily.getId();
+                                int activityId = found.getActivity().getId().intValue();
+                                switch (activityId) {
+                                    case 1: {
+                                        hiveService.updateHoneyAmount(hiveId, -found.getHive().getHoneyAmount());
+                                        hiveFeignApi.clearHoney(hiveId);
+                                    }
+                                    case 2: {
+                                        beeFamilyService.removeExtraQueens(beeFamilyId);
+                                        beeFamilyFeignApi.removeExtraQueens(beeFamilyId);
+                                    }
+                                    case 3: {
+                                        hiveFeignApi.updateOverheatedStatus(hiveId, false);
+                                    }
+                                    case 4: {
+                                        beeFamilyFeignApi.updateInfectedStatus(beeFamilyId, false);
+                                    }
+                                    case 5: {
+                                        hiveFeignApi.updateChilledStatus(hiveId, false);
+                                    }
+                                }
+                            });
                         },
                         () -> {
                             throw new NotFoundException(String.format(JOB_NOT_FOUND, id));

@@ -171,4 +171,16 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     public List<BeeFamily> getAllEntities() {
         return beeFamilyRepository.findAll();
     }
+
+    @Override
+    @Transactional
+    public void removeExtraQueens(@NonNull Long id) {
+        log.debug("Запрос на удаление лишних маток в семье, id = {}", id);
+        beeFamilyRepository.findById(id)
+                .map(found -> {
+                    found.setQueenPopulation(1L);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
+    }
 }

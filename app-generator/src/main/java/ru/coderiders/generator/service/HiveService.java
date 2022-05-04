@@ -22,6 +22,8 @@ public interface HiveService {
 
     void updateOverheatedStatus(@NonNull Long id, @NonNull Boolean isOverheated);
 
+    void updateChilledStatus(@NonNull Long id, @NonNull Boolean isChilled);
+
     void saveFamily(@NonNull Long id, @NonNull BeeFamily beeFamily);
 
     void releaseFamily(@NonNull Long id);
