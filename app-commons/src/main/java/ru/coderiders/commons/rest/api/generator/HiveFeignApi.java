@@ -18,6 +18,9 @@ public interface HiveFeignApi {
     @PutMapping("/{id}/change_delta")
     void updateDelta(@PathVariable Long id, @RequestBody Double delta);
 
+    @PutMapping("/{id}/clear_honey")
+    void clearHoney(@PathVariable Long id);
+
     @PostMapping("/{id}/overheat")
     void updateOverheatedStatus(@PathVariable Long id, @RequestBody Boolean isOverheated);
 }

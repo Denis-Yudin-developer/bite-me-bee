@@ -30,4 +30,9 @@ public class BeeFamilyController implements BeeFamilyApi {
     public void updateDelta(Long id, Double delta) {
         beeFamilyService.updateDelta(id, delta);
     }
+
+    @Override
+    public void removeExtraQueens(Long id) {
+        beeFamilyService.removeExtraQueens(id);
+    }
 }
