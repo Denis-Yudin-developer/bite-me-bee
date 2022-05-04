@@ -167,4 +167,8 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         log.debug("Запрос на проверку существование пчелиной семьи по id = {}", id);
         return beeFamilyRepository.existsById(id);
     }
+
+    public List<BeeFamily> getAllEntities() {
+        return beeFamilyRepository.findAll();
+    }
 }
