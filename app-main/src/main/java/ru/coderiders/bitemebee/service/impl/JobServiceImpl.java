@@ -5,9 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
+import ru.coderiders.bitemebee.entity.BeeFamily;
 import ru.coderiders.bitemebee.entity.Job;
 import ru.coderiders.bitemebee.mapper.JobMapper;
 import ru.coderiders.bitemebee.repository.JobRepository;
@@ -15,24 +18,29 @@ import ru.coderiders.bitemebee.rest.dto.JobNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.JobRqDto;
 import ru.coderiders.bitemebee.rest.dto.JobRsDto;
 import ru.coderiders.bitemebee.service.ActivityService;
+import ru.coderiders.bitemebee.service.BeeFamilyService;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.JobService;
 import ru.coderiders.bitemebee.service.UserService;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@EnableScheduling
 public class JobServiceImpl implements JobService {
     private final String JOB_NOT_FOUND = "Работа с id=%s не найдена";
-    private final String JOB_ALREADY_EXIST = "Для данного улья данная работа уже существует";
+    private final String JOB_ALREADY_EXIST = "Для данного улья есть открытая работа";
+    private final String PLANNED_JOB_CREATED = "Задача создана по расписанию";
     private final JobRepository jobRepository;
     private final JobMapper jobMapper;
     private final ActivityService activityService;
     private final HiveService hiveService;
     private final UserService userService;
+    private final BeeFamilyService beeFamilyService;
 
     @Override
     @Transactional
@@ -61,7 +69,6 @@ public class JobServiceImpl implements JobService {
         try {
             hiveService.getById(hiveId);
             activityService.getById(activityId);
-            userService.getById(userId);
         } catch (NotFoundException e) {
             throw new BadRequestException(e.getMessage());
         }
@@ -100,5 +107,58 @@ public class JobServiceImpl implements JobService {
                         () -> {
                             throw new NotFoundException(String.format(JOB_NOT_FOUND, id));
                         });
+    }
+
+    @Override
+    @Transactional
+    @Scheduled(fixedRateString = "${verifier.delayMs:60000}")
+    public void verifyPlannedJobs() {
+        log.debug("Запущен процесс создания плановых работ");
+        beeFamilyService.getAllEntities().stream()
+                .filter(BeeFamily::getIsAlive)
+                .forEach(beeFamily -> {
+                    var hiveId = beeFamily.getHive().getId();
+                    beeFamily.getBeeType().getSchedules()
+                            .forEach(schedule -> {
+                                var interval = schedule.getIntervalInMinutes();
+                                var activityId = schedule.getActivity().getId();
+                                getHiveLastJob(hiveId, schedule.getActivity().getId())
+                                        .ifPresentOrElse(job -> {
+                                            if (Instant.now().compareTo(job.getClosedAt().plusSeconds(interval * 60)) > 0) {
+                                                log.debug("Превышен интервал между работами");
+                                                JobRqDto newJob = JobRqDto.builder()
+                                                        .activityId(activityId)
+                                                        .hiveId(hiveId)
+                                                        .note(PLANNED_JOB_CREATED)
+                                                        .userId(1L)
+                                                        .build();
+                                                try {
+                                                    create(newJob);
+                                                } catch (BadRequestException e) {
+                                                    log.warn("Ошибка при создании задачи по расписанию: {}", e.getMessage());
+                                                }
+                                            }
+                                        }, () -> {
+                                            log.debug("Работы не было. Ориентируемся на время подселения пчелиной семьи");
+                                            if (Instant.now().compareTo(beeFamily.getCreatedAt()) > 0) {
+                                                JobRqDto newJob = JobRqDto.builder()
+                                                        .activityId(activityId)
+                                                        .hiveId(hiveId)
+                                                        .note(PLANNED_JOB_CREATED)
+                                                        .userId(1L)
+                                                        .build();
+                                                try {
+                                                    create(newJob);
+                                                } catch (BadRequestException e) {
+                                                    log.warn("Ошибка при создании задачи по расписанию: {}", e.getMessage());
+                                                }
+                                            }
+                                        });
+                            });
+                });
+    }
+
+    private Optional<Job> getHiveLastJob(@NonNull Long hiveId, @NonNull Long activityId) {
+        return jobRepository.findLastJob(hiveId, activityId);
     }
 }
