@@ -2,18 +2,20 @@ package ru.coderiders.bitemebee.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.coderiders.bitemebee.rest.api.impl.HiveController;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
 import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.HiveSnapshotService;
 import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
+import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
 
 import java.util.Arrays;
@@ -35,7 +37,9 @@ import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_DTO_1;
 import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_DTO_2;
 import static ru.coderiders.bitemebee.data.HiveSnapshotData.HIVE_SNAPSHOT_RQ_DTO_1;
 
-@WebMvcTest(HiveController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@WithMockUser(roles = "ADMIN")
 public class HiveControllerTest {
     @MockBean
     private HiveService hiveService;
@@ -114,7 +118,7 @@ public class HiveControllerTest {
 
     @Test
     public void create_validData_returnCreated() throws Exception {
-        //when(hiveService.create(HIVE_RQ_DTO_1)).thenReturn(HIVE_RS_DTO_1);
+        when(hiveService.create(HIVE_RQ_DTO_1)).thenReturn(HIVE_RS_DTO_1);
         mockMvc.perform(post("/api/hives/")
                         .content(toJsonString(HIVE_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,18 +129,18 @@ public class HiveControllerTest {
                 .andExpect(jsonPath("$.beeFamilies[0].isAlive").isBoolean())
                 .andExpect(jsonPath("$.beeFamilies[0].beeType.title")
                         .value("Медоносная пчела"));
-       // verify(hiveService, times(1)).create(HIVE_RQ_DTO_1);
+        verify(hiveService, times(1)).create(HIVE_RQ_DTO_1);
     }
 
     @Test
     public void create_invalidData_returnBadRequest() throws Exception {
-      //  when(hiveService.create(HIVE_RQ_DTO_1))
-      //          .thenThrow(new BadRequestException("Ошибка в теле запроса при добавлении улья"));
+        when(hiveService.create(HIVE_RQ_DTO_1))
+                .thenThrow(new BadRequestException("Ошибка в теле запроса при добавлении улья"));
         mockMvc.perform(post("/api/hives/")
                         .content(toJsonString(HIVE_RQ_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-     //   verify(hiveService, times(1)).create(HIVE_RQ_DTO_1);
+        verify(hiveService, times(1)).create(HIVE_RQ_DTO_1);
     }
 }

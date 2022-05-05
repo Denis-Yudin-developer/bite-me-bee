@@ -2,17 +2,23 @@ package ru.coderiders.bitemebee.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 import ru.coderiders.bitemebee.rest.api.impl.BeeFamilyController;
 import ru.coderiders.bitemebee.rest.dto.BeeFamilyRsDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
 import ru.coderiders.bitemebee.service.BeeFamilySnapshotService;
+import ru.coderiders.bitemebee.service.UserService;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
 import ru.coderiders.commons.rest.exception.BadRequestException;
 import ru.coderiders.commons.rest.exception.NotFoundException;
@@ -36,7 +42,9 @@ import static ru.coderiders.bitemebee.data.BeeFamilySnapshotData.BEE_FAMILY_SNAP
 import static ru.coderiders.bitemebee.data.BeeFamilySnapshotData.BEE_FAMILY_SNAPSHOT_DTO_2;
 import static ru.coderiders.bitemebee.data.BeeFamilySnapshotData.BEE_FAMILY_SNAPSHOT_RQ_DTO_1;
 
-@WebMvcTest(BeeFamilyController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@WithMockUser(roles = "ADMIN")
 public class BeeFamilyControllerTest {
     @MockBean
     private BeeFamilyService beeFamilyService;
