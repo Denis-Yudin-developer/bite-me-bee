@@ -1,7 +1,6 @@
 package ru.coderiders.bitemebee.rest.api.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import ru.coderiders.bitemebee.rest.dto.JobRqDto;
 import ru.coderiders.bitemebee.rest.dto.JobRsDto;
 import ru.coderiders.bitemebee.service.JobService;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class JobController implements JobAPI {
