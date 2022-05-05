@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User getEntityById(@NonNull Long id) {
-        log.debug("Запрос на получение су пользователя по id = {}", id);
+        log.debug("Запрос на получение сущности пользователя по id = {}", id);
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format(USER_ID_NOT_FOUND, id)));
     }
 

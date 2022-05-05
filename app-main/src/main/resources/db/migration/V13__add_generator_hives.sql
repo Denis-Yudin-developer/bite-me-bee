@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS generator_hives (
 	delta float8 NOT NULL,
 	honey_capacity float8 NOT NULL,
 	is_overheated bool NOT NULL,
-    is_chilled bool NOT NULL,
+	is_chilled bool NOT NULL,
 	bee_family_id int8 NULL,
 	CONSTRAINT pk_generator_hives_id PRIMARY KEY (id)
 );
