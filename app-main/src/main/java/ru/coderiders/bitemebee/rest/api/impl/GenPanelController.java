@@ -28,7 +28,12 @@ public class GenPanelController implements GenPanelApi {
     }
 
     @Override
-    public void infect(Long id) {
+    public void chillHive(Long id) {
+        hiveFeignApi.updateChilledStatus(id, true);
+    }
+
+    @Override
+    public void infectBeeFamily(Long id) {
         beeFamilyFeignApi.updateInfectedStatus(id, true);
     }
 }

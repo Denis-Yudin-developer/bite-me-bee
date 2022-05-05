@@ -23,4 +23,7 @@ public interface HiveFeignApi {
 
     @PostMapping("/{id}/overheat")
     void updateOverheatedStatus(@PathVariable Long id, @RequestBody Boolean isOverheated);
+
+    @PostMapping("/{id}/chill")
+    void updateChilledStatus(@PathVariable Long id, @RequestBody Boolean isChilled);
 }

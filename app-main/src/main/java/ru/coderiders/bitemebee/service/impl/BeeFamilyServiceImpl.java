@@ -140,11 +140,14 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     public void release(@NonNull Long id) {
         log.debug("Запрос на выселение пчелиной семьи по id = {}", id);
         beeFamilyRepository.findById(id)
-                .ifPresentOrElse(found -> found.setIsAlive(false),
+                .ifPresentOrElse(found -> {
+                            found.setIsAlive(false);
+                            found.setIsDeleted(true);
+                            beeFamilyFeignApi.deleteById(id);
+                        },
                         () -> {
                             throw new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id));
                         });
-        beeFamilyFeignApi.deleteById(id);
     }
 
     @Override
@@ -152,11 +155,10 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     public void deleteByBeeType(@NonNull Long beeTypeId) {
         log.debug("Запрос на удаление семей с beeTypeId = {}", beeTypeId);
         List<BeeFamily> beeFamiliesList = beeFamilyRepository.findByBeeTypeId(beeTypeId)
-                .stream().map(found -> {
+                .stream().peek(found -> {
                     found.setIsDeleted(true);
                     found.setIsAlive(false);
                     beeFamilyFeignApi.deleteById(found.getId());
-                    return found;
                 }).toList();
         beeFamilyRepository.saveAll(beeFamiliesList);
     }
@@ -168,7 +170,20 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
         return beeFamilyRepository.existsById(id);
     }
 
+    @Transactional
     public List<BeeFamily> getAllEntities() {
         return beeFamilyRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public void removeExtraQueens(@NonNull Long id) {
+        log.debug("Запрос на удаление лишних маток в семье, id = {}", id);
+        beeFamilyRepository.findById(id)
+                .map(found -> {
+                    found.setQueenPopulation(1L);
+                    return found;
+                })
+                .orElseThrow(() -> new NotFoundException(String.format(BEE_FAMILY_NOT_FOUND, id)));
     }
 }

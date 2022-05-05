@@ -27,7 +27,6 @@ public class JobRqDto {
     @NotNull(message = "Не указан идентификатор улья")
     @Schema(description = "Идентификатор улья", example = "1")
     private Long hiveId;
-    @NotNull(message = "Не указан идентификатор пользователя")
     @Schema(description = "Идентификатор пользователя", example = "1")
     private Long userId;
 }

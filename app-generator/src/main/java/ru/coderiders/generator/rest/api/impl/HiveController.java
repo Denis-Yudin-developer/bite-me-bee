@@ -30,4 +30,9 @@ public class HiveController implements HiveApi {
     public void updateOverheatedStatus(Long id, Boolean isOverheated) {
         hiveService.updateOverheatedStatus(id, isOverheated);
     }
+
+    @Override
+    public void updateChilledStatus(Long id, Boolean isChilled) {
+        hiveService.updateChilledStatus(id, isChilled);
+    }
 }

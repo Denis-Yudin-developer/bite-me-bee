@@ -30,4 +30,6 @@ public interface BeeFamilyService {
     void deleteByBeeType(@NonNull Long beeTypeId);
 
     List<BeeFamily> getAllEntities();
+
+    void removeExtraQueens(@NonNull Long id);
 }

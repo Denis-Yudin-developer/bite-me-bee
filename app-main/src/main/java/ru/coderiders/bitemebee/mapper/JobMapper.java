@@ -58,7 +58,6 @@ public class JobMapper {
             Optional.of(jobSrc.getUserId())
                     .flatMap(userRepository::findById)
                     .ifPresent(jobDst::setUser);
-
             return jobDst;
         };
     }

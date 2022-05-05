@@ -143,6 +143,7 @@ public class BeeFamilyServiceImpl implements BeeFamilyService {
     }
 
     @Override
+    @Transactional
     public void removeExtraQueens(@NonNull Long id) {
         log.debug("Запрос на удаление лишних маток в семье в генераторе, id = {}", id);
         beeFamilyRepository.findById(id)

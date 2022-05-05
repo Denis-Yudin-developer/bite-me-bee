@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.coderiders.bitemebee.entity.BeeFamilySnapshot;
 import ru.coderiders.bitemebee.entity.BeeType;
-import ru.coderiders.bitemebee.entity.Hive;
 import ru.coderiders.bitemebee.entity.HiveSnapshot;
 import ru.coderiders.bitemebee.repository.BeeFamilyRepository;
-import ru.coderiders.bitemebee.repository.HiveRepository;
 import ru.coderiders.bitemebee.rest.dto.HiveRsDto;
 import ru.coderiders.bitemebee.rest.dto.JobRqDto;
 import ru.coderiders.bitemebee.service.BeeFamilyService;
@@ -19,10 +17,12 @@ import ru.coderiders.bitemebee.service.HiveService;
 import ru.coderiders.bitemebee.service.HiveSnapshotService;
 import ru.coderiders.bitemebee.service.JobService;
 import ru.coderiders.bitemebee.service.UserService;
+import ru.coderiders.bitemebee.visitor.family.FamilySnapshotVisitorDto;
+import ru.coderiders.bitemebee.visitor.family.LinkedVisitorFamily;
+import ru.coderiders.bitemebee.visitor.hive.HiveSnapshotVisitorDto;
+import ru.coderiders.bitemebee.visitor.hive.LinkedVisitorHive;
 import ru.coderiders.commons.rest.dto.BeeFamilySnapshotDto;
 import ru.coderiders.commons.rest.dto.HiveSnapshotDto;
-
-import java.time.Instant;
 
 @Slf4j
 @Service
@@ -35,6 +35,8 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
     private final HiveSnapshotService hiveSnapshotService;
     private final BeeFamilySnapshotService beeFamilySnapshotService;
     private final BeeFamilyRepository beeFamilyRepository;
+    private final LinkedVisitorHive linkedVisitorHive;
+    private final LinkedVisitorFamily linkedVisitorFamily;
 
     @Override
     @Transactional
@@ -44,62 +46,38 @@ public class SnapshotProcessorImpl implements SnapshotProcessor {
             log.warn("Не найден улей по идентификатору, id = {}", hiveId);
             return;
         }
-        beeFamilyRepository.findByHiveIdAndIsAliveTrue(hiveId).ifPresent(beeFamily -> {
-            BeeType beeType = beeFamily.getBeeType();
-            if(beeType.getMaxTemperature() < hiveSnapshot.getTemperature()) {
-                JobRqDto jobRqDto = JobRqDto.builder()
-                        .activityId(3L)
-                        .note("Улей перегрет")
-                        .hiveId(hiveSnapshot.getHiveId())
-                        .userId(userService.getRandomUserId())
-                        .build();
-                jobService.create(jobRqDto);
-            }
-        });
         HiveSnapshot created = hiveSnapshotService.createSnapshot(hiveSnapshot);
         hiveService.updateHoneyAmount(hiveId, created.getHoneyIncrease());
         HiveRsDto hive = hiveService.getById(hiveId);
-        if(hive.getHoneyAmount() == hive.getFrameCount().doubleValue()) {
-            JobRqDto jobRqDto = JobRqDto.builder()
-                    .activityId(1L)
-                    .note("Улей переполнен мёдом")
-                    .hiveId(hiveSnapshot.getHiveId())
-                    .userId(userService.getRandomUserId())
+        beeFamilyRepository.findByHiveIdAndIsAliveTrue(hiveId).ifPresent(beeFamily -> {
+            BeeType beeType = beeFamily.getBeeType();
+            HiveSnapshotVisitorDto visitorDto = HiveSnapshotVisitorDto.builder()
+                    .minTemperature(beeType.getMinTemperature())
+                    .maxTemperature(beeType.getMaxTemperature())
+                    .honeyCapacity(hive.getFrameCount())
                     .build();
-            jobService.create(jobRqDto);
-        }
+            linkedVisitorHive.visit(visitorDto, hiveSnapshot);
+        });
     }
 
     @Override
     @Transactional
-    public void processBeeFamilySnapshot(@NonNull BeeFamilySnapshotDto beeFamilySnapshotGeneratorDto) {
-        Long beeFamilyId = beeFamilySnapshotGeneratorDto.getFamilyId();
+    public void processBeeFamilySnapshot(@NonNull BeeFamilySnapshotDto familySnapshot) {
+        Long beeFamilyId = familySnapshot.getFamilyId();
         if(!beeFamilyService.beeFamilyExists(beeFamilyId)) {
             log.warn("Не найдена пчелиная семья по идентификатору, id = {}", beeFamilyId);
             return;
         }
         beeFamilyRepository.findById(beeFamilyId).ifPresent(beeFamily -> {
             Long hiveId = beeFamily.getHive().getId();
-            if(beeFamilySnapshotGeneratorDto.getPopulationIncrease() < 0) {
-                JobRqDto jobRqDto = JobRqDto.builder()
-                        .activityId(4L)
-                        .note("Семья заболела")
-                        .hiveId(hiveId)
-                        .userId(userService.getRandomUserId())
-                        .build();
-                jobService.create(jobRqDto);
-            }
-            if(beeFamilySnapshotGeneratorDto.getQueenPopulationIncrease() > 0) {
-                JobRqDto jobRqDto = JobRqDto.builder()
-                        .activityId(2L)
-                        .note("В семья родилась лишняя матка")
-                        .hiveId(hiveId)
-                        .userId(userService.getRandomUserId())
-                        .build();
-                jobService.create(jobRqDto);
-            }
+            FamilySnapshotVisitorDto visitorDto = FamilySnapshotVisitorDto.builder()
+                    .hiveId(hiveId)
+                    .populationDecreaseFactor(0)
+                    .queenIncreaseFactor(0)
+                    .build();
+            linkedVisitorFamily.visit(visitorDto, familySnapshot);
         });
-        BeeFamilySnapshot beeFamilySnapshot = beeFamilySnapshotService.createSnapshot(beeFamilySnapshotGeneratorDto);
+        BeeFamilySnapshot beeFamilySnapshot = beeFamilySnapshotService.createSnapshot(familySnapshot);
         beeFamilyService.updatePopulation(beeFamilyId, beeFamilySnapshot.getDronePopulationIncrease(),
                 beeFamilySnapshot.getWorkerPopulationIncrease(), beeFamilySnapshot.getQueenPopulationIncrease(),
                 beeFamilySnapshot.getPopulationIncrease());
