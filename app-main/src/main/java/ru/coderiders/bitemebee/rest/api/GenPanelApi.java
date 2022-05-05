@@ -34,5 +34,5 @@ public interface GenPanelApi {
     @PutMapping("/{id}/infect")
     @Operation(description = "Заразить семью", method = "PUT")
     @PreAuthorize("hasRole('ADMIN')")
-    void infect(@PathVariable Long id);
+    void infectBeeFamily(@PathVariable Long id);
 }

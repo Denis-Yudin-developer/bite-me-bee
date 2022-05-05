@@ -33,7 +33,7 @@ public class GenPanelController implements GenPanelApi {
     }
 
     @Override
-    public void infect(Long id) {
+    public void infectBeeFamily(Long id) {
         beeFamilyFeignApi.updateInfectedStatus(id, true);
     }
 }
