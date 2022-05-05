@@ -55,12 +55,9 @@ public class JobMapper {
                     .flatMap(hiveRepository::findById)
                     .ifPresent(jobDst::setHive);
 
-            if(jobSrc.getUserId() != null) {
-                Optional.of(jobSrc.getUserId())
-                        .flatMap(userRepository::findById)
-                        .ifPresent(jobDst::setUser);
-            }
-
+            Optional.of(jobSrc.getUserId())
+                    .flatMap(userRepository::findById)
+                    .ifPresent(jobDst::setUser);
             return jobDst;
         };
     }
