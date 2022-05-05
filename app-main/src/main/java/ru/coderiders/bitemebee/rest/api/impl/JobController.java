@@ -45,6 +45,11 @@ public class JobController implements JobAPI {
     }
 
     @Override
+    public JobRsDto assignUser(Long id, Long userId) {
+        return jobService.assignUser(id, userId);
+    }
+
+    @Override
     public ResponseEntity<Void> complete(Long id) {
         jobService.complete(id);
         return ResponseEntity.accepted().build();

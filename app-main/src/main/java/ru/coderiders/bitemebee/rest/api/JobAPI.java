@@ -80,6 +80,21 @@ public interface JobAPI {
                     @PathVariable(name = "id") Long id,
                     @Valid @RequestBody JobNoteRqDto jobNoteRqDto);
 
+    @PutMapping("/{id}/user")
+    @Operation(description = "Изменение исполнителя работы по идентификатору по идентификатору", method = "PUT")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = JobRsDto.class))}),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND")
+    })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    JobRsDto assignUser(@Parameter(required = true, description = "Идентификатор")
+                        @PathVariable(name = "id") Long id,
+                        @Valid @RequestBody Long userId);
+
     @DeleteMapping("/{id}")
     @Operation(description = "Удаление записи о работе по идентификатору", method = "DELETE")
     @ApiResponses({

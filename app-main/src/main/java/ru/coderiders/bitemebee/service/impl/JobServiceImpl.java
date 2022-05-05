@@ -16,6 +16,7 @@ import ru.coderiders.bitemebee.entity.Job;
 import ru.coderiders.bitemebee.mapper.JobMapper;
 import ru.coderiders.bitemebee.repository.BeeFamilyRepository;
 import ru.coderiders.bitemebee.repository.JobRepository;
+import ru.coderiders.bitemebee.repository.UserRepository;
 import ru.coderiders.bitemebee.rest.dto.JobNoteRqDto;
 import ru.coderiders.bitemebee.rest.dto.JobRqDto;
 import ru.coderiders.bitemebee.rest.dto.JobRsDto;
@@ -40,6 +41,7 @@ public class JobServiceImpl implements JobService {
     private final String PLANNED_JOB_CREATED = "Задача создана по расписанию";
     private final JobRepository jobRepository;
     private final BeeFamilyRepository beeFamilyRepository;
+    private final UserRepository userRepository;
     private final JobMapper jobMapper;
     private final ActivityService activityService;
     private final HiveService hiveService;
@@ -71,11 +73,9 @@ public class JobServiceImpl implements JobService {
         log.debug("Запрос на создание новой работы, jobRqDto = {}", jobRqDto);
         var hiveId = jobRqDto.getHiveId();
         var activityId = jobRqDto.getActivityId();
-        var userId = jobRqDto.getUserId();
         try {
             hiveService.getById(hiveId);
             activityService.getById(activityId);
-            userService.getById(userId);
         } catch (NotFoundException e) {
             throw new BadRequestException(e.getMessage());
         }
@@ -106,10 +106,24 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
+    public JobRsDto assignUser(@NonNull Long id, @NonNull Long userId) {
+        log.debug("Запрос на обновление исполнителя работы по id = {}, userId = {}", id, userId);
+        return jobRepository.findById(id)
+                .map(found -> {
+                    found.setUser(userService.getEntityById(userId));
+                    return found;
+                })
+                .map(jobMapper::toDto)
+                .orElseThrow(() -> new NotFoundException(String.format(JOB_NOT_FOUND, id)));
+    }
+
+    @Override
+    @Transactional
     public void complete(@NonNull Long id) {
         log.debug("Запрос на завершение работы по id = {}", id);
         jobRepository.findById(id).
                 ifPresentOrElse(found -> {
+                            if (found.getClosedAt() != null) return;
                             found.setIsCompleted(true);
                             found.setClosedAt(Instant.now());
                             Long hiveId = found.getHive().getId();
